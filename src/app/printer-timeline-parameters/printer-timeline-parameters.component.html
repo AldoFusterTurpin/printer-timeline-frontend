@@ -1,7 +1,7 @@
 <form [formGroup]="myForm" (ngSubmit)="submitForm()" novalidate class="mat-form-field--inline">
     <mat-form-field appearance="outline">
         <mat-label>Printer Number (Pn)</mat-label>
-        <input matInput placeholder="Placeholder" formControlName="PnControl">
+        <input matInput formControlName="PnControl">
         <mat-error *ngIf="errorHandling('PnControl', 'required')">
             You must provide a <strong>Printer Number (Pn)</strong>
         </mat-error>
@@ -10,7 +10,7 @@
 
     <mat-form-field appearance="outline">
         <mat-label>Serial Number (Sn)</mat-label>
-        <input matInput placeholder="Placeholder" formControlName="SnControl">
+        <input matInput formControlName="SnControl">
         <mat-error *ngIf="errorHandling('SnControl', 'required')">
             You must provide a <strong>Serial Number (Sn)</strong>
         </mat-error>
@@ -20,13 +20,17 @@
     <mat-form-field>
         <mat-label>Data to display</mat-label>
         <mat-select multiple formControlName="dataList">
-            <mat-option *ngFor="let data of typesOfData" [value]="data">{{data}}</mat-option>
+            <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
+                <mat-option *ngFor="let d of group.data" [value]="d.value">
+                    {{d.viewValue}}
+                </mat-option>
+            </mat-optgroup>
         </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in" formControlName="myDate"
-            (dateChange)="date($event)">
+        <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in"
+            formControlName="myDate" (dateChange)="date($event)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="errorHandling('myDate', 'required')">

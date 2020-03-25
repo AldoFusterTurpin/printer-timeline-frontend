@@ -8,14 +8,29 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 export class PrinterTimelineParametersComponent {
   myForm: FormGroup;
-  typesOfData: string[] = [
-    'XML',
-    'JSON',
-    'RTA',
-    'Heart Beats (HB)',
-    'Get Configuration Profile Request',
-    'Get SQS Credentials Request',
-    'Printer Subscriptions'
+  dataGroups = [
+    {
+      name: 'Files',
+      data: [
+        {value: 'xml', viewValue: 'XML'},
+        {value: 'json', viewValue: 'JSON'},
+        {value: 'rta', viewValue: 'RTA'},
+        {value: 'heartBits', viewValue: 'Heart Bits (HB)'}
+      ]
+    },
+    {
+      name: 'Requests',
+      data: [
+        {value: 'gcp', viewValue: 'Get Configuration Profile'},
+        {value: 'getSqsCredentials', viewValue: 'Get SQS Credentials'}
+      ]
+    },
+    {
+      name: 'Other',
+      data: [
+        {value: 'printerSubscriptions', viewValue: 'Printer Subscriptions'}
+      ]
+    },
   ];
 
   constructor(public formBuilder: FormBuilder) { }
@@ -43,5 +58,4 @@ export class PrinterTimelineParametersComponent {
   submitForm() {
     console.log(this.myForm.value)
   }
-
 }
