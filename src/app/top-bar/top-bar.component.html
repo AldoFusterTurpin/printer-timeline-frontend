@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+    <img id="hp_logo" width="60" height="60" alt="Angular Logo" src="../assets/images/hp_logo.png" />
+    <span id="web-title"> Cloud Connector </span>
+
+    <div id="toolbar-buttons-container">
+        <button mat-button class="toolbar-button">
+            <mat-icon class="black-icon">print</mat-icon> Printers Info
+        </button>
+        <button mat-button class="toolbar-button" [routerLink]="['/printer-timeline-parameters']">
+            <mat-icon class="black-icon">timeline</mat-icon> Printer Timeline
+        </button>
+    </div>
+
+    <!-- This fills the remaining space of the current row -->
+    <span class="example-fill-remaining-space"></span>
+
+    <!-- <span fontSet="material-icons-outlined"> with <mat-icon>favorite_outline</mat-icon> by the <mat-icon fontSet="material-icons-outlined">cloud_outline</mat-icon>Cloud Team </span> -->
+    <span> with <mat-icon class="black-icon">favorite</mat-icon> by the <span id="cloudTeam"> Cloud Team</span> </span>
+</mat-toolbar>
