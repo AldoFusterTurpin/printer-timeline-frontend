@@ -1,4 +1,6 @@
 <form [formGroup]="myForm" (ngSubmit)="submitForm()" novalidate class="mat-form-field--inline">
+    <h2>Printer information</h2>
+
     <mat-form-field appearance="outline">
         <mat-label>Printer Number (Pn)</mat-label>
         <input matInput formControlName="PnControl">
@@ -17,7 +19,9 @@
         <mat-hint>Hint</mat-hint>
     </mat-form-field>
 
-    <mat-form-field>
+    <h2>Data type</h2>
+
+    <mat-form-field appearance="outline">
         <mat-label>Data to display</mat-label>
         <mat-select multiple formControlName="dataList">
             <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
@@ -28,17 +32,9 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-        <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in"
-            formControlName="myDate" (dateChange)="date($event)">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="errorHandling('myDate', 'required')">
-            Please enter <strong>a date to see data from</strong>
-        </mat-error>
-    </mat-form-field>
+    <app-time-range-selector></app-time-range-selector>
 
     <div class="button-wrapper">
         <button mat-flat-button color="primary">Next</button>
     </div>
-</form>
+</form> 

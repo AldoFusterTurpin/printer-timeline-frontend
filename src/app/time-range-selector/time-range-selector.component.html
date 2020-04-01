@@ -1,0 +1,23 @@
+<h2>Time range</h2>
+<form [formGroup]="timeRangeFormGroup">
+    <mat-form-field appearance="outline">
+        <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in"
+            formControlName="myDate" (dateChange)="date($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="errorHandling('myDate', 'required')">
+            Please enter <strong>a date to see data from</strong>
+        </mat-error>
+    </mat-form-field>
+
+    <!-- <div class="input-wrapper">
+        <label>Date Range():</label>
+        <input formControlName="myDate" [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2"
+            [selectMode]="'range'">
+        <owl-date-time #dtPicker2></owl-date-time>
+        <mat-icon>date_range</mat-icon>
+        <mat-error *ngIf="errorHandling('myDate', 'required')">
+            Please enter <strong>a date range</strong> to see data from then
+        </mat-error>
+    </div> -->
+</form>

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { TimeRangeSelectorComponent } from '../time-range-selector/time-range-selector.component';
+
 
 @Component({
   selector: 'app-printer-timeline-parameters',
@@ -7,7 +9,10 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
   styleUrls: ['./printer-timeline-parameters.component.scss']
 })
 export class PrinterTimelineParametersComponent {
+  @ViewChild(TimeRangeSelectorComponent, {static: true}) timeRangeForm: TimeRangeSelectorComponent;
+
   myForm: FormGroup;
+
   dataGroups = [
     {
       name: 'Files',
@@ -26,7 +31,7 @@ export class PrinterTimelineParametersComponent {
       ]
     },
     {
-      name: 'Other',
+      name: 'Others',
       data: [
         {value: 'printerSubscriptions', viewValue: 'Printer Subscriptions'}
       ]
@@ -39,15 +44,8 @@ export class PrinterTimelineParametersComponent {
     this.myForm = this.formBuilder.group({
       PnControl: ['', [Validators.required]],
       SnControl: ['', [Validators.required]],
-      myDate: ['', [Validators.required]],
-      dataList: [null, [Validators.required]]
-    })
-  }
-
-  date(e) {
-    var convertDate = new Date(e.target.value).toISOString().substring(0, 10);
-    this.myForm.get('myDate').setValue(convertDate, {
-      onlyself: true
+      dataList: [, [Validators.required]],
+      myDate: this.timeRangeForm.createGroup()
     })
   }
 

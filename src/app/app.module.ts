@@ -6,10 +6,14 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { TopBarComponent } from './top-bar/top-bar.component';
 
+//external date picker library https://www.npmjs.com/package/ng-pick-datetime
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 //external file with all the components of Angular material used in the app
 import { AngularMaterialModule } from './material.module';
 
 import { PrinterTimelineParametersComponent } from './printer-timeline-parameters/printer-timeline-parameters.component';
+import { TimeRangeSelectorComponent } from './time-range-selector/time-range-selector.component';
 
 
 @NgModule({
@@ -17,11 +21,14 @@ import { PrinterTimelineParametersComponent } from './printer-timeline-parameter
     AppComponent,
     TopBarComponent,
     PrinterTimelineParametersComponent,
+    TimeRangeSelectorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
     RouterModule.forRoot([
       { path: 'printer-timeline-parameters', component: PrinterTimelineParametersComponent },
     ])

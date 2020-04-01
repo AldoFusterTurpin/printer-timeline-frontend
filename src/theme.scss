@@ -1,5 +1,6 @@
+@import '~@angular/material/theming';
+
 //this file defines custom material theme for the webpage
-@import "~@angular/material/theming";
 @include mat-core();
 
 $my-app-primary: mat-palette($mat-light-blue, 600);
@@ -46,6 +47,9 @@ form {
 .button-wrapper {
   margin-top: 10px;
 }
+
+//Angular Date Time Picker  https://www.npmjs.com/package/ng-pick-datetime
+@import "~ng-pick-datetime/assets/style/picker.min.css";
 
 /* Rules for sizing the icon. */
 .material-icons.md-18 { font-size: 18px; }
