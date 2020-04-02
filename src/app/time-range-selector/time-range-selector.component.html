@@ -1,8 +1,15 @@
-<h2>Time range</h2>
-<form [formGroup]="timeRangeFormGroup">
+<form [formGroup]="timeRangeFormGroup" class="mat-form-field--inline">
+    <h2>Time range</h2>
+
+    <label id="example-radio-group-label">Select a time range type:</label>
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" formControlName="typeOfDate">
+        <mat-radio-button class="example-radio-button" *ngFor="let rangeType of rangeTypes" [value]="rangeType">
+            {{rangeType}}
+        </mat-radio-button>
+    </mat-radio-group>
+
     <mat-form-field appearance="outline">
-        <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in"
-            formControlName="myDate" (dateChange)="date($event)">
+        <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in" formControlName="myDate" (dateChange)="date($event)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="errorHandling('myDate', 'required')">

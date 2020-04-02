@@ -9,11 +9,14 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 export class TimeRangeSelectorComponent implements OnInit {
   timeRangeFormGroup: FormGroup;
 
+  rangeTypes: string[] = ['Relative', 'Absolute'];
+
   constructor(private formBuilder: FormBuilder) { }
 
   createGroup() {
     this.timeRangeFormGroup = this.formBuilder.group({
       myDate: ['', [Validators.required]],
+      typeOfDate: ['', [Validators.required]]
     });
 
     return this.timeRangeFormGroup;

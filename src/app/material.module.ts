@@ -18,6 +18,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
+import {MatRadioModule} from '@angular/material/radio';
 
 
 
@@ -36,7 +37,8 @@ import {MatSelectModule} from '@angular/material/select';
       MatExpansionModule,
       MatListModule,
       FormsModule,
-      MatSelectModule
+      MatSelectModule,
+      MatRadioModule
    ],
    exports: [
       MatButtonModule,
@@ -51,7 +53,8 @@ import {MatSelectModule} from '@angular/material/select';
       MatExpansionModule,
       MatListModule,
       FormsModule,
-      MatSelectModule
+      MatSelectModule,
+      MatRadioModule
    ],
    providers: [
       MatDatepickerModule,
