@@ -11,6 +11,8 @@ export class TimeRangeSelectorComponent implements OnInit {
 
   rangeTypes: string[] = ['Relative', 'Absolute'];
 
+  public min = new Date(2018, 1, 12, 10, 30);
+
   constructor(private formBuilder: FormBuilder) { }
 
   createGroup() {
@@ -36,7 +38,6 @@ export class TimeRangeSelectorComponent implements OnInit {
   }
 
   public isRelativeTime() {
-    return this.timeRangeFormGroup.get('typeOfDate').value() === "Relative"; 
+    return this.timeRangeFormGroup.get('typeOfDate').value() === "Relative";
   }
-
 }

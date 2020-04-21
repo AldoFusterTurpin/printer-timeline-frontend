@@ -49,9 +49,9 @@ export class PrinterTimelineParametersComponent {
     })
   }
 
-  public errorHandling = (control: string, error: string) => {
+  /* public errorHandling = (control: string, error: string) => {
     return this.myForm.controls[control].hasError(error);
-  }
+  } */
 
   submitForm() {
     console.log(this.myForm.value)

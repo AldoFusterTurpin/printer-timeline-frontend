@@ -1,21 +1,21 @@
-<form [formGroup]="myForm" (ngSubmit)="submitForm()" novalidate class="mat-form-field--inline">
+<form [formGroup]="myForm" novalidate (submit)="submitForm()" class="mat-form-field--inline" #myform="ngForm">
     <h2>Printer information</h2>
 
     <mat-form-field appearance="outline">
         <mat-label>Printer Number (PN)</mat-label>
         <input matInput formControlName="PnControl">
-        <mat-error *ngIf="errorHandling('PnControl', 'required')">
+        <!-- <mat-error *ngIf="errorHandling('PnControl', 'required')">
             You must provide a <strong>Printer Number (PN)</strong>
-        </mat-error>
+        </mat-error> -->
         <mat-hint>Hint</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
         <mat-label>Serial Number (SN)</mat-label>
         <input matInput formControlName="SnControl">
-        <mat-error *ngIf="errorHandling('SnControl', 'required')">
+       <!--  <mat-error *ngIf="errorHandling('SnControl', 'required')">
             You must provide a <strong>Serial Number (SN)</strong>
-        </mat-error>
+        </mat-error> -->
         <mat-hint>Hint</mat-hint>
     </mat-form-field>
 
@@ -30,11 +30,9 @@
                 </mat-option>
             </mat-optgroup>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field>   
 
     <app-time-range-selector></app-time-range-selector>
 
-    <div class="button-wrapper">
-        <button mat-flat-button color="primary">Next</button>
-    </div>
+    <button mat-flat-button color="primary">Next</button>
 </form> 
