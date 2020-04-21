@@ -15,8 +15,8 @@ export class TimeRangeSelectorComponent implements OnInit {
 
   createGroup() {
     this.timeRangeFormGroup = this.formBuilder.group({
-      myDate: ['', [Validators.required]],
-      typeOfDate: ['', [Validators.required]]
+      typeOfDate: ['', [Validators.required]],
+      myDate: ['', [Validators.required]]
     });
 
     return this.timeRangeFormGroup;
@@ -33,6 +33,10 @@ export class TimeRangeSelectorComponent implements OnInit {
 
   public errorHandling = (control: string, error: string) => {
     return this.timeRangeFormGroup.controls[control].hasError(error);
+  }
+
+  public isRelativeTime() {
+    return this.timeRangeFormGroup.get('typeOfDate').value() === "Relative"; 
   }
 
 }

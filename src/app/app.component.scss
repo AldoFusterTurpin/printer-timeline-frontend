@@ -1,4 +1,4 @@
-:host {
+/* :host {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 14px;
@@ -258,7 +258,7 @@ svg#clouds {
   width: 1920px;
 }
 
-/* Responsive Styles */
+// responsive styles
 @media screen and (max-width: 767px) {
   .card-container > *:not(.circle-link),
   .terminal {
@@ -286,3 +286,4 @@ svg#clouds {
     visibility: hidden;
   }
 }
+ */

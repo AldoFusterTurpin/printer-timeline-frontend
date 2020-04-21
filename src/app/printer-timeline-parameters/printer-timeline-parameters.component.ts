@@ -44,8 +44,8 @@ export class PrinterTimelineParametersComponent {
     this.myForm = this.formBuilder.group({
       PnControl: ['', [Validators.required]],
       SnControl: ['', [Validators.required]],
-      dataList: [, [Validators.required]],
-      myDate: this.timeRangeForm.createGroup()
+      dataTypes: [, [Validators.required]],
+      timeRange: this.timeRangeForm.createGroup()
     })
   }
 

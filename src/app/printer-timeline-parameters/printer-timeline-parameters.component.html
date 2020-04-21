@@ -2,19 +2,19 @@
     <h2>Printer information</h2>
 
     <mat-form-field appearance="outline">
-        <mat-label>Printer Number (Pn)</mat-label>
+        <mat-label>Printer Number (PN)</mat-label>
         <input matInput formControlName="PnControl">
         <mat-error *ngIf="errorHandling('PnControl', 'required')">
-            You must provide a <strong>Printer Number (Pn)</strong>
+            You must provide a <strong>Printer Number (PN)</strong>
         </mat-error>
         <mat-hint>Hint</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <mat-label>Serial Number (Sn)</mat-label>
+        <mat-label>Serial Number (SN)</mat-label>
         <input matInput formControlName="SnControl">
         <mat-error *ngIf="errorHandling('SnControl', 'required')">
-            You must provide a <strong>Serial Number (Sn)</strong>
+            You must provide a <strong>Serial Number (SN)</strong>
         </mat-error>
         <mat-hint>Hint</mat-hint>
     </mat-form-field>
@@ -23,7 +23,7 @@
 
     <mat-form-field appearance="outline">
         <mat-label>Data to display</mat-label>
-        <mat-select multiple formControlName="dataList">
+        <mat-select multiple formControlName="dataTypes" panelOpen="True">
             <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
                 <mat-option *ngFor="let d of group.data" [value]="d.value">
                     {{d.viewValue}}

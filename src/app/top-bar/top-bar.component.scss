@@ -1,19 +1,9 @@
-.example-fill-remaining-space {
-    /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
-}
-
 #hp_logo {
     margin-right: 20px;
 }
 
 #toolbar-buttons-container {
-    margin-left: 30px;
-}
-
-.toolbar-button {
-    font-size: 17px;
+    margin-left: 20px;
 }
 
 #web-title {
@@ -21,11 +11,20 @@
     color: black;
 }
 
-#cloudTeam {
-    font-weight: bold;
-    color: black;
+.toolbar-button {
+    font-size: 17px;
+    border: 2px solid rgb(62, 154, 223);
+    margin-left: 5px;
 }
 
-.black-icon {
-    color: black;
+.mat-toolbar {
+    display: flex;
+    flex: 1 1 auto;
+    background-color: white;
+    margin-top: 20px;
+}
+
+/* Solid border */
+hr.solid {
+    border-top: 1px solid #bbb;
 }
