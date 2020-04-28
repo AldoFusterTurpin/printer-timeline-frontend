@@ -11,7 +11,8 @@ export class TimeRangeSelectorComponent implements OnInit {
 
   rangeTypes: string[] = ['Relative', 'Absolute'];
 
-  public min = new Date(2018, 1, 12, 10, 30);
+  public minDate = new Date(2020, 1, 12);
+  public maxDate = new Date(2020, 12, 21);
 
   constructor(private formBuilder: FormBuilder) { }
 

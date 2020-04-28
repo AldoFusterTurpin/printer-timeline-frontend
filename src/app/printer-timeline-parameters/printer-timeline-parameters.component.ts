@@ -17,10 +17,10 @@ export class PrinterTimelineParametersComponent {
     {
       name: 'Files',
       data: [
-        {value: 'xml', viewValue: 'XML'},
+        {value: 'openXml', viewValue: 'OpenXML'},
         {value: 'json', viewValue: 'JSON'},
         {value: 'rta', viewValue: 'RTA'},
-        {value: 'heartBits', viewValue: 'Heart Bits (HB)'}
+        {value: 'heartBeats', viewValue: 'Heart Beats'}
       ]
     },
     {
@@ -55,5 +55,6 @@ export class PrinterTimelineParametersComponent {
 
   submitForm() {
     console.log(this.myForm.value)
+
   }
 }
