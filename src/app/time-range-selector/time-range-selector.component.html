@@ -32,14 +32,15 @@
 
 
     <div class="input-wrapper">
-        <label>
-            <input formControlName="myDate" [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2"
-                [selectMode]="'range'" [min]="minDate" [max]="maxDate">
-            <owl-date-time #dtPicker2></owl-date-time>
-        </label>
+        <label> </label>
+        <input formControlName="myDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker" [owlDateTime]="dtPicker"
+            [min]="minDate" [max]="maxDate">
+        <owl-date-time #dtPicker></owl-date-time>
+
         <mat-icon>date_range</mat-icon>
         <!-- <mat-error *ngIf="errorHandling('myDate', 'required')">
             Please enter <strong>a date range</strong> to see data from then
         </mat-error> -->
     </div>
+
 </form>

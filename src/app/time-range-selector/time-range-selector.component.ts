@@ -11,10 +11,18 @@ export class TimeRangeSelectorComponent implements OnInit {
 
   rangeTypes: string[] = ['Relative', 'Absolute'];
 
-  public minDate = new Date(2020, 1, 12);
-  public maxDate = new Date(2020, 12, 21);
+  public selectedMoment = new Date();
+
+  public minDate = this.getMinDate();
+  public maxDate = new Date();
 
   constructor(private formBuilder: FormBuilder) { }
+
+  public getMinDate() {
+    let date = new Date()
+    date.setMonth(date.getMonth() - 1)
+    return date;
+  }
 
   createGroup() {
     this.timeRangeFormGroup = this.formBuilder.group({

@@ -55,6 +55,5 @@ export class PrinterTimelineParametersComponent {
 
   submitForm() {
     console.log(this.myForm.value)
-
   }
 }
