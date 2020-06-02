@@ -18,9 +18,9 @@ export class PrinterTimelineParametersComponent {
       name: 'Files',
       data: [
         {value: 'openXml', viewValue: 'OpenXML'},
-        {value: 'json', viewValue: 'JSON'},
-        {value: 'rta', viewValue: 'RTA'},
-        {value: 'heartBeats', viewValue: 'Heart Beats'}
+        {value: 'json', viewValue: 'Cloud JSON'},
+        {value: 'rta', viewValue: 'RTA (Real Time Alerts)'},
+        {value: 'heartBeats', viewValue: 'HB (Heart Beats)'}
       ]
     },
     {
