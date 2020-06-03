@@ -12,7 +12,12 @@ export class PrinterTimelineParametersComponent {
   @ViewChild(TimeRangeSelectorComponent, {static: true}) timeRangeForm: TimeRangeSelectorComponent;
 
   files: Array<String> = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
+  requests: Array<String> = ['Get Configuration Profile', 'Get SQS Credentials'];
+  others: Array<String> = ['Printer Subscriptions'];
+
   selectedFilesValues = [];
+  selectedRequestsValues = [];
+  selectedOthersValues = [];
 
   myForm: FormGroup;
 
@@ -57,6 +62,8 @@ export class PrinterTimelineParametersComponent {
       PnControl: ['', [Validators.required]],
       SnControl: ['', [Validators.required]],
       filesControl: this.addFilesControls(),
+      requestsControl: this.addRequestsControls(),
+      othersControl: this.addOthersControls(),
       dataTypes: [, [Validators.required]],
       timeRange: this.timeRangeForm.createGroup()
     })
@@ -70,8 +77,32 @@ export class PrinterTimelineParametersComponent {
     return this.formBuilder.array(arr);
   }
 
+  addRequestsControls() {
+    const arr = this.requests.map(item => {
+      return this.formBuilder.control(false);
+    });
+
+    return this.formBuilder.array(arr);
+  }
+
+  addOthersControls() {
+    const arr = this.others.map(item => {
+      return this.formBuilder.control(false);
+    });
+
+    return this.formBuilder.array(arr);
+  }
+
   get filesArray() {
     return <FormArray>this.myForm.get('filesControl');
+  }
+
+  get requestsArray() {
+    return <FormArray>this.myForm.get('requestsControl');
+  }
+
+  get othersArray() {
+    return <FormArray>this.myForm.get('othersControl');
   }
 
   getSelectedFilesValue() {
@@ -79,6 +110,24 @@ export class PrinterTimelineParametersComponent {
     this.filesArray.controls.forEach((control, i) => {
       if (control.value) {
         this.selectedFilesValues.push(this.files[i]);
+      }
+    });
+  }
+
+  getSelectedRequestsValue() {
+    this.selectedRequestsValues = [];
+    this.requestsArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedRequestsValues.push(this.requests[i]);
+      }
+    });
+  }
+
+  getSelectedOthersValue() {
+    this.selectedOthersValues = [];
+    this.othersArray.controls.forEach((control, i) => {
+      if (control.value) {
+        this.selectedOthersValues.push(this.others[i]);
       }
     });
   }

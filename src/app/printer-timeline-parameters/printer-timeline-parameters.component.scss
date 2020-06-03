@@ -2,6 +2,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 600px
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .checkboxes {
@@ -9,6 +16,7 @@
     flex-direction: row;
     text-align: center;
     width: 600px;
+    margin-bottom: 10px;
 }
 
 .checkboxes input {

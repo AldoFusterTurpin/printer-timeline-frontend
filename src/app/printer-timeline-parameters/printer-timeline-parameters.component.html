@@ -17,9 +17,10 @@
         </mat-error> -->
     </mat-form-field>
 
-    <h2>Data types</h2>
+    <div class="form-section">
+        <h2>Data types</h2>
 
-    <!--  <mat-form-field appearance="outline">
+        <!--  <mat-form-field appearance="outline">
         <mat-label>Data to display</mat-label>
         <mat-select multiple formControlName="dataTypes" panelOpen="True">
             <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
@@ -30,15 +31,33 @@
         </mat-select>
     </mat-form-field>   -->
 
-        <h4> Files</h4>
-        <div class="checkboxes">
-            <div *ngFor="let control of filesArray.controls; let i = index;">
+        <h4>Files</h4>
+        <div class="checkboxes form-section">
+            <div *ngFor="let control of filesArray.controls; let i = index">
                 <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
-                    id="inlineCheckbox{{i}}"> </mat-checkbox>
+                    id="inlineCheckbox_{{i}}"> </mat-checkbox>
                 <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
             </div>
         </div>
 
+        <h4>Requests</h4>
+        <div class="checkboxes">
+            <div *ngFor="let control of requestsArray.controls; let i = index">
+                <mat-checkbox color="primary" (change)="getSelectedRequestsValue()" [formControl]="control"
+                    id="inlineCheckbox2_{{i}}"> </mat-checkbox>
+                <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
+            </div>
+        </div>
+
+        <h4>Others</h4>
+        <div class="checkboxes">
+            <div *ngFor="let control of othersArray.controls; let i = index">
+                <mat-checkbox color="primary" (change)="getSelectedOthersValue()" [formControl]="control"
+                    id="inlineCheckbox3_{{i}}"> </mat-checkbox>
+                <label class="" for="inlineCheckbox{{i}}">{{others[i]}}</label>
+            </div>
+        </div>
+    </div>
 
     <app-time-range-selector></app-time-range-selector>
 
