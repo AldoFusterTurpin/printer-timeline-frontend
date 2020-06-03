@@ -12,14 +12,14 @@
     <mat-form-field appearance="outline">
         <mat-label>Serial Number (SN)</mat-label>
         <input matInput formControlName="SnControl">
-       <!--  <mat-error *ngIf="errorHandling('SnControl', 'required')">
+        <!--  <mat-error *ngIf="errorHandling('SnControl', 'required')">
             You must provide a <strong>Serial Number (SN)</strong>
         </mat-error> -->
     </mat-form-field>
 
     <h2>Data types</h2>
 
-    <mat-form-field appearance="outline">
+    <!--  <mat-form-field appearance="outline">
         <mat-label>Data to display</mat-label>
         <mat-select multiple formControlName="dataTypes" panelOpen="True">
             <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
@@ -28,9 +28,19 @@
                 </mat-option>
             </mat-optgroup>
         </mat-select>
-    </mat-form-field>   
+    </mat-form-field>   -->
+
+        <h4> Files</h4>
+        <div class="checkboxes">
+            <div *ngFor="let control of filesArray.controls; let i = index;">
+                <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
+                    id="inlineCheckbox{{i}}"> </mat-checkbox>
+                <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
+            </div>
+        </div>
+
 
     <app-time-range-selector></app-time-range-selector>
 
     <button mat-flat-button color="primary">Next</button>
-</form> 
+</form>

@@ -4,3 +4,17 @@
     align-items: center;
 }
 
+.checkboxes {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    width: 600px;
+}
+
+.checkboxes input {
+    margin: 0px 0px 0px 0px;
+}
+
+.checkboxes label {
+    margin: 0px 20px 0px 3px;
+}
