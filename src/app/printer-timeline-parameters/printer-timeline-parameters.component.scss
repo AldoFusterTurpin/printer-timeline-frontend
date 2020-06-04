@@ -1,30 +1,25 @@
 #form {
-    display: flex;
+    flex: 1;
     flex-direction: column;
+    display: flex;
     align-items: center;
 } 
 
-#printer-info-time-range {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 900px;
-}
-
 #printer-info {
+    flex: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 600px;
 }
 
 #printer-info-elements {
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-right: 30px;
-    width: 600px;
+    justify-content: center;
+    width: 200px;
 }
 
 #product-number {
@@ -32,11 +27,12 @@
 } 
 
 #data-types {
+    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: left;
     justify-content: left;
-    width: 900px;
+    width: 700px;
 }
 
 .checkboxes {
