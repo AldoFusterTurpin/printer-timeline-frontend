@@ -1,6 +1,56 @@
-.mat-form-field--inline {
+#form {
+    flex: 1;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+} 
+
+#printer-info {
+    flex: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+#printer-info-elements {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 30px;
+    justify-content: center;
+    width: 200px;
+}
+
+#product-number {
+    margin-right: 20px;
+} 
+
+#data-types {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    width: 700px;
+}
+
+#files-header, #requests-headers, #others-header {
+    align-self: center;
+}
+
+.checkboxes {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 600px;
+    justify-content: left;
+}
+
+.checkboxes input {
+    margin: 0px 0px 20px 0px;
+}
+
+.checkboxes label {
+    margin: 0px 20px 0px 6px;
+} 

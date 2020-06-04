@@ -14,6 +14,7 @@ import { AngularMaterialModule } from './material.module';
 
 import { PrinterTimelineParametersComponent } from './printer-timeline-parameters/printer-timeline-parameters.component';
 import { TimeRangeSelectorComponent } from './time-range-selector/time-range-selector.component';
+import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { TimeRangeSelectorComponent } from './time-range-selector/time-range-sel
     TopBarComponent,
     PrinterTimelineParametersComponent,
     TimeRangeSelectorComponent,
+    DataTypesFilterComponent,
   ],
   imports: [
     BrowserModule,

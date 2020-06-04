@@ -19,6 +19,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 
@@ -38,7 +39,8 @@ import {MatRadioModule} from '@angular/material/radio';
       MatListModule,
       FormsModule,
       MatSelectModule,
-      MatRadioModule
+      MatRadioModule,
+      MatCheckboxModule
    ],
    exports: [
       MatButtonModule,
@@ -54,7 +56,8 @@ import {MatRadioModule} from '@angular/material/radio';
       MatListModule,
       FormsModule,
       MatSelectModule,
-      MatRadioModule
+      MatRadioModule,
+      MatCheckboxModule
    ],
    providers: [
       MatDatepickerModule,

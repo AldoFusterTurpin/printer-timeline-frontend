@@ -1,25 +1,30 @@
-<form [formGroup]="myForm" novalidate (submit)="submitForm()" class="mat-form-field--inline" #myform="ngForm">
-    <h2>Printer information</h2>
+<form id="form" [formGroup]="myForm" novalidate (submit)="submitForm()" #myform="ngForm">
 
-    <mat-form-field appearance="outline">
-        <mat-label>Printer Number (PN)</mat-label>
-        <input matInput formControlName="PnControl">
-        <!-- <mat-error *ngIf="errorHandling('PnControl', 'required')">
-            You must provide a <strong>Printer Number (PN)</strong>
-        </mat-error> -->
-    </mat-form-field>
+    <section id="printer-info">
+        <h2>Printer information</h2>
+        <div id="printer-info-elements">
+            <mat-form-field id="product-number">
+                <mat-label>Product Number (Pn)</mat-label>
+                <input matInput formControlName="PnControl">
+                <mat-error *ngIf="errorHandling('PnControl', 'required')">
+                    This field is <strong>mandatory</strong>
+                </mat-error>
+            </mat-form-field>
 
-    <mat-form-field appearance="outline">
-        <mat-label>Serial Number (SN)</mat-label>
-        <input matInput formControlName="SnControl">
-       <!--  <mat-error *ngIf="errorHandling('SnControl', 'required')">
-            You must provide a <strong>Serial Number (SN)</strong>
-        </mat-error> -->
-    </mat-form-field>
+            <mat-form-field>
+                <mat-label>Serial Number (Sn)</mat-label>
+                <input matInput formControlName="SnControl">
+                <mat-error *ngIf="errorHandling('SnControl', 'required')">
+                    This field is <strong>mandatory</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </section>
 
     <h2>Data types</h2>
+    <section id="data-types">
 
-    <mat-form-field appearance="outline">
+        <!--  <mat-form-field appearance="outline">
         <mat-label>Data to display</mat-label>
         <mat-select multiple formControlName="dataTypes" panelOpen="True">
             <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
@@ -28,9 +33,40 @@
                 </mat-option>
             </mat-optgroup>
         </mat-select>
-    </mat-form-field>   
+    </mat-form-field>   -->
 
-    <app-time-range-selector></app-time-range-selector>
+
+        <div id="files" class="checkboxes">
+            <h4 id="files-header">Files</h4>
+            <div *ngFor="let control of filesArray.controls; let i = index">
+                <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
+                    id="inlineCheckbox_{{i}}"> </mat-checkbox>
+                <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
+            </div>
+        </div>
+
+        <div class="checkboxes">
+            <h4 id="requests-headers">Requests</h4>
+            <div *ngFor="let control of requestsArray.controls; let i = index">
+                <mat-checkbox color="primary" (change)="getSelectedRequestsValue()" [formControl]="control"
+                    id="inlineCheckbox2_{{i}}"> </mat-checkbox>
+                <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
+            </div>
+        </div>
+
+        <div class="checkboxes">
+            <h4 id="others-header">Others</h4>
+            <div *ngFor="let control of othersArray.controls; let i = index">
+                <mat-checkbox color="primary" (change)="getSelectedOthersValue()" [formControl]="control"
+                    id="inlineCheckbox3_{{i}}"> </mat-checkbox>
+                <label class="" for="inlineCheckbox{{i}}">{{others[i]}}</label>
+            </div>
+        </div>
+    </section>
+
+    <section class="form-section" id="time-range">
+        <app-time-range-selector></app-time-range-selector>
+    </section>
 
     <button mat-flat-button color="primary">Next</button>
-</form> 
+</form>
