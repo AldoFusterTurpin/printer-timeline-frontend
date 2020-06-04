@@ -1,22 +1,51 @@
-.mat-form-field--inline {
+#form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 600px
+} 
+
+#printer-info-time-range {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 900px;
 }
 
-.form-section {
+#printer-info {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 600px;
+}
+
+#printer-info-elements {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 30px;
+    width: 600px;
+}
+
+#product-number {
+    margin-right: 20px;
+} 
+
+#data-types {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    width: 900px;
 }
 
 .checkboxes {
     display: flex;
-    flex-direction: row;
-    text-align: center;
+    flex-direction: column;
+    text-align: left;
     width: 600px;
     margin-bottom: 10px;
+    justify-content: left;
 }
 
 .checkboxes input {
@@ -25,4 +54,44 @@
 
 .checkboxes label {
     margin: 0px 20px 0px 3px;
+} 
+
+
+//below here is old
+/* 
+#printer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+#time-range {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+} */
+
+/* .mat-form-field--inline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+} */
+
+/* 
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.mat-form-field--inline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+} 
+*/

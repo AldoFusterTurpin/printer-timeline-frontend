@@ -1,24 +1,28 @@
-<form [formGroup]="myForm" novalidate (submit)="submitForm()" class="mat-form-field--inline" #myform="ngForm">
-    <h2>Printer information</h2>
+<form id="form" [formGroup]="myForm" novalidate (submit)="submitForm()" #myform="ngForm">
 
-    <mat-form-field appearance="outline">
-        <mat-label>Printer Number (PN)</mat-label>
-        <input matInput formControlName="PnControl">
-        <!-- <mat-error *ngIf="errorHandling('PnControl', 'required')">
-            You must provide a <strong>Printer Number (PN)</strong>
+    <section id="printer-info">
+        <h2>Printer information</h2>
+        <div id="printer-info-elements">
+            <mat-form-field id="product-number">
+                <mat-label>Product Number (PN)</mat-label>
+                <input matInput formControlName="PnControl">
+                <!-- <mat-error *ngIf="errorHandling('PnControl', 'required')">
+            You must provide a <strong>Product Number (PN)</strong>
         </mat-error> -->
-    </mat-form-field>
+            </mat-form-field>
 
-    <mat-form-field appearance="outline">
-        <mat-label>Serial Number (SN)</mat-label>
-        <input matInput formControlName="SnControl">
-        <!--  <mat-error *ngIf="errorHandling('SnControl', 'required')">
+            <mat-form-field>
+                <mat-label>Serial Number (SN)</mat-label>
+                <input matInput formControlName="SnControl">
+                <!--  <mat-error *ngIf="errorHandling('SnControl', 'required')">
             You must provide a <strong>Serial Number (SN)</strong>
         </mat-error> -->
-    </mat-form-field>
+            </mat-form-field>
+        </div>
+    </section>
 
-    <div class="form-section">
-        <h2>Data types</h2>
+    <h2>Data types</h2>
+    <section id="data-types">
 
         <!--  <mat-form-field appearance="outline">
         <mat-label>Data to display</mat-label>
@@ -31,8 +35,9 @@
         </mat-select>
     </mat-form-field>   -->
 
-        <h4>Files</h4>
-        <div class="checkboxes form-section">
+
+        <div id="files" class="checkboxes">
+            <h4>Files</h4>
             <div *ngFor="let control of filesArray.controls; let i = index">
                 <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
                     id="inlineCheckbox_{{i}}"> </mat-checkbox>
@@ -40,8 +45,8 @@
             </div>
         </div>
 
-        <h4>Requests</h4>
         <div class="checkboxes">
+            <h4>Requests</h4>
             <div *ngFor="let control of requestsArray.controls; let i = index">
                 <mat-checkbox color="primary" (change)="getSelectedRequestsValue()" [formControl]="control"
                     id="inlineCheckbox2_{{i}}"> </mat-checkbox>
@@ -49,17 +54,19 @@
             </div>
         </div>
 
-        <h4>Others</h4>
         <div class="checkboxes">
+            <h4>Others</h4>
             <div *ngFor="let control of othersArray.controls; let i = index">
                 <mat-checkbox color="primary" (change)="getSelectedOthersValue()" [formControl]="control"
                     id="inlineCheckbox3_{{i}}"> </mat-checkbox>
                 <label class="" for="inlineCheckbox{{i}}">{{others[i]}}</label>
             </div>
         </div>
-    </div>
+    </section>
 
-    <app-time-range-selector></app-time-range-selector>
+    <section class="form-section" id="time-range">
+        <app-time-range-selector></app-time-range-selector>
+    </section>
 
     <button mat-flat-button color="primary">Next</button>
 </form>
