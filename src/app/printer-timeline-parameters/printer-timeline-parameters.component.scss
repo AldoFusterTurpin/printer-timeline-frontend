@@ -35,59 +35,22 @@
     width: 700px;
 }
 
+#files-header, #requests-headers, #others-header {
+    align-self: center;
+}
+
 .checkboxes {
     display: flex;
     flex-direction: column;
     text-align: left;
     width: 600px;
-    margin-bottom: 10px;
     justify-content: left;
 }
 
 .checkboxes input {
-    margin: 0px 0px 0px 0px;
+    margin: 0px 0px 20px 0px;
 }
 
 .checkboxes label {
-    margin: 0px 20px 0px 3px;
+    margin: 0px 20px 0px 6px;
 } 
-
-
-//below here is old
-/* 
-#printer-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#time-range {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-} */
-
-/* .mat-form-field--inline {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-} */
-
-/* 
-
-.form-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.mat-form-field--inline {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-} 
-*/

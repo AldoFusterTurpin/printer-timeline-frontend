@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { TimeRangeSelectorComponent } from '../time-range-selector/time-range-selector.component';
-
+import { DataTypesFilterComponent } from '../data-types-filter/data-types-filter.component';
 
 @Component({
   selector: 'app-printer-timeline-parameters',
@@ -132,9 +132,9 @@ export class PrinterTimelineParametersComponent {
     });
   }
 
-  /* public errorHandling = (control: string, error: string) => {
+  public errorHandling = (control: string, error: string) => {
     return this.myForm.controls[control].hasError(error);
-  } */
+  }
 
   submitForm() {
     console.log(this.myForm.value)
