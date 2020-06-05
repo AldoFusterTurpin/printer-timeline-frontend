@@ -2,22 +2,32 @@
     <h2>Time range</h2>
 
     <div id="time-type">
-    <mat-radio-group formControlName="typeOfDate" aria-label="Select an option" color="primary">
-        <mat-radio-button value="relative">Relative</mat-radio-button>
-        <mat-radio-button value="absolute" >Absolute</mat-radio-button>
-      </mat-radio-group>
+        <mat-radio-group formControlName="typeOfDate" aria-label="Select an option" color="primary">
+            <mat-radio-button value="relative">Relative</mat-radio-button>
+            <mat-radio-button value="absolute">Absolute</mat-radio-button>
+        </mat-radio-group>
     </div>
 
-     <!-- <div *ngIf="isRelativeTime();">
-        <p>
-            In if
-        </p>
-    </div> -->
-    <!-- <ng-template #notShow>
-        <p>
-            In esle
-        </p>
-    </ng-template> -->
+    <p *ngIf="isRelativeTime(); else notShow">
+        TODO Display relative selector time
+    </p>
+
+    <ng-template #notShow>
+        <div class="input-wrapper">
+            <label> </label>
+            <input formControlName="myDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker"
+                [owlDateTime]="dtPicker" [min]="minDate" [max]="maxDate">
+            <owl-date-time #dtPicker></owl-date-time>
+
+            <mat-icon>date_range</mat-icon>
+            <!-- 
+            <mat-error *ngIf="errorHandling('myDate', 'required')">
+            Please enter <strong>a date range</strong> to see data from then
+            </mat-error> 
+            -->
+        </div>
+    </ng-template>
+
 
     <!-- <mat-form-field appearance="outline">
         <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in"
@@ -28,19 +38,4 @@
             Please enter <strong>a date to see data from</strong>
         </mat-error>
     </mat-form-field> -->
-
-    <div class="input-wrapper">
-        <label> </label>
-        <input formControlName="myDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker" [owlDateTime]="dtPicker"
-            [min]="minDate" [max]="maxDate">
-        <owl-date-time #dtPicker></owl-date-time>
-
-        <mat-icon>date_range</mat-icon>
-        <!-- 
-        <mat-error *ngIf="errorHandling('myDate', 'required')">
-        Please enter <strong>a date range</strong> to see data from then
-        </mat-error> 
-        -->
-    </div>
-
 </form>

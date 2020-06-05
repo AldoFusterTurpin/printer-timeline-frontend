@@ -51,6 +51,6 @@ export class TimeRangeSelectorComponent implements OnInit {
   }
 
   public isRelativeTime() {
-    return this.formGroup.get('typeOfDate').value() === "relative";
+    return this.formGroup.get('typeOfDate').value === "relative";
   }
 }
