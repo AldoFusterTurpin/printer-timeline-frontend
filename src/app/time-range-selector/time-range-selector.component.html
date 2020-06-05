@@ -1,20 +1,19 @@
-<form [formGroup]="timeRangeFormGroup" class="mat-form-field--inline">
+<form [formGroup]="formGroup" class="mat-form-field--inline">
     <h2>Time range</h2>
 
-    <!-- <label>Select a time range type:</label>
-    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-        formControlName="typeOfDate" color="primary">
-        <mat-radio-button *ngFor="let rangeType of rangeTypes" [value]="rangeType">
-            {{rangeType}}
-        </mat-radio-button>
-    </mat-radio-group>
+    <div id="time-type">
+    <mat-radio-group formControlName="typeOfDate" aria-label="Select an option" color="primary">
+        <mat-radio-button value="relative">Relative</mat-radio-button>
+        <mat-radio-button value="absolute" >Absolute</mat-radio-button>
+      </mat-radio-group>
+    </div>
 
-    <div *ngIf="isRelativeTime(); else notShow">
+     <!-- <div *ngIf="isRelativeTime();">
         <p>
             In if
         </p>
-    </div>
-    <ng-template #notShow>
+    </div> -->
+    <!-- <ng-template #notShow>
         <p>
             In esle
         </p>
@@ -30,7 +29,6 @@
         </mat-error>
     </mat-form-field> -->
 
-
     <div class="input-wrapper">
         <label> </label>
         <input formControlName="myDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker" [owlDateTime]="dtPicker"
@@ -38,9 +36,11 @@
         <owl-date-time #dtPicker></owl-date-time>
 
         <mat-icon>date_range</mat-icon>
-        <!-- <mat-error *ngIf="errorHandling('myDate', 'required')">
-            Please enter <strong>a date range</strong> to see data from then
-        </mat-error> -->
+        <!-- 
+        <mat-error *ngIf="errorHandling('myDate', 'required')">
+        Please enter <strong>a date range</strong> to see data from then
+        </mat-error> 
+        -->
     </div>
 
 </form>

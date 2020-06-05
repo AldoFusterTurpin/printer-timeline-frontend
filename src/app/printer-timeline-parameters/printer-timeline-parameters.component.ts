@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { TimeRangeSelectorComponent } from '../time-range-selector/time-range-selector.component';
-import { DataTypesFilterComponent } from '../data-types-filter/data-types-filter.component';
+
 
 @Component({
   selector: 'app-printer-timeline-parameters',
@@ -9,7 +9,7 @@ import { DataTypesFilterComponent } from '../data-types-filter/data-types-filter
   styleUrls: ['./printer-timeline-parameters.component.scss']
 })
 export class PrinterTimelineParametersComponent {
-  @ViewChild(TimeRangeSelectorComponent, {static: true}) timeRangeForm: TimeRangeSelectorComponent;
+  @ViewChild(TimeRangeSelectorComponent, { static: true }) timeRangeForm: TimeRangeSelectorComponent;
 
   files: Array<String> = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
   requests: Array<String> = ['Get Configuration Profile', 'Get SQS Credentials'];
@@ -35,23 +35,23 @@ export class PrinterTimelineParametersComponent {
       {
         name: 'Files',
         data: [
-          {value: 'openXml', viewValue: 'OpenXML'},
-          {value: 'json', viewValue: 'Cloud JSON'},
-          {value: 'rta', viewValue: 'RTA (Real Time Alerts)'},
-          {value: 'heartBeats', viewValue: 'HB (Heart Beats)'}
+          { value: 'openXml', viewValue: 'OpenXML' },
+          { value: 'json', viewValue: 'Cloud JSON' },
+          { value: 'rta', viewValue: 'RTA (Real Time Alerts)' },
+          { value: 'heartBeats', viewValue: 'HB (Heart Beats)' }
         ]
       },
       {
         name: 'Requests',
         data: [
-          {value: 'gcp', viewValue: 'Get Configuration Profile'},
-          {value: 'getSqsCredentials', viewValue: 'Get SQS Credentials'}
+          { value: 'gcp', viewValue: 'Get Configuration Profile' },
+          { value: 'getSqsCredentials', viewValue: 'Get SQS Credentials' }
         ]
       },
       {
         name: 'Others',
         data: [
-          {value: 'printerSubscriptions', viewValue: 'Printer Subscriptions'}
+          { value: 'printerSubscriptions', viewValue: 'Printer Subscriptions' }
         ]
       },
     ]
@@ -64,7 +64,6 @@ export class PrinterTimelineParametersComponent {
       filesControl: this.addFilesControls(),
       requestsControl: this.addRequestsControls(),
       othersControl: this.addOthersControls(),
-      dataTypes: [, [Validators.required]],
       timeRange: this.timeRangeForm.createGroup()
     })
   }

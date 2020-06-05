@@ -7,9 +7,13 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
   styleUrls: ['./time-range-selector.component.scss']
 })
 export class TimeRangeSelectorComponent implements OnInit {
-  timeRangeFormGroup: FormGroup;
+  
+  rangeTypes = [
+    {value: 'relative', viewValue: 'Relative'},
+    {value: 'absolute', viewValue: 'Absolute'},
+  ];
 
-  rangeTypes: string[] = ['Relative', 'Absolute'];
+  formGroup: FormGroup;
 
   public selectedMoment = new Date();
 
@@ -25,28 +29,28 @@ export class TimeRangeSelectorComponent implements OnInit {
   }
 
   createGroup() {
-    this.timeRangeFormGroup = this.formBuilder.group({
-      typeOfDate: ['', [Validators.required]],
+    this.formGroup = this.formBuilder.group({
+      typeOfDate: ['relative'],
       myDate: ['', [Validators.required]]
-    });
+    },);
 
-    return this.timeRangeFormGroup;
+    return this.formGroup;
   }
 
   ngOnInit(): void { }
 
   date(e) {
     var convertDate = new Date(e.target.value).toISOString().substring(0, 10);
-    this.timeRangeFormGroup.get('myDate').setValue(convertDate, {
+    this.formGroup.get('myDate').setValue(convertDate, {
       onlyself: true
     })
   }
 
   public errorHandling = (control: string, error: string) => {
-    return this.timeRangeFormGroup.controls[control].hasError(error);
+    return this.formGroup.controls[control].hasError(error);
   }
 
   public isRelativeTime() {
-    return this.timeRangeFormGroup.get('typeOfDate').value() === "Relative";
+    return this.formGroup.get('typeOfDate').value() === "relative";
   }
 }
