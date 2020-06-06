@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" class="mat-form-field--inline">
+<form [formGroup]="myForm" class="mat-form-field--inline">
     <h2>Time range</h2>
 
     <div id="time-type">
@@ -8,33 +8,49 @@
         </mat-radio-group>
     </div>
 
-    <p *ngIf="isRelativeTime(); else notShow">
-        TODO Display relative selector time
-    </p>
+    <div id="relative-time" *ngIf="isRelativeTime(); else notShow">
+        <mat-form-field id="relative-time-value">
+            <mat-label>Ex: 15 </mat-label>
+            <input matInput formControlName="relativeValue">
+            <mat-error *ngIf="errorHandling('relativeValue', 'required')">
+                This field is <strong>mandatory</strong>
+            </mat-error>
+        </mat-form-field>
 
+        <mat-form-field>
+            <mat-label>Time units</mat-label>
+            <mat-select formControlName="relativeUnits" required>
+                <mat-option *ngFor="let unit of relativeUnits" [value]="unit">
+                    {{unit.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="errorHandling('relativeValue', 'required')">This field is <strong>mandatory</strong>
+            </mat-error>
+        </mat-form-field>
+    </div>
     <ng-template #notShow>
-        <div class="input-wrapper">
+        <div>
             <label> </label>
-            <input formControlName="myDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker"
+            <input formControlName="absoluteDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker"
                 [owlDateTime]="dtPicker" [min]="minDate" [max]="maxDate">
             <owl-date-time #dtPicker></owl-date-time>
 
             <mat-icon>date_range</mat-icon>
-            <!-- 
-            <mat-error *ngIf="errorHandling('myDate', 'required')">
+            
+            <mat-error *ngIf="isAbsoluteDateEmpty &&errorHandling('absoluteDate', 'required')">
             Please enter <strong>a date range</strong> to see data from then
             </mat-error> 
-            -->
+           
         </div>
     </ng-template>
 
 
     <!-- <mat-form-field appearance="outline">
         <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in"
-            formControlName="myDate" (dateChange)="date($event)">
+            formControlName="absoluteDate" (dateChange)="date($event)">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="errorHandling('myDate', 'required')">
+        <mat-error *ngIf="errorHandling('absoluteDate', 'required')">
             Please enter <strong>a date to see data from</strong>
         </mat-error>
     </mat-form-field> -->

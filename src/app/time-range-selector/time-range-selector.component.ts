@@ -13,7 +13,12 @@ export class TimeRangeSelectorComponent implements OnInit {
     {value: 'absolute', viewValue: 'Absolute'},
   ];
 
-  formGroup: FormGroup;
+  relativeUnits = [
+    {value: 'minutes', viewValue: 'Minutes'},
+    {value: 'seconds', viewValue: 'Seconds'},
+  ];
+
+  myForm: FormGroup;
 
   public selectedMoment = new Date();
 
@@ -29,28 +34,35 @@ export class TimeRangeSelectorComponent implements OnInit {
   }
 
   createGroup() {
-    this.formGroup = this.formBuilder.group({
+    this.myForm = this.formBuilder.group({
       typeOfDate: ['relative'],
-      myDate: ['', [Validators.required]]
-    },);
+      absoluteDate: ['', [Validators.required]],
+      relativeValue:  ['', [Validators.required]],
+      relativeUnits:  ['', [Validators.required]]
+    });
 
-    return this.formGroup;
+    return this.myForm;
   }
 
   ngOnInit(): void { }
 
   date(e) {
     var convertDate = new Date(e.target.value).toISOString().substring(0, 10);
-    this.formGroup.get('myDate').setValue(convertDate, {
+    this.myForm.get('absoluteDate').setValue(convertDate, {
       onlyself: true
     })
   }
 
-  public errorHandling = (control: string, error: string) => {
-    return this.formGroup.controls[control].hasError(error);
+  public errorHandling(ctrl: string, error: string) {
+    return this.myForm.controls[ctrl].hasError(error);
   }
 
   public isRelativeTime() {
-    return this.formGroup.get('typeOfDate').value === "relative";
+    return this.myForm.get('typeOfDate').value === "relative";
   }
+
+  public isAbsoluteDateEmpty() {
+    return ((this.myForm.get('absoluteDate').value) == (''));
+  }
+
 }
