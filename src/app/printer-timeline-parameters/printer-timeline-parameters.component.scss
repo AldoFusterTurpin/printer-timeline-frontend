@@ -77,8 +77,26 @@
     margin-right: 20px;
 }
 
-#relative-time {
+#relative-time-block {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
+
+#absolute-time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#absolute-time-selector-with-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#absolute-time-selector {
+    margin-right: 10px;
+}
+

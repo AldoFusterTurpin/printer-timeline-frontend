@@ -31,7 +31,7 @@ export class PrinterTimelineParametersComponent {
   public minDate = this.getMinDate();
   public maxDate = new Date();
 
-  public getMinDate() {
+  private getMinDate() {
     let date = new Date()
     date.setMonth(date.getMonth() - 1)
     return date;
@@ -78,7 +78,6 @@ export class PrinterTimelineParametersComponent {
   get filesArray() {
     return <FormArray>this.myForm.get('filesControl');
   }
-
   getSelectedFilesValue() {
     this.selectedFilesValues = [];
     this.filesArray.controls.forEach((control, i) => {
@@ -122,21 +121,21 @@ export class PrinterTimelineParametersComponent {
     return this.myForm.get('typeOfDate').value === "relative";
   }
 
-  public isAbsoluteDateEmpty(): boolean {
+  private isAbsoluteDateEmpty(): boolean {
     return this.myForm.get('absoluteDate').value == '';
   }
 
-  public printerInfoIsValid(): boolean {
+  private printerInfoIsValid(): boolean {
     return !this.formControlhasError('PnControl', 'required') && !this.formControlhasError('SnControl', 'required');
   }
 
-  public dataTypesIsValid(): boolean {
+  private dataTypesIsValid(): boolean {
     return this.myForm.controls["filesControl"].value.indexOf(true) != -1 ||
       this.myForm.controls["requestsControl"].value.indexOf(true) != -1 ||
       this.myForm.controls["othersControl"].value.indexOf(true) != -1;
   }
 
-  public timeIsValid(): boolean {
+  private timeIsValid(): boolean {
     if (this.myForm.controls["typeOfDate"].value == "relative") {
       return !this.formControlhasError('relativeValue', 'required') && !this.formControlhasError('relativeUnits', 'required')
     }

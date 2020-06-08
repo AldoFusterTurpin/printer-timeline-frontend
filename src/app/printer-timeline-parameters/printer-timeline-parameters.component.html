@@ -62,12 +62,12 @@
             </mat-radio-group>
         </div>
 
-        <div id="relative-time" *ngIf="isRelativeTime(); else notShow">
+        <div id="relative-time-block" *ngIf="isRelativeTime(); else notShow">
             <mat-form-field id="relative-time-value">
                 <mat-label>Ex: 15 </mat-label>
                 <input matInput formControlName="relativeValue" pattern="[0-9]*">
                 <mat-error *ngIf="formControlhasError('relativeValue', 'required')">
-                    This field is <strong>mandatory</strong>
+                    This field is <strong>mandatory</strong> and accepts only numbers
                 </mat-error>
             </mat-form-field>
 
@@ -78,36 +78,30 @@
                         {{unit.viewValue}}
                     </mat-option>
                 </mat-select>
-                <mat-error *ngIf="formControlhasError('relativeValue', 'required')">This field is <strong>mandatory</strong>
+                <mat-error *ngIf="formControlhasError('relativeValue', 'required')">This field is
+                    <strong>mandatory</strong>
                 </mat-error>
             </mat-form-field>
         </div>
         <ng-template #notShow>
-            <div>
-                <label> </label>
-                <input formControlName="absoluteDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker"
-                    [owlDateTime]="dtPicker" [min]="minDate" [max]="maxDate" placeholder="Click me!">
-                <owl-date-time #dtPicker></owl-date-time>
+            <div id="absolute-time-block">
+                <div id="absolute-time-selector-with-icon">
+                    <div id="absolute-time-selector">
+                        <label> </label>
+                        <input formControlName="absoluteDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker"
+                            [owlDateTime]="dtPicker" [min]="minDate" [max]="maxDate" placeholder="Click me!">
+                        <owl-date-time #dtPicker></owl-date-time>
+                    </div>
 
-                <mat-icon>date_range</mat-icon>
-
-                <mat-error *ngIf="!isAbsoluteDateEmpty && formControlhasError('absoluteDate', 'required')">
-                    Please enter <strong>a date range</strong> to see data from then
+                    <mat-icon>date_range</mat-icon>
+                </div>
+                <mat-error *ngIf="formControlhasError('absoluteDate', 'required')">
+                    This field is <strong>mandatory</strong>
                 </mat-error>
 
             </div>
         </ng-template>
     </div>
-
-    <!-- <mat-form-field appearance="outline">
-        <input matInput readonly [matDatepicker]="picker" placeholder="Date you are interested in"
-            formControlName="absoluteDate" (dateChange)="date($event)">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="formControlhasError('absoluteDate', 'required')">
-            Please enter <strong>a date to see data from</strong>
-        </mat-error>
-    </mat-form-field> -->
 
     <button mat-flat-button color="primary" [disabled]="!this.formIsValid()">Next</button>
 
