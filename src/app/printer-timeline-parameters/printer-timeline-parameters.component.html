@@ -63,6 +63,7 @@
         </div>
 
         <div id="relative-time-block" *ngIf="isRelativeTime(); else notShow">
+            <p>Last</p>
             <mat-form-field id="relative-time-value">
                 <mat-label>Ex: 15 </mat-label>
                 <input matInput formControlName="relativeValue" pattern="[0-9]*">
@@ -78,8 +79,8 @@
                         {{unit.viewValue}}
                     </mat-option>
                 </mat-select>
-                <mat-error *ngIf="formControlhasError('relativeValue', 'required')">This field is
-                    <strong>mandatory</strong>
+                <mat-error *ngIf="formControlhasError('relativeValue', 'required')">
+                    This field is<strong>mandatory</strong>
                 </mat-error>
             </mat-form-field>
         </div>

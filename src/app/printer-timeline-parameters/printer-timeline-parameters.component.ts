@@ -28,6 +28,11 @@ export class PrinterTimelineParametersComponent {
     { value: 'seconds', viewValue: 'Seconds' },
   ];
 
+  private allNumbers(text) {
+    var numbers = /^[0-9]+$/;
+    return text.match(numbers);
+  }
+
   public minDate = this.getMinDate();
   public maxDate = new Date();
 
@@ -44,7 +49,7 @@ export class PrinterTimelineParametersComponent {
       filesControl: this.addFilesControls(),
       requestsControl: this.addRequestsControls(),
       othersControl: this.addOthersControls(),
-      typeOfDate: ['relative', [Validators.required]], //TODO check this
+      typeOfDate: ['relative', [Validators.required]],
       relativeValue: ['', [Validators.required]],
       relativeUnits: ['', [Validators.required]],
       absoluteDate: ['', [Validators.required]]
@@ -137,13 +142,19 @@ export class PrinterTimelineParametersComponent {
 
   private timeIsValid(): boolean {
     if (this.myForm.controls["typeOfDate"].value == "relative") {
-      return !this.formControlhasError('relativeValue', 'required') && !this.formControlhasError('relativeUnits', 'required')
+      return !this.formControlhasError('relativeValue', 'required') && !this.formControlhasError('relativeUnits', 'required') &&
+        this.allNumbers(this.myForm.controls["relativeValue"].value);
     }
 
     if (this.myForm.controls["typeOfDate"].value == "absolute") {
       return !this.formControlhasError('absoluteDate', 'required');
     }
     return false;
+  }
+
+  public relativeAndAbsoluteTimeSelectedConflict(): boolean {
+    return this.myForm.controls["relativeValue"].value != "" && this.myForm.controls["relativeValue"].value != "" &&
+      this.myForm.controls["absoluteDate"].value != ""
   }
 
   public formIsValid(): boolean {
