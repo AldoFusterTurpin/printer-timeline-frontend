@@ -34,17 +34,17 @@ export class TimeRangeSelectorComponent implements OnInit {
   }
 
   createGroup() {
-    this.myForm = this.formBuilder.group({
+    return this.formBuilder.group({
       typeOfDate: ['relative'],
       absoluteDate: ['', [Validators.required]],
       relativeValue:  ['', [Validators.required]],
       relativeUnits:  ['', [Validators.required]]
     });
-
-    return this.myForm;
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.myForm = this.createGroup();
+   }
 
   date(e) {
     var convertDate = new Date(e.target.value).toISOString().substring(0, 10);
@@ -62,7 +62,7 @@ export class TimeRangeSelectorComponent implements OnInit {
   }
 
   public isAbsoluteDateEmpty() {
-    return ((this.myForm.get('absoluteDate').value) == (''));
+    return this.myForm.get('absoluteDate').value == '';
   }
 
 }

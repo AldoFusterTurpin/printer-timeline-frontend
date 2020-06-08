@@ -37,7 +37,7 @@
 
             <mat-icon>date_range</mat-icon>
             
-            <mat-error *ngIf="isAbsoluteDateEmpty &&errorHandling('absoluteDate', 'required')">
+            <mat-error *ngIf="!isAbsoluteDateEmpty && errorHandling('absoluteDate', 'required')">
             Please enter <strong>a date range</strong> to see data from then
             </mat-error> 
            
