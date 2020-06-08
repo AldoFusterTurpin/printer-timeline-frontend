@@ -28,8 +28,6 @@ export class PrinterTimelineParametersComponent {
     { value: 'seconds', viewValue: 'Seconds' },
   ];
 
-  public selectedMoment = new Date();
-
   public minDate = this.getMinDate();
   public maxDate = new Date();
 
@@ -46,10 +44,10 @@ export class PrinterTimelineParametersComponent {
       filesControl: this.addFilesControls(),
       requestsControl: this.addRequestsControls(),
       othersControl: this.addOthersControls(),
-      typeOfDate: ['relative'],
-      absoluteDate: ['', [Validators.required]],
+      typeOfDate: ['relative', [Validators.required]], //TODO check this
       relativeValue: ['', [Validators.required]],
-      relativeUnits: ['', [Validators.required]]
+      relativeUnits: ['', [Validators.required]],
+      absoluteDate: ['', [Validators.required]]
     })
   }
 
@@ -81,14 +79,6 @@ export class PrinterTimelineParametersComponent {
     return <FormArray>this.myForm.get('filesControl');
   }
 
-  get requestsArray() {
-    return <FormArray>this.myForm.get('requestsControl');
-  }
-
-  get othersArray() {
-    return <FormArray>this.myForm.get('othersControl');
-  }
-
   getSelectedFilesValue() {
     this.selectedFilesValues = [];
     this.filesArray.controls.forEach((control, i) => {
@@ -96,6 +86,10 @@ export class PrinterTimelineParametersComponent {
         this.selectedFilesValues.push(this.files[i]);
       }
     });
+  }
+
+  get requestsArray() {
+    return <FormArray>this.myForm.get('requestsControl');
   }
 
   getSelectedRequestsValue() {
@@ -107,6 +101,10 @@ export class PrinterTimelineParametersComponent {
     });
   }
 
+  get othersArray() {
+    return <FormArray>this.myForm.get('othersControl');
+  }
+
   getSelectedOthersValue() {
     this.selectedOthersValues = [];
     this.othersArray.controls.forEach((control, i) => {
@@ -116,19 +114,44 @@ export class PrinterTimelineParametersComponent {
     });
   }
 
-  public errorHandling = (control: string, error: string) => {
-    return this.myForm.controls[control].hasError(error);
+  public formControlhasError(controlName: string, error: string): boolean {
+    return this.myForm.controls[controlName].hasError(error);
   }
 
-  public isRelativeTime() {
+  public isRelativeTime(): boolean {
     return this.myForm.get('typeOfDate').value === "relative";
   }
 
-  public isAbsoluteDateEmpty() {
+  public isAbsoluteDateEmpty(): boolean {
     return this.myForm.get('absoluteDate').value == '';
   }
 
-  submitForm() {
+  public printerInfoIsValid(): boolean {
+    return !this.formControlhasError('PnControl', 'required') && !this.formControlhasError('SnControl', 'required');
+  }
+
+  public dataTypesIsValid(): boolean {
+    return this.myForm.controls["filesControl"].value.indexOf(true) != -1 ||
+      this.myForm.controls["requestsControl"].value.indexOf(true) != -1 ||
+      this.myForm.controls["othersControl"].value.indexOf(true) != -1;
+  }
+
+  public timeIsValid(): boolean {
+    if (this.myForm.controls["typeOfDate"].value == "relative") {
+      return !this.formControlhasError('relativeValue', 'required') && !this.formControlhasError('relativeUnits', 'required')
+    }
+
+    if (this.myForm.controls["typeOfDate"].value == "absolute") {
+      return !this.formControlhasError('absoluteDate', 'required');
+    }
+    return false;
+  }
+
+  public formIsValid(): boolean {
+    return this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
+  }
+
+  submitForm(): void {
     console.log(this.myForm.value)
   }
 
