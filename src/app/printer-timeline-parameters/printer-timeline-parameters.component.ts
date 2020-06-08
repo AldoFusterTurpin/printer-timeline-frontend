@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
-import { TimeRangeSelectorComponent } from '../time-range-selector/time-range-selector.component';
 
 
 @Component({
@@ -9,8 +8,6 @@ import { TimeRangeSelectorComponent } from '../time-range-selector/time-range-se
   styleUrls: ['./printer-timeline-parameters.component.scss']
 })
 export class PrinterTimelineParametersComponent {
-  @ViewChild(TimeRangeSelectorComponent, { static: true }) timeRangeForm: TimeRangeSelectorComponent;
-
   myForm: FormGroup;
 
   files: Array<String> = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
@@ -21,15 +18,14 @@ export class PrinterTimelineParametersComponent {
   selectedRequestsValues = [];
   selectedOthersValues = [];
 
-
   rangeTypes = [
-    {value: 'relative', viewValue: 'Relative'},
-    {value: 'absolute', viewValue: 'Absolute'},
+    { value: 'relative', viewValue: 'Relative' },
+    { value: 'absolute', viewValue: 'Absolute' },
   ];
 
   relativeUnits = [
-    {value: 'minutes', viewValue: 'Minutes'},
-    {value: 'seconds', viewValue: 'Seconds'},
+    { value: 'minutes', viewValue: 'Minutes' },
+    { value: 'seconds', viewValue: 'Seconds' },
   ];
 
   public selectedMoment = new Date();
@@ -43,12 +39,6 @@ export class PrinterTimelineParametersComponent {
     return date;
   }
 
-  constructor(public formBuilder: FormBuilder) { }
-
-  ngOnInit(): void {
-    this.myForm = this.createForm()
-  }
-
   private createForm() {
     return this.formBuilder.group({
       PnControl: ['', [Validators.required]],
@@ -56,12 +46,10 @@ export class PrinterTimelineParametersComponent {
       filesControl: this.addFilesControls(),
       requestsControl: this.addRequestsControls(),
       othersControl: this.addOthersControls(),
-      //timeRange: this.timeRangeForm.createGroup(),
-      //
       typeOfDate: ['relative'],
       absoluteDate: ['', [Validators.required]],
-      relativeValue:  ['', [Validators.required]],
-      relativeUnits:  ['', [Validators.required]]
+      relativeValue: ['', [Validators.required]],
+      relativeUnits: ['', [Validators.required]]
     })
   }
 
@@ -142,5 +130,11 @@ export class PrinterTimelineParametersComponent {
 
   submitForm() {
     console.log(this.myForm.value)
+  }
+
+  constructor(public formBuilder: FormBuilder) { }
+
+  ngOnInit(): void {
+    this.myForm = this.createForm()
   }
 }

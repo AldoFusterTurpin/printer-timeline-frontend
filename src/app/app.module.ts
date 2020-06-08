@@ -13,7 +13,6 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { AngularMaterialModule } from './material.module';
 
 import { PrinterTimelineParametersComponent } from './printer-timeline-parameters/printer-timeline-parameters.component';
-import { TimeRangeSelectorComponent } from './time-range-selector/time-range-selector.component';
 import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.component';
 
 
@@ -22,7 +21,6 @@ import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.
     AppComponent,
     TopBarComponent,
     PrinterTimelineParametersComponent,
-    TimeRangeSelectorComponent,
     DataTypesFilterComponent,
   ],
   imports: [
