@@ -107,7 +107,7 @@
 
                     <mat-icon>date_range</mat-icon>
                 </div>
-                <mat-error *ngIf="myForm.get('absoluteDateControl')?.touched && formControlhasError('absoluteDateControl', 'required')">
+                <mat-error *ngIf="myForm.get('absoluteDateControl')?.touched && (formControlhasError('absoluteDateControl', 'required') || this.myForm.get('absoluteDateControl').value.indexOf(null) != -1)">
                     This field is <strong>mandatory</strong>
                 </mat-error>
 
