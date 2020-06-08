@@ -11,6 +11,8 @@ import { TimeRangeSelectorComponent } from '../time-range-selector/time-range-se
 export class PrinterTimelineParametersComponent {
   @ViewChild(TimeRangeSelectorComponent, { static: true }) timeRangeForm: TimeRangeSelectorComponent;
 
+  myForm: FormGroup;
+
   files: Array<String> = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
   requests: Array<String> = ['Get Configuration Profile', 'Get SQS Credentials'];
   others: Array<String> = ['Printer Subscriptions'];
@@ -19,7 +21,27 @@ export class PrinterTimelineParametersComponent {
   selectedRequestsValues = [];
   selectedOthersValues = [];
 
-  myForm: FormGroup;
+
+  rangeTypes = [
+    {value: 'relative', viewValue: 'Relative'},
+    {value: 'absolute', viewValue: 'Absolute'},
+  ];
+
+  relativeUnits = [
+    {value: 'minutes', viewValue: 'Minutes'},
+    {value: 'seconds', viewValue: 'Seconds'},
+  ];
+
+  public selectedMoment = new Date();
+
+  public minDate = this.getMinDate();
+  public maxDate = new Date();
+
+  public getMinDate() {
+    let date = new Date()
+    date.setMonth(date.getMonth() - 1)
+    return date;
+  }
 
   constructor(public formBuilder: FormBuilder) { }
 
@@ -34,7 +56,12 @@ export class PrinterTimelineParametersComponent {
       filesControl: this.addFilesControls(),
       requestsControl: this.addRequestsControls(),
       othersControl: this.addOthersControls(),
-      timeRange: this.timeRangeForm.createGroup()
+      //timeRange: this.timeRangeForm.createGroup(),
+      //
+      typeOfDate: ['relative'],
+      absoluteDate: ['', [Validators.required]],
+      relativeValue:  ['', [Validators.required]],
+      relativeUnits:  ['', [Validators.required]]
     })
   }
 
@@ -103,6 +130,14 @@ export class PrinterTimelineParametersComponent {
 
   public errorHandling = (control: string, error: string) => {
     return this.myForm.controls[control].hasError(error);
+  }
+
+  public isRelativeTime() {
+    return this.myForm.get('typeOfDate').value === "relative";
+  }
+
+  public isAbsoluteDateEmpty() {
+    return this.myForm.get('absoluteDate').value == '';
   }
 
   submitForm() {
