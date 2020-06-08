@@ -18,17 +18,20 @@ export class PrinterTimelineParametersComponent {
   selectedRequestsValues = [];
   selectedOthersValues = [];
 
+  relativeValueOk: boolean;
+  relativeUnitsHasUnsupportedChars: boolean;
+
   rangeTypes = [
-    { value: 'relative', viewValue: 'Relative' },
-    { value: 'absolute', viewValue: 'Absolute' },
+    { realValue: 'relative', viewValue: 'Relative' },
+    { realValue: 'absolute', viewValue: 'Absolute' },
   ];
 
   relativeUnits = [
-    { value: 'minutes', viewValue: 'Minutes' },
-    { value: 'seconds', viewValue: 'Seconds' },
+    { realValue: 'minutes', viewValue: 'Minutes' },
+    { realValue: 'seconds', viewValue: 'Seconds' },
   ];
 
-  private allNumbers(text) {
+  private allNumbers(text): boolean {
     var numbers = /^[0-9]+$/;
     return text.match(numbers);
   }
@@ -49,41 +52,39 @@ export class PrinterTimelineParametersComponent {
       filesControl: this.addFilesControls(),
       requestsControl: this.addRequestsControls(),
       othersControl: this.addOthersControls(),
-      typeOfDate: ['relative', [Validators.required]],
-      relativeValue: ['', [Validators.required]],
-      relativeUnits: ['', [Validators.required]],
-      absoluteDate: ['', [Validators.required]]
+      typeOfDateControl: ['relative', [Validators.required]],
+      relativeValueControl: ['', [Validators.required]],
+      relativeUnitsControl: ['', [Validators.required]],
+      absoluteDateControl: ['', [Validators.required]]
     })
   }
 
-  addFilesControls() {
+  private addFilesControls() {
     const arr = this.files.map(item => {
       return this.formBuilder.control(false);
     });
-
     return this.formBuilder.array(arr);
   }
 
-  addRequestsControls() {
+  private addRequestsControls() {
     const arr = this.requests.map(item => {
       return this.formBuilder.control(false);
     });
-
     return this.formBuilder.array(arr);
   }
 
-  addOthersControls() {
+  private addOthersControls() {
     const arr = this.others.map(item => {
       return this.formBuilder.control(false);
     });
-
     return this.formBuilder.array(arr);
   }
 
   get filesArray() {
     return <FormArray>this.myForm.get('filesControl');
   }
-  getSelectedFilesValue() {
+
+  public getSelectedFilesValue() {
     this.selectedFilesValues = [];
     this.filesArray.controls.forEach((control, i) => {
       if (control.value) {
@@ -96,7 +97,7 @@ export class PrinterTimelineParametersComponent {
     return <FormArray>this.myForm.get('requestsControl');
   }
 
-  getSelectedRequestsValue() {
+  public getSelectedRequestsValue() {
     this.selectedRequestsValues = [];
     this.requestsArray.controls.forEach((control, i) => {
       if (control.value) {
@@ -109,7 +110,7 @@ export class PrinterTimelineParametersComponent {
     return <FormArray>this.myForm.get('othersControl');
   }
 
-  getSelectedOthersValue() {
+  public getSelectedOthersValue() {
     this.selectedOthersValues = [];
     this.othersArray.controls.forEach((control, i) => {
       if (control.value) {
@@ -119,15 +120,11 @@ export class PrinterTimelineParametersComponent {
   }
 
   public formControlhasError(controlName: string, error: string): boolean {
-    return this.myForm.controls[controlName].hasError(error);
+    return this.myForm.get(controlName).hasError(error);
   }
 
-  public isRelativeTime(): boolean {
-    return this.myForm.get('typeOfDate').value === "relative";
-  }
-
-  private isAbsoluteDateEmpty(): boolean {
-    return this.myForm.get('absoluteDate').value == '';
+  public isAbsoluteDateEmpty(): boolean {
+    return this.myForm.get('absoluteDateControl').value == '';
   }
 
   private printerInfoIsValid(): boolean {
@@ -135,26 +132,21 @@ export class PrinterTimelineParametersComponent {
   }
 
   private dataTypesIsValid(): boolean {
-    return this.myForm.controls["filesControl"].value.indexOf(true) != -1 ||
-      this.myForm.controls["requestsControl"].value.indexOf(true) != -1 ||
-      this.myForm.controls["othersControl"].value.indexOf(true) != -1;
+    return this.myForm.get("filesControl").value.indexOf(true) != -1 ||
+      this.myForm.get("requestsControl").value.indexOf(true) != -1 ||
+      this.myForm.get("othersControl").value.indexOf(true) != -1;
   }
 
   private timeIsValid(): boolean {
-    if (this.myForm.controls["typeOfDate"].value == "relative") {
-      return !this.formControlhasError('relativeValue', 'required') && !this.formControlhasError('relativeUnits', 'required') &&
-        this.allNumbers(this.myForm.controls["relativeValue"].value);
+    if (this.myForm.get("typeOfDateControl").value == "relative") {
+      return !this.formControlhasError('relativeValueControl', 'required') && !this.formControlhasError('relativeUnitsControl', 'required') &&
+        this.allNumbers(this.myForm.get("relativeValueControl").value);
     }
 
-    if (this.myForm.controls["typeOfDate"].value == "absolute") {
-      return !this.formControlhasError('absoluteDate', 'required');
+    if (this.myForm.get("typeOfDateControl").value == "absolute") {
+      return !this.formControlhasError('absoluteDateControl', 'required');
     }
-    return false;
-  }
-
-  public relativeAndAbsoluteTimeSelectedConflict(): boolean {
-    return this.myForm.controls["relativeValue"].value != "" && this.myForm.controls["relativeValue"].value != "" &&
-      this.myForm.controls["absoluteDate"].value != ""
+    return this.relativeValueOk;
   }
 
   public formIsValid(): boolean {
@@ -165,9 +157,28 @@ export class PrinterTimelineParametersComponent {
     console.log(this.myForm.value)
   }
 
-  constructor(public formBuilder: FormBuilder) { }
+  onChanges(): void {
+    this.myForm.get('relativeUnitsControl').valueChanges.subscribe(val => {
 
-  ngOnInit(): void {
-    this.myForm = this.createForm()
-  }
+      if (this.myForm.get("relativeUnitsControl").value.realValue == "minutes") {
+        const t = parseInt(this.myForm.get("relativeValueControl").value);
+        this.relativeValueOk == (t <= 60);
+        console.log(this.relativeValueOk);
+      }
+
+      /* this.relativeUnitsHasUnsupportedChars = !this.allNumbers(this.myForm.get("relativeValueControl").value);
+
+      console.log(val);
+      console.log(this.relativeValueOk); */
+    });
+}
+
+constructor(public formBuilder: FormBuilder) { }
+
+ngOnInit(): void {
+  this.relativeValueOk = true;
+  this.relativeUnitsHasUnsupportedChars = false;
+  this.myForm = this.createForm();
+  this.onChanges();
+}
 }

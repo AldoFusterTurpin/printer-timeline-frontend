@@ -56,30 +56,41 @@
         <h2>Time range</h2>
 
         <div id="time-type">
-            <mat-radio-group formControlName="typeOfDate" aria-label="Select an option" color="primary">
+            <mat-radio-group formControlName="typeOfDateControl" aria-label="Select an option" color="primary">
                 <mat-radio-button value="relative">Relative</mat-radio-button>
                 <mat-radio-button value="absolute">Absolute</mat-radio-button>
             </mat-radio-group>
         </div>
 
-        <div id="relative-time-block" *ngIf="isRelativeTime(); else notShow">
+        <div id="relative-time-block" *ngIf="this.myForm.get('typeOfDateControl').value === 'relative'; else notShow">
             <p>Last</p>
             <mat-form-field id="relative-time-value">
                 <mat-label>Ex: 15 </mat-label>
-                <input matInput formControlName="relativeValue" pattern="[0-9]*">
-                <mat-error *ngIf="formControlhasError('relativeValue', 'required')">
+                <input matInput formControlName="relativeValueControl" pattern="[0-9]*">
+
+                <mat-error *ngIf="formControlhasError('relativeValueControl', 'required')">
                     This field is <strong>mandatory</strong> and accepts only numbers
                 </mat-error>
+
+                <mat-error
+                    *ngIf="!formControlhasError('relativeValueControl', 'required') && this.relativeUnitsHasUnsupportedChars">
+                    Unsupported chars
+                </mat-error>
+
+                <mat-error *ngIf="!formControlhasError('relativeValueControl', 'required') && !this.relativeValueOk">
+                    Value is to big
+                </mat-error>
+
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Time units</mat-label>
-                <mat-select formControlName="relativeUnits" required>
+                <mat-select formControlName="relativeUnitsControl" required>
                     <mat-option *ngFor="let unit of relativeUnits" [value]="unit">
                         {{unit.viewValue}}
                     </mat-option>
                 </mat-select>
-                <mat-error *ngIf="formControlhasError('relativeValue', 'required')">
+                <mat-error *ngIf="formControlhasError('relativeValueControl', 'required')">
                     This field is<strong>mandatory</strong>
                 </mat-error>
             </mat-form-field>
@@ -89,14 +100,14 @@
                 <div id="absolute-time-selector-with-icon">
                     <div id="absolute-time-selector">
                         <label> </label>
-                        <input formControlName="absoluteDate" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker"
+                        <input formControlName="absoluteDateControl" [selectMode]="'range'" [owlDateTimeTrigger]="dtPicker"
                             [owlDateTime]="dtPicker" [min]="minDate" [max]="maxDate" placeholder="Click me!">
                         <owl-date-time #dtPicker></owl-date-time>
                     </div>
 
                     <mat-icon>date_range</mat-icon>
                 </div>
-                <mat-error *ngIf="formControlhasError('absoluteDate', 'required')">
+                <mat-error *ngIf="myForm.get('absoluteDateControl')?.touched && formControlhasError('absoluteDateControl', 'required')">
                     This field is <strong>mandatory</strong>
                 </mat-error>
 
