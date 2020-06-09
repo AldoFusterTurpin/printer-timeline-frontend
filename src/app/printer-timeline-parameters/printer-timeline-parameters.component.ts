@@ -9,7 +9,6 @@ import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 })
 export class PrinterTimelineParametersComponent {
   private timeUnitsUntouchedBefore: boolean;
-
   private selectedFilesValues = [];
   private selectedRequestsValues = [];
   private selectedOthersValues = [];
@@ -60,13 +59,26 @@ export class PrinterTimelineParametersComponent {
       this.timeUnitsUntouchedBefore = true;
     });
 
+    this.myForm.get('absoluteDateControl').valueChanges.subscribe(val => {
+      let dates = this.myForm.get("absoluteDateControl").value;
+      let startDate = dates[0];
+      let endDate = dates[1];
+      this.absoluteValueTooBig = !this.datesDifferenceIsOkay(startDate, endDate);
+    });
+
     this.myForm.valueChanges.subscribe(val => {
       this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
     });
   }
 
+  private datesDifferenceIsOkay(start: Date, end: Date) {
+    let diff = end.getTime() - start.getTime();
+    let diffSeconds = Math.abs(diff / 1000);
+    return diffSeconds <= 3600;
+  }
+
   private getMinDate() {
-    let date = new Date()
+    let date = new Date();
     date.setMonth(date.getMonth() - 1)
     return date;
   }
@@ -159,10 +171,11 @@ export class PrinterTimelineParametersComponent {
   public others: Array<String>;
 
   public relativeValueTooBig: boolean;
+  public absoluteValueTooBig: boolean;
 
   public relativeUnits;
 
-  public minDate;;
+  public minDate;
   public maxDate;
 
   public getSelectedFilesValue() {
@@ -204,7 +217,7 @@ export class PrinterTimelineParametersComponent {
   constructor(public formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.formIsValid = this.relativeValueTooBig = this.timeUnitsUntouchedBefore = false;
+    this.formIsValid = this.relativeValueTooBig = this.timeUnitsUntouchedBefore = this.absoluteValueTooBig = false;
 
     this.minDate = this.getMinDate();
     this.maxDate = new Date();

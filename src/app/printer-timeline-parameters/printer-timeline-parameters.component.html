@@ -5,13 +5,13 @@
         <div id="printer-info-elements">
             <mat-form-field id="product-number">
                 <mat-label>Product Number (Pn)</mat-label>
-                <input matInput formControlName="PnControl" >
+                <input matInput formControlName="PnControl">
                 <mat-error *ngIf="formControlhasError('PnControl', 'required')">
                     This field is required
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field id="serial-number">
                 <mat-label>Serial Number (Sn)</mat-label>
                 <input matInput formControlName="SnControl">
                 <mat-error *ngIf="formControlhasError('SnControl', 'required')">
@@ -24,25 +24,30 @@
     <h2>Data types</h2>
     <section id="data-types">
 
-        <div id="files" class="checkboxes">
+        <div id="files-block" class="checkboxes">
             <h4 id="files-header">Files</h4>
-            <div *ngFor="let control of filesArray.controls; let i = index">
-                <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
-                    id="inlineCheckbox_{{i}}"> </mat-checkbox>
-                <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
+            <div>
+                <div *ngFor="let control of filesArray.controls; let i = index">
+                    <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
+                        id="inlineCheckbox_{{i}}"> </mat-checkbox>
+                    <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
+                </div>
             </div>
         </div>
 
-        <div class="checkboxes">
+
+        <div id="requests-block" class="checkboxes">
             <h4 id="requests-headers">Requests</h4>
-            <div *ngFor="let control of requestsArray.controls; let i = index">
-                <mat-checkbox color="primary" (change)="getSelectedRequestsValue()" [formControl]="control"
-                    id="inlineCheckbox2_{{i}}"> </mat-checkbox>
-                <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
+            <div>
+                <div *ngFor="let control of requestsArray.controls; let i = index">
+                    <mat-checkbox color="primary" (change)="getSelectedRequestsValue()" [formControl]="control"
+                        id="inlineCheckbox2_{{i}}"> </mat-checkbox>
+                    <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
+                </div>
             </div>
         </div>
 
-        <div class="checkboxes">
+        <div id="others-block" class="checkboxes">
             <h4 id="others-header">Others</h4>
             <div *ngFor="let control of othersArray.controls; let i = index">
                 <mat-checkbox color="primary" (change)="getSelectedOthersValue()" [formControl]="control"
@@ -109,11 +114,13 @@
 
                     <mat-icon>date_range</mat-icon>
                 </div>
-                <mat-error
-                    *ngIf="myForm.get('absoluteDateControl')?.touched && (formControlhasError('absoluteDateControl', 'required') || this.myForm.get('absoluteDateControl').value.indexOf(null) != -1)">
+                <mat-error *ngIf="myForm.get('absoluteDateControl')?.touched && (formControlhasError('absoluteDateControl', 'required') || this.myForm.get('absoluteDateControl').value.indexOf(null) != -1)">
                     This field is required
                 </mat-error>
 
+                <mat-error *ngIf=" this.absoluteValueTooBig">
+                    Time difference is too big
+                </mat-error>
             </div>
         </ng-template>
     </div>
