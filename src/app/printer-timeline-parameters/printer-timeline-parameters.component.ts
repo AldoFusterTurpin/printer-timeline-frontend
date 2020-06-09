@@ -57,51 +57,20 @@ export class PrinterTimelineParametersComponent {
     return this.myForm.get(controlName).hasError(error);
   }
 
-  public isAbsoluteDateEmpty(): boolean {
-    return this.myForm.get('absoluteDateControl').value == '';
+  public allNumbers(text): boolean {
+    var numbers = /^[0-9]+$/;
+    return text.match(numbers);
   }
 
   constructor(public formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.formIsValid = false;
-    this.relativeValueTooBig = false;
+    this.formIsValid = this.relativeValueTooBig = this.timeUnitsUntouchedBefore = false;
     this.myForm = this.createForm();
     this.onChanges();
   }
 
-  private controlRelativeTimeMaxValue() {
-    const t = parseInt(this.myForm.get("relativeValueControl").value);
-      if (this.myForm.get("relativeUnitsControl").value.realValue == "minutes") {
-        if (t > 60) {
-          this.relativeValueTooBig = true;
-          this.myForm.controls['relativeValueControl'].setErrors({'incorrect': true});
-        } else {
-          this.relativeValueTooBig = false;
-        }
-      } else if (this.myForm.get("relativeUnitsControl").value.realValue == "seconds") {
-        if (t > 3600) {
-          this.relativeValueTooBig = true;
-          this.myForm.controls['relativeValueControl'].setErrors({'incorrect': true});
-        } else {
-          this.relativeValueTooBig = false;
-        }
-      }
-  }
-
-  private onChanges(): void {
-    this.myForm.get('relativeUnitsControl').valueChanges.subscribe(val => {
-      this.controlRelativeTimeMaxValue();
-    });
-
-    this.myForm.get('relativeValueControl').valueChanges.subscribe(val => {
-      this.controlRelativeTimeMaxValue();
-    });
-
-    this.myForm.valueChanges.subscribe(val => {
-      this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
-    }); 
-  }
+  public timeUnitsUntouchedBefore: boolean;
 
   private selectedFilesValues = [];
   private selectedRequestsValues = [];
@@ -111,6 +80,59 @@ export class PrinterTimelineParametersComponent {
     { realValue: 'relative', viewValue: 'Relative' },
     { realValue: 'absolute', viewValue: 'Absolute' },
   ];
+
+  private setMaxValueIsTooBig(b: boolean) {
+    let previousErrors = this.myForm.controls['relativeValueControl'].errors;
+    this.relativeValueTooBig = b;
+    if (b) {
+      this.myForm.controls['relativeValueControl'].setErrors({ 'incorrect': b });
+    } else {
+      this.myForm.controls['relativeValueControl'].setErrors(previousErrors);
+    }
+  }
+
+  private controlRelativeTimeMaxValue() {
+    let formValueString = this.myForm.get("relativeValueControl").value;
+    if (this.allNumbers(formValueString)) {
+      let formUnits = this.myForm.get("relativeUnitsControl").value.realValue;
+      let formValue = parseInt(formValueString);
+
+      if (formUnits == "minutes") {
+        if (formValue > 60) {
+          this.setMaxValueIsTooBig(true);
+        } else {
+          this.setMaxValueIsTooBig(false);
+        }
+      } else if (formUnits == "seconds") {
+        if (formValue > 3600) {
+          this.setMaxValueIsTooBig(true);
+        } else {
+          this.setMaxValueIsTooBig(false);
+        }
+      }
+    } else {
+      this.setMaxValueIsTooBig(false);
+    }
+  }
+
+  private onChanges(): void {
+    this.myForm.get('relativeValueControl').valueChanges.subscribe(val => {
+      this.controlRelativeTimeMaxValue();
+    });
+
+    this.myForm.get('relativeUnitsControl').valueChanges.subscribe(val => {
+      if (this.timeUnitsUntouchedBefore) {
+        this.myForm.get("relativeValueControl").setValue("");
+      }
+      this.timeUnitsUntouchedBefore = true;
+    });
+
+    this.myForm.valueChanges.subscribe(val => {
+      this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
+      console.log(this.myForm.controls['relativeValueControl'].value);
+      console.log(this.myForm.controls['relativeUnitsControl'].value);
+    });
+  }
 
   private getMinDate() {
     let date = new Date()
@@ -153,20 +175,13 @@ export class PrinterTimelineParametersComponent {
     return this.formBuilder.array(arr);
   }
 
-  public allNumbers(text): boolean {
-    var numbers = /^[0-9]+$/;
-    return text.match(numbers);
-  }
-
   get filesArray() {
     return <FormArray>this.myForm.get('filesControl');
   }
 
-
   get requestsArray() {
     return <FormArray>this.myForm.get('requestsControl');
   }
-
 
   get othersArray() {
     return <FormArray>this.myForm.get('othersControl');

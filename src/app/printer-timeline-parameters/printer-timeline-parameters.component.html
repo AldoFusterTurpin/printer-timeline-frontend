@@ -5,9 +5,9 @@
         <div id="printer-info-elements">
             <mat-form-field id="product-number">
                 <mat-label>Product Number (Pn)</mat-label>
-                <input matInput formControlName="PnControl">
+                <input matInput formControlName="PnControl" >
                 <mat-error *ngIf="formControlhasError('PnControl', 'required')">
-                    This field is <strong>mandatory</strong>
+                    This field is required
                 </mat-error>
             </mat-form-field>
 
@@ -15,7 +15,7 @@
                 <mat-label>Serial Number (Sn)</mat-label>
                 <input matInput formControlName="SnControl">
                 <mat-error *ngIf="formControlhasError('SnControl', 'required')">
-                    This field is <strong>mandatory</strong>
+                    This field is required
                 </mat-error>
             </mat-form-field>
         </div>
@@ -66,10 +66,10 @@
             *ngIf="this.myForm.get('typeOfDateControl').value === 'relative'; else absoluteTime">
             <p>Last</p>
             <mat-form-field id="relative-time-value">
-                <mat-label>Ex: 15 </mat-label>
-                <input matInput formControlName="relativeValueControl" pattern="[0-9]*">
+                <mat-label>Time value </mat-label>
+                <input matInput formControlName="relativeValueControl" pattern="[0-9]*" placeholder="Ex. 15">
 
-                <mat-error *ngIf="!formControlhasError('relativeValueControl', 'required') && relativeValueTooBig">
+                <mat-error *ngIf="relativeValueTooBig">
                     Value is too big
                 </mat-error>
 
@@ -79,7 +79,7 @@
                 </mat-error>
 
                 <mat-error *ngIf="formControlhasError('relativeValueControl', 'required')">
-                    This field is <strong>mandatory</strong>
+                    This field is required
                 </mat-error>
 
             </mat-form-field>
@@ -92,7 +92,7 @@
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="formControlhasError('relativeValueControl', 'required')">
-                    This field is<strong>mandatory</strong>
+                    This field is required
                 </mat-error>
             </mat-form-field>
         </div>
@@ -111,7 +111,7 @@
                 </div>
                 <mat-error
                     *ngIf="myForm.get('absoluteDateControl')?.touched && (formControlhasError('absoluteDateControl', 'required') || this.myForm.get('absoluteDateControl').value.indexOf(null) != -1)">
-                    This field is <strong>mandatory</strong>
+                    This field is required
                 </mat-error>
 
             </div>
