@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { flatten } from '@angular/compiler';
 
 
 @Component({
@@ -9,12 +10,13 @@ import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 })
 export class PrinterTimelineParametersComponent {
   public myForm: FormGroup;
+  public formIsValid: boolean;
 
   public files: Array<String> = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
   public requests: Array<String> = ['Get Configuration Profile', 'Get SQS Credentials'];
   public others: Array<String> = ['Printer Subscriptions'];
 
-  public relativeValueWrong: boolean;
+  public relativeValueTooBig: boolean;
 
   public relativeUnits = [
     { realValue: 'minutes', viewValue: 'Minutes' },
@@ -59,39 +61,46 @@ export class PrinterTimelineParametersComponent {
     return this.myForm.get('absoluteDateControl').value == '';
   }
 
-  public formIsValid(): boolean {
-    return this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
-  }
-
   constructor(public formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.relativeValueWrong = false;
+    this.formIsValid = false;
+    this.relativeValueTooBig = false;
     this.myForm = this.createForm();
     this.onChanges();
   }
 
-  private my_func() {
+  private controlRelativeTimeMaxValue() {
     const t = parseInt(this.myForm.get("relativeValueControl").value);
       if (this.myForm.get("relativeUnitsControl").value.realValue == "minutes") {
-        this.relativeValueWrong = (t > 60);
+        if (t > 60) {
+          this.relativeValueTooBig = true;
+          this.myForm.controls['relativeValueControl'].setErrors({'incorrect': true});
+        } else {
+          this.relativeValueTooBig = false;
+        }
       } else if (this.myForm.get("relativeUnitsControl").value.realValue == "seconds") {
-        this.relativeValueWrong = (t > 3600);
+        if (t > 3600) {
+          this.relativeValueTooBig = true;
+          this.myForm.controls['relativeValueControl'].setErrors({'incorrect': true});
+        } else {
+          this.relativeValueTooBig = false;
+        }
       }
-
-      console.log("this.relativeValueWrong: " + typeof this.relativeValueWrong + ", " + this.relativeValueWrong);
-      console.log("t: " + typeof t + ", " + t);
   }
 
   private onChanges(): void {
     this.myForm.get('relativeUnitsControl').valueChanges.subscribe(val => {
-      this.my_func();
+      this.controlRelativeTimeMaxValue();
     });
 
     this.myForm.get('relativeValueControl').valueChanges.subscribe(val => {
-      this.my_func();
+      this.controlRelativeTimeMaxValue();
     });
-    
+
+    this.myForm.valueChanges.subscribe(val => {
+      this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
+    }); 
   }
 
   private selectedFilesValues = [];
@@ -175,7 +184,7 @@ export class PrinterTimelineParametersComponent {
 
   private timeIsValid(): boolean {
     if (this.myForm.get("typeOfDateControl").value == "relative") {
-      if (this.relativeValueWrong) {
+      if (this.relativeValueTooBig) {
         return false;
       }
 
@@ -193,7 +202,7 @@ export class PrinterTimelineParametersComponent {
     if (this.myForm.get("typeOfDateControl").value == "absolute") {
       return !this.formControlhasError('absoluteDateControl', 'required') && this.myForm.get('absoluteDateControl').value.indexOf(null) == -1;
     }
-    return !this.relativeValueWrong;
+    return !this.relativeValueTooBig;
   }
 
   submitForm(): void {

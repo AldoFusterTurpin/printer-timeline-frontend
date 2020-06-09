@@ -68,16 +68,18 @@
             <mat-form-field id="relative-time-value">
                 <mat-label>Ex: 15 </mat-label>
                 <input matInput formControlName="relativeValueControl" pattern="[0-9]*">
-                <mat-error *ngIf="formControlhasError('relativeValueControl', 'required')">
-                    This field is <strong>mandatory</strong>
+
+                <mat-error *ngIf="!formControlhasError('relativeValueControl', 'required') && relativeValueTooBig">
+                    Value is too big
                 </mat-error>
 
-                <mat-error *ngIf="!this.allNumbers(this.myForm.get('relativeValueControl').value)">
+                <mat-error
+                    *ngIf="!formControlhasError('relativeValueControl', 'required') && !this.allNumbers(this.myForm.get('relativeValueControl').value)">
                     Unsupported chars
                 </mat-error>
 
-                <mat-error *ngIf="this.relativeValueWrong">
-                    Unsupported value
+                <mat-error *ngIf="formControlhasError('relativeValueControl', 'required')">
+                    This field is <strong>mandatory</strong>
                 </mat-error>
 
             </mat-form-field>
@@ -116,6 +118,6 @@
         </ng-template>
     </div>
 
-    <button mat-flat-button color="primary" [disabled]="!this.formIsValid()">Next</button>
+    <button mat-flat-button color="primary" [disabled]="!formIsValid">Next</button>
 
 </form>
