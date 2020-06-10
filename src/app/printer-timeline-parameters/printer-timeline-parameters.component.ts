@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 
 
@@ -7,24 +7,25 @@ import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
   templateUrl: './printer-timeline-parameters.component.html',
   styleUrls: ['./printer-timeline-parameters.component.scss']
 })
-export class PrinterTimelineParametersComponent {
+export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   private timeUnitsUntouchedBefore: boolean;
   private selectedFilesValues = [];
   private selectedRequestsValues = [];
   private selectedOthersValues = [];
 
+  private relativeValueControlSubscription;
+  private relativeUnitsControlSubscription;
+  private absoluteDateControlSubscription;
+  private formSubscription;
+
   private setMaxValueIsTooBig(b: boolean) {
-    let previousErrors = this.myForm.controls['relativeValueControl'].errors;
     this.relativeValueTooBig = b;
     if (b) {
       this.myForm.controls['relativeValueControl'].setErrors({ 'incorrect': b });
-    } else {
-      this.myForm.controls['relativeValueControl'].setErrors(previousErrors);
     }
   }
 
-  private controlRelativeTimeMaxValue() {
-    let formValueString = this.myForm.get("relativeValueControl").value;
+  private controlRelativeTimeMaxValue(formValueString) {
     if (this.allNumbers(formValueString)) {
       let formUnits = this.myForm.get("relativeUnitsControl").value.realValue;
       let formValue = parseInt(formValueString);
@@ -47,34 +48,65 @@ export class PrinterTimelineParametersComponent {
     }
   }
 
-  private onChanges(): void {
-    this.myForm.get('relativeValueControl').valueChanges.subscribe(val => {
-      this.controlRelativeTimeMaxValue();
+  private createRelativeValueControlSubscription() {
+    this.relativeValueControlSubscription = this.myForm.get('relativeValueControl').valueChanges.subscribe(val => {
+      this.controlRelativeTimeMaxValue(val);
     });
+  }
 
-    this.myForm.get('relativeUnitsControl').valueChanges.subscribe(val => {
+  private createRelativeUnitsControlSubscription() {
+    this.relativeUnitsControlSubscription = this.myForm.get('relativeUnitsControl').valueChanges.subscribe(val => {
       if (this.timeUnitsUntouchedBefore) {
         this.myForm.get("relativeValueControl").setValue("");
       }
       this.timeUnitsUntouchedBefore = true;
-    });
 
-    this.myForm.get('absoluteDateControl').valueChanges.subscribe(val => {
-      let dates = this.myForm.get("absoluteDateControl").value;
+      this.controlRelativeTimeMaxValue(this.myForm.get('relativeValueControl').value);
+    });
+  }
+
+  private createAbsoluteDateControlSubscription() {
+    this.absoluteDateControlSubscription = this.myForm.get('absoluteDateControl').valueChanges.subscribe(dates => {
       let startDate = dates[0];
       let endDate = dates[1];
-      this.absoluteValueTooBig = !this.datesDifferenceIsOkay(startDate, endDate);
-    });
 
-    this.myForm.valueChanges.subscribe(val => {
+      //TODO THE ERROR APPEARS BECAUSE NG PICKER RETURNS A GENERAL OBJECT AND I WANT A DATE OBJECT! NEED TO CAST
+      console.log("Start: " + typeof startDate);
+      console.log("End: " + typeof endDate);
+
+      if (startDate != null && endDate && null) {
+        this.absoluteValueTooBig = !this.datesDifferenceIsOkay(startDate, endDate);
+      }
+
+      console.log("this.absoluteValueTooBig: " + this.absoluteValueTooBig);
+    });
+  }
+
+  private createFormSubscription() {
+    this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
     });
   }
 
+  private onChanges(): void {
+    this.createRelativeValueControlSubscription();
+    this.createRelativeUnitsControlSubscription();
+    this.createAbsoluteDateControlSubscription();
+    this.createFormSubscription();
+  }
+
+  private diff_seconds(start, end): number {
+    let diff = (end.getTime() - start.getTime()) / 1000;
+    return Math.abs(Math.round(diff));
+  }
+
   private datesDifferenceIsOkay(start: Date, end: Date) {
-    let diff = end.getTime() - start.getTime();
-    let diffSeconds = Math.abs(diff / 1000);
-    return diffSeconds <= 3600;
+    /* let diff = end.getTime() - start.getTime();
+    let diffSeconds = Math.abs(diff/1000);
+    return diffSeconds <= 3600; */
+
+    let diff = this.diff_seconds(start, end);
+    return diff < 3600;
   }
 
   private getMinDate() {
@@ -175,8 +207,12 @@ export class PrinterTimelineParametersComponent {
 
   public relativeUnits;
 
-  public minDate;
-  public maxDate;
+  public minDate: Date;
+  public maxDate: Date;
+
+  public submitForm(): void {
+    console.log(this.myForm.value);
+  }
 
   public getSelectedFilesValue() {
     this.selectedFilesValues = [];
@@ -226,13 +262,16 @@ export class PrinterTimelineParametersComponent {
     this.requests = ['Get Configuration Profile', 'Get SQS Credentials'];
     this.others = ['Printer Subscriptions'];
 
-    this.relativeUnits = [ { realValue: 'minutes', viewValue: 'Minutes' }, { realValue: 'seconds', viewValue: 'Seconds' } ];
+    this.relativeUnits = [{ realValue: 'minutes', viewValue: 'Minutes' }, { realValue: 'seconds', viewValue: 'Seconds' }];
 
     this.myForm = this.createForm();
     this.onChanges();
   }
 
-  submitForm(): void {
-    console.log(this.myForm.value);
+  ngOnDestroy() {
+    this.relativeValueControlSubscription.unsubscribe();
+    this.relativeUnitsControlSubscription.unsubscribe();
+    this.absoluteDateControlSubscription.unsubscribe();
+    this.formSubscription.unsubscribe();
   }
 }
