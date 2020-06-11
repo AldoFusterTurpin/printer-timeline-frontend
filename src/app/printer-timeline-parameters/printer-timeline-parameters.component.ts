@@ -96,7 +96,6 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
     this.startTimePreviousThanEnd = this.absoluteDateStart.value < this.absoluteDateEnd.value;
     this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStart.value, this.absoluteDateEnd.value);
-    console.log(this.startTimePreviousThanEnd)
   }
 
   private diff_seconds(start: Date, end: Date): number {
