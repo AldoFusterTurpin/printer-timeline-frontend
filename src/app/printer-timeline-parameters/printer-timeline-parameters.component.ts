@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 
 @Component({
@@ -18,73 +18,78 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   private absoluteDateControlSubscription;
   private formSubscription;
 
-  private setMaxValueIsTooBig(b: boolean) {
+  private setRelativeValueIsTooBig(b: boolean) {
     this.relativeValueTooBig = b;
     if (b) {
-      this.myForm.controls['relativeValueControl'].setErrors({ 'incorrect': b });
+      this.relativeValueControl.setErrors({ 'incorrect': b });
     }
   }
 
   private controlRelativeTimeMaxValue(formValueString) {
     if (this.allNumbers(formValueString)) {
-      let formUnits = this.myForm.get("relativeUnitsControl").value.realValue;
+      let formUnits = this.relativeUnitsControl.value.realValue;
       let formValue = parseInt(formValueString);
 
-      if (formUnits == "minutes") {
+      if (formUnits == 'minutes') {
         if (formValue > 60) {
-          this.setMaxValueIsTooBig(true);
+          this.setRelativeValueIsTooBig(true);
         } else {
-          this.setMaxValueIsTooBig(false);
+          this.setRelativeValueIsTooBig(false);
         }
-      } else if (formUnits == "seconds") {
+      } else if (formUnits == 'seconds') {
         if (formValue > 3600) {
-          this.setMaxValueIsTooBig(true);
+          this.setRelativeValueIsTooBig(true);
         } else {
-          this.setMaxValueIsTooBig(false);
+          this.setRelativeValueIsTooBig(false);
         }
       }
     } else {
-      this.setMaxValueIsTooBig(false);
+      this.setRelativeValueIsTooBig(false);
     }
   }
 
   private createRelativeValueControlSubscription() {
-    this.relativeValueControlSubscription = this.myForm.get('relativeValueControl').valueChanges.subscribe(val => {
+    this.relativeValueControlSubscription = this.relativeValueControl.valueChanges.subscribe(val => {
       this.controlRelativeTimeMaxValue(val);
     });
   }
 
   private createRelativeUnitsControlSubscription() {
-    this.relativeUnitsControlSubscription = this.myForm.get('relativeUnitsControl').valueChanges.subscribe(val => {
+    this.relativeUnitsControlSubscription = this.relativeUnitsControl.valueChanges.subscribe(val => {
       if (this.timeUnitsUntouchedBefore) {
-        this.myForm.get("relativeValueControl").setValue("");
+        this.relativeValueControl.setValue('');
       }
       this.timeUnitsUntouchedBefore = true;
 
-      this.controlRelativeTimeMaxValue(this.myForm.get('relativeValueControl').value);
+      this.controlRelativeTimeMaxValue(this.relativeValueControl.value);
     });
   }
 
   private createAbsoluteDateControlSubscription() {
-    this.absoluteDateControlSubscription = this.myForm.get('absoluteDateControl').valueChanges.subscribe(dates => {
+    this.absoluteDateControlSubscription = this.absoluteDateControl.valueChanges.subscribe(dates => {
       let startDate = dates[0];
       let endDate = dates[1];
 
-      //TODO THE ERROR APPEARS BECAUSE NG PICKER RETURNS A GENERAL OBJECT AND I WANT A DATE OBJECT! NEED TO CAST
-      console.log("Start: " + typeof startDate);
-      console.log("End: " + typeof endDate);
-
-      if (startDate != null && endDate && null) {
+      if (startDate != null && endDate != null) {
         this.absoluteValueTooBig = !this.datesDifferenceIsOkay(startDate, endDate);
       }
-
-      console.log("this.absoluteValueTooBig: " + this.absoluteValueTooBig);
     });
+  }
+
+  private diff_seconds(start: Date, end: Date): number {
+    let diff = (end.getTime() - start.getTime()) / 1000;
+    return Math.abs(Math.round(diff));
+  }
+
+  private datesDifferenceIsOkay(start: Date, end: Date) {
+    let diff = this.diff_seconds(start, end);
+    return diff < 3600;
   }
 
   private createFormSubscription() {
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
+      console.log(this.myForm.value);
     });
   }
 
@@ -95,21 +100,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     this.createFormSubscription();
   }
 
-  private diff_seconds(start, end): number {
-    let diff = (end.getTime() - start.getTime()) / 1000;
-    return Math.abs(Math.round(diff));
-  }
-
-  private datesDifferenceIsOkay(start: Date, end: Date) {
-    /* let diff = end.getTime() - start.getTime();
-    let diffSeconds = Math.abs(diff/1000);
-    return diffSeconds <= 3600; */
-
-    let diff = this.diff_seconds(start, end);
-    return diff < 3600;
-  }
-
-  private getMinDate() {
+  private createMinDate() {
     let date = new Date();
     date.setMonth(date.getMonth() - 1)
     return date;
@@ -117,16 +108,56 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   private createForm() {
     return this.formBuilder.group({
-      PnControl: ['', [Validators.required]],
-      SnControl: ['', [Validators.required]],
-      filesControl: this.addFilesControls(),
-      requestsControl: this.addRequestsControls(),
-      othersControl: this.addOthersControls(),
-      typeOfDateControl: ['relative', [Validators.required]],
-      relativeValueControl: ['', [Validators.required]],
-      relativeUnitsControl: ['', [Validators.required]],
-      absoluteDateControl: ['', [Validators.required]]
+      _PnControl: ['', [Validators.required]],
+      _SnControl: ['', [Validators.required]],
+      _filesControl: this.addFilesControls(),
+      _requestsControl: this.addRequestsControls(),
+      _othersControl: this.addOthersControls(),
+      _typeOfDateControl: ['relative', [Validators.required]],
+      _relativeValueControl: ['', [Validators.required]],
+      _relativeUnitsControl: ['', [Validators.required]],
+      _absoluteDateControl: ['', [Validators.required]],
+      _absoluteDateStart: ['', [Validators.required]],
+      _absoluteTimeStart: ['', [Validators.required]],
+      _absoluteDateEnd: ['', [Validators.required]],
+      _absoluteTimeEnd: ['', [Validators.required]]
     })
+  }
+
+  get relativeValueControl() {
+    return this.myForm.get('_relativeValueControl');
+  }
+
+  get typeOfDateControl() {
+    return this.myForm.get('_typeOfDateControl');
+  }
+
+  get filesControl() {
+    return <FormArray>this.myForm.get('_filesControl');
+  }
+
+  get requestsControl() {
+    return <FormArray>this.myForm.get('_requestsControl');
+  }
+
+  get othersControl() {
+    return <FormArray>this.myForm.get('_othersControl');
+  }
+
+  get absoluteDateControl() {
+    return this.myForm.get('_absoluteDateControl');
+  }
+
+  get relativeUnitsControl() {
+    return this.myForm.get('_relativeUnitsControl')
+  }
+
+  get absoluteDateStart() {
+    return this.myForm.get('_absoluteDateStart')
+  }
+
+  get absoluteDateEnd() {
+    return this.myForm.get('_absoluteDateEnd')
   }
 
   private addFilesControls() {
@@ -150,49 +181,22 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     return this.formBuilder.array(arr);
   }
 
-  get filesArray() {
-    return <FormArray>this.myForm.get('filesControl');
-  }
-
-  get requestsArray() {
-    return <FormArray>this.myForm.get('requestsControl');
-  }
-
-  get othersArray() {
-    return <FormArray>this.myForm.get('othersControl');
-  }
-
   private printerInfoIsValid(): boolean {
-    return !this.formControlhasError('PnControl', 'required') && !this.formControlhasError('SnControl', 'required');
+    return !this.formControlhasError('_PnControl', 'required') && !this.formControlhasError('_SnControl', 'required');
   }
 
   private dataTypesIsValid(): boolean {
-    return this.myForm.get("filesControl").value.indexOf(true) != -1 ||
-      this.myForm.get("requestsControl").value.indexOf(true) != -1 ||
-      this.myForm.get("othersControl").value.indexOf(true) != -1;
+    return this.filesControl.value.indexOf(true) != -1 || this.requestsControl.value.indexOf(true) != -1 || this.othersControl.value.indexOf(true) != -1;
   }
 
   private timeIsValid(): boolean {
-    if (this.myForm.get("typeOfDateControl").value == "relative") {
-      if (this.relativeValueTooBig) {
-        return false;
-      }
-
-      if (this.formControlhasError('relativeUnitsControl', 'required')) {
-        return false;
-      }
-
-      if (!this.allNumbers(this.myForm.get("relativeValueControl").value)) {
-        return false;
-      }
-
-      return true;
+    if (this.typeOfDateControl.value === 'relative') {
+      return !this.relativeValueTooBig &&
+        !this.formControlhasError('_relativeUnitsControl', 'required') &&
+        this.allNumbers(this.relativeValueControl.value);
+    } else if (this.typeOfDateControl.value === 'absolute') {
+      return !this.formControlhasError('_absoluteDateControl', 'required') && this.absoluteDateControl.value.indexOf(null) === -1;
     }
-
-    if (this.myForm.get("typeOfDateControl").value == "absolute") {
-      return !this.formControlhasError('absoluteDateControl', 'required') && this.myForm.get('absoluteDateControl').value.indexOf(null) == -1;
-    }
-    return !this.relativeValueTooBig;
   }
 
   public myForm: FormGroup;
@@ -216,7 +220,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   public getSelectedFilesValue() {
     this.selectedFilesValues = [];
-    this.filesArray.controls.forEach((control, i) => {
+    this.filesControl.controls.forEach((control, i) => {
       if (control.value) {
         this.selectedFilesValues.push(this.files[i]);
       }
@@ -225,7 +229,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   public getSelectedRequestsValue() {
     this.selectedRequestsValues = [];
-    this.requestsArray.controls.forEach((control, i) => {
+    this.requestsControl.controls.forEach((control, i) => {
       if (control.value) {
         this.selectedRequestsValues.push(this.requests[i]);
       }
@@ -234,7 +238,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   public getSelectedOthersValue() {
     this.selectedOthersValues = [];
-    this.othersArray.controls.forEach((control, i) => {
+    this.othersControl.controls.forEach((control, i) => {
       if (control.value) {
         this.selectedOthersValues.push(this.others[i]);
       }
@@ -255,7 +259,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.formIsValid = this.relativeValueTooBig = this.timeUnitsUntouchedBefore = this.absoluteValueTooBig = false;
 
-    this.minDate = this.getMinDate();
+    this.minDate = this.createMinDate();
     this.maxDate = new Date();
 
     this.files = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
@@ -268,7 +272,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     this.onChanges();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.relativeValueControlSubscription.unsubscribe();
     this.relativeUnitsControlSubscription.unsubscribe();
     this.absoluteDateControlSubscription.unsubscribe();

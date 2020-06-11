@@ -6,8 +6,11 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { TopBarComponent } from './top-bar/top-bar.component';
 
-//external date picker library https://www.npmjs.com/package/ng-pick-datetime
+//external date picker library https://www.npmjs.com/package/ng-pick-datetime TODO uninstall
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
+//external time picker
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 //external file with all the components of Angular material used in the app
 import { AngularMaterialModule } from './material.module';
@@ -29,6 +32,7 @@ import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.
     AngularMaterialModule,
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
+    NgxMaterialTimepickerModule,
     RouterModule.forRoot([
       { path: 'printer-timeline-parameters', component: PrinterTimelineParametersComponent },
     ])

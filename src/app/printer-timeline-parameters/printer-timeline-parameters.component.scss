@@ -94,11 +94,18 @@
     margin-right: 10px;
 }
 
-#selector-time {
+#time-selector {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 40px;
+}
+
+#start-timedate-block, #end-timedate-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 #time-type {
@@ -120,15 +127,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-#absolute-time-selector-with-icon {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 20px;
+    justify-content: center;
 }
 
 #absolute-time-selector {
     margin-right: 10px;
+}
+
+#start-date-selector,  #end-date-selector{
+    margin-right: 20px;
 }
