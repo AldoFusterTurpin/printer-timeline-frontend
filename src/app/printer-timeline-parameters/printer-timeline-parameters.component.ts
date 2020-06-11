@@ -10,14 +10,15 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   public readonly initialStartTime = '00:00';
   public readonly initialEndTime = '00:00';
+
   private timeUnitsUntouchedBefore: boolean; 
+
   private selectedFilesValues = [];
   private selectedRequestsValues = [];
   private selectedOthersValues = [];
 
-  private relativeValueControlSubscription;
-  private relativeUnitsControlSubscription;
-  private absoluteDateControlSubscription;
+  private relativeTimeValueControlSubscription;
+  private relativeTimeUnitsControlSubscription;
   private formSubscription;
 
   private createForm() {
@@ -68,13 +69,13 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   private createRelativeValueControlSubscription() {
-    this.relativeValueControlSubscription = this.relativeValueControl.valueChanges.subscribe(val => {
+    this.relativeTimeValueControlSubscription = this.relativeValueControl.valueChanges.subscribe(val => {
       this.controlRelativeTimeMaxValue(val);
     });
   }
 
   private createRelativeUnitsControlSubscription() {
-    this.relativeUnitsControlSubscription = this.relativeUnitsControl.valueChanges.subscribe(val => {
+    this.relativeTimeUnitsControlSubscription = this.relativeUnitsControl.valueChanges.subscribe(val => {
       if (this.timeUnitsUntouchedBefore) {
         this.relativeValueControl.setValue('');
       } else {
@@ -105,7 +106,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   private datesDifferenceIsOkay(start: Date, end: Date) {
     let diff = this.diff_seconds(start, end);
-    return diff < 3600;
+    return diff <= 3600;
   }
 
   private controlFormIsValid() {
@@ -116,7 +117,6 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
       this.controlAbsoluteDate();
-      console.log(this.myForm.value);
     });
   }
 
@@ -273,13 +273,13 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     this.relativeUnits = [{ realValue: 'minutes', viewValue: 'Minutes' }, { realValue: 'seconds', viewValue: 'Seconds' }];
 
     this.myForm = this.createForm();
+
     this.onChanges();
   }
 
   ngOnDestroy(): void {
-    this.relativeValueControlSubscription.unsubscribe();
-    this.relativeUnitsControlSubscription.unsubscribe();
-    this.absoluteDateControlSubscription.unsubscribe();
+    this.relativeTimeValueControlSubscription.unsubscribe();
+    this.relativeTimeUnitsControlSubscription.unsubscribe();
     this.formSubscription.unsubscribe();
   }
 }
