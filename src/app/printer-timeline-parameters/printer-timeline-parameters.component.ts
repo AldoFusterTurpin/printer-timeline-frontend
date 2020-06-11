@@ -18,6 +18,23 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   private absoluteDateControlSubscription;
   private formSubscription;
 
+  private createForm() {
+    return this.formBuilder.group({
+      _PnControl: ['', [Validators.required]],
+      _SnControl: ['', [Validators.required]],
+      _filesControl: this.addFilesControls(),
+      _requestsControl: this.addRequestsControls(),
+      _othersControl: this.addOthersControls(),
+      _typeOfDateControl: ['relative', [Validators.required]],
+      _relativeTimeValueControl: ['', [Validators.required]],
+      _relativeTimeUnitsControl: ['', [Validators.required]],
+      _absoluteDateStartControl: [null, [Validators.required]],
+      _absoluteTimeStartControl: ['', [Validators.required]],
+      _absoluteDateEndControl: [null, [Validators.required]],
+      _absoluteTimeEndControl: ['', [Validators.required]]
+    })
+  }
+
   private setRelativeValueIsTooBig(b: boolean) {
     this.relativeValueTooBig = b;
     if (b) {
@@ -65,15 +82,20 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     });
   }
 
-  private createAbsoluteDateControlSubscription() {
-    this.absoluteDateControlSubscription = this.absoluteDateControl.valueChanges.subscribe(dates => {
-      let startDate = dates[0];
-      let endDate = dates[1];
+  private controlAbsoluteDate() {
+    if (this.absoluteDateStart.value === null) {
+      return;
+    }
+    let startTime = this.absoluteTimeStart.value;
+    this.absoluteDateStart.value.setHours(startTime.slice(0, 2), startTime.slice(3, 5), 0);
 
-      if (startDate != null && endDate != null) {
-        this.absoluteValueTooBig = !this.datesDifferenceIsOkay(startDate, endDate);
-      }
-    });
+    if (this.absoluteDateEnd.value === null) {
+      return;
+    }
+    let endTime = this.absoluteTimeEnd.value;
+    this.absoluteDateEnd.value.setHours(endTime.slice(0, 2), endTime.slice(3, 5), 0);
+
+    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStart.value, this.absoluteDateEnd.value);
   }
 
   private diff_seconds(start: Date, end: Date): number {
@@ -83,12 +105,18 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   private datesDifferenceIsOkay(start: Date, end: Date) {
     let diff = this.diff_seconds(start, end);
+    console.log(diff);
     return diff < 3600;
+  }
+
+  private controlFormIsValid() {
+    this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
   }
 
   private createFormSubscription() {
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
-      this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
+      this.controlFormIsValid();
+      this.controlAbsoluteDate();
       console.log(this.myForm.value);
     });
   }
@@ -96,7 +124,6 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   private onChanges(): void {
     this.createRelativeValueControlSubscription();
     this.createRelativeUnitsControlSubscription();
-    this.createAbsoluteDateControlSubscription();
     this.createFormSubscription();
   }
 
@@ -106,59 +133,25 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     return date;
   }
 
-  private createForm() {
-    return this.formBuilder.group({
-      _PnControl: ['', [Validators.required]],
-      _SnControl: ['', [Validators.required]],
-      _filesControl: this.addFilesControls(),
-      _requestsControl: this.addRequestsControls(),
-      _othersControl: this.addOthersControls(),
-      _typeOfDateControl: ['relative', [Validators.required]],
-      _relativeValueControl: ['', [Validators.required]],
-      _relativeUnitsControl: ['', [Validators.required]],
-      _absoluteDateControl: ['', [Validators.required]],
-      _absoluteDateStart: ['', [Validators.required]],
-      _absoluteTimeStart: ['', [Validators.required]],
-      _absoluteDateEnd: ['', [Validators.required]],
-      _absoluteTimeEnd: ['', [Validators.required]]
-    })
-  }
+  get relativeValueControl() { return this.myForm.get('_relativeTimeValueControl'); }
 
-  get relativeValueControl() {
-    return this.myForm.get('_relativeValueControl');
-  }
+  get typeOfDateControl() { return this.myForm.get('_typeOfDateControl'); }
 
-  get typeOfDateControl() {
-    return this.myForm.get('_typeOfDateControl');
-  }
+  get filesControl() { return <FormArray>this.myForm.get('_filesControl'); }
 
-  get filesControl() {
-    return <FormArray>this.myForm.get('_filesControl');
-  }
+  get requestsControl() { return <FormArray>this.myForm.get('_requestsControl'); }
 
-  get requestsControl() {
-    return <FormArray>this.myForm.get('_requestsControl');
-  }
+  get othersControl() { return <FormArray>this.myForm.get('_othersControl'); }
 
-  get othersControl() {
-    return <FormArray>this.myForm.get('_othersControl');
-  }
+  get relativeUnitsControl() { return this.myForm.get('_relativeTimeUnitsControl'); }
 
-  get absoluteDateControl() {
-    return this.myForm.get('_absoluteDateControl');
-  }
+  get absoluteDateStart() { return this.myForm.get('_absoluteDateStartControl'); }
 
-  get relativeUnitsControl() {
-    return this.myForm.get('_relativeUnitsControl')
-  }
+  get absoluteTimeStart() { return this.myForm.get('_absoluteTimeStartControl'); }
 
-  get absoluteDateStart() {
-    return this.myForm.get('_absoluteDateStart')
-  }
+  get absoluteDateEnd() { return this.myForm.get('_absoluteDateEndControl'); }
 
-  get absoluteDateEnd() {
-    return this.myForm.get('_absoluteDateEnd')
-  }
+  get absoluteTimeEnd() { return this.myForm.get('_absoluteTimeEndControl'); }
 
   private addFilesControls() {
     const arr = this.files.map(item => {
@@ -191,11 +184,21 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   private timeIsValid(): boolean {
     if (this.typeOfDateControl.value === 'relative') {
-      return !this.relativeValueTooBig &&
-        !this.formControlhasError('_relativeUnitsControl', 'required') &&
-        this.allNumbers(this.relativeValueControl.value);
-    } else if (this.typeOfDateControl.value === 'absolute') {
-      return !this.formControlhasError('_absoluteDateControl', 'required') && this.absoluteDateControl.value.indexOf(null) === -1;
+      return !this.relativeValueTooBig && !this.formControlhasError('_relativeTimeUnitsControl', 'required') && this.allNumbers(this.relativeValueControl.value);
+    } 
+    
+    if (this.typeOfDateControl.value === 'absolute') {
+      let startOk = !this.formControlhasError('_absoluteDateStartControl', 'required') &&
+        this.absoluteDateStart.value != null &&
+        !this.formControlhasError('_absoluteTimeStartControl', 'required') &&
+        this.absoluteTimeStart.value != '';
+
+      let endOk = !this.formControlhasError('_absoluteDateEndControl', 'required')
+        && this.absoluteDateEnd.value != null &&
+        !this.formControlhasError('_absoluteTimeEndControl', 'required') &&
+        this.absoluteTimeEnd.value != '';
+
+      return startOk && endOk && !this.absoluteDatesDifferenceTooBig;
     }
   }
 
@@ -207,7 +210,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   public others: Array<String>;
 
   public relativeValueTooBig: boolean;
-  public absoluteValueTooBig: boolean;
+  public absoluteDatesDifferenceTooBig: boolean;
 
   public relativeUnits;
 
@@ -257,7 +260,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   constructor(public formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.formIsValid = this.relativeValueTooBig = this.timeUnitsUntouchedBefore = this.absoluteValueTooBig = false;
+    this.formIsValid = this.relativeValueTooBig = this.timeUnitsUntouchedBefore = this.absoluteDatesDifferenceTooBig = false;
 
     this.minDate = this.createMinDate();
     this.maxDate = new Date();

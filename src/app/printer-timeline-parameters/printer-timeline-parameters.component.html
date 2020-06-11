@@ -71,18 +71,18 @@
             <p>Last</p>
             <mat-form-field id="relative-time-value">
                 <mat-label>Time value </mat-label>
-                <input matInput formControlName="_relativeValueControl" pattern="[0-9]*" placeholder="Ex. 15">
+                <input matInput formControlName="_relativeTimeValueControl" pattern="[0-9]*" placeholder="Ex. 15">
 
                 <mat-error *ngIf="relativeValueTooBig">
                     Value is too big
                 </mat-error>
 
                 <mat-error
-                    *ngIf="!formControlhasError('_relativeValueControl', 'required') && !this.allNumbers(this.relativeValueControl.value)">
+                    *ngIf="!formControlhasError('_relativeTimeValueControl', 'required') && !this.allNumbers(this.relativeValueControl.value)">
                     Unsupported chars
                 </mat-error>
 
-                <mat-error *ngIf="formControlhasError('_relativeValueControl', 'required')">
+                <mat-error *ngIf="formControlhasError('_relativeTimeValueControl', 'required')">
                     This field is required
                 </mat-error>
 
@@ -90,12 +90,12 @@
 
             <mat-form-field>
                 <mat-label>Time units</mat-label>
-                <mat-select formControlName="_relativeUnitsControl" required>
+                <mat-select formControlName="_relativeTimeUnitsControl" required>
                     <mat-option *ngFor="let unit of relativeUnits" [value]="unit">
                         {{unit.viewValue}}
                     </mat-option>
                 </mat-select>
-                <mat-error *ngIf="formControlhasError('_relativeValueControl', 'required')">
+                <mat-error *ngIf="formControlhasError('_relativeTimeValueControl', 'required')">
                     This field is required
                 </mat-error>
             </mat-form-field>
@@ -107,36 +107,61 @@
                         <mat-form-field>
                             <mat-label>Start date</mat-label>
                             <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1"
-                                formControlName="_absoluteDateStart" placeholder="Click the icon">
+                                formControlName="_absoluteDateStartControl" placeholder="MM/DD/YYYY">
                             <mat-hint>Max: 1 month ago</mat-hint>
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker-toggle matSuffix [for]="picker1" class="date-icon"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
                         </mat-form-field>
                     </div>
 
                     <div id="start-time-selector">
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeStart">
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeStartControl">
                         </ngx-timepicker-field>
                     </div>
                 </div>
+
+                <!-- <div id="absolute-time-block">
+                    <div id="absolute-time-selector-with-icon">
+                        <div id="absolute-time-selector">
+                            <label> </label>
+                            <input formControlName="absoluteDateControl" [selectMode]="'range'"
+                                [owlDateTimeTrigger]="dtPicker" [owlDateTime]="dtPicker" [min]="minDate" [max]="maxDate"
+                                placeholder="Click me!">
+                            <owl-date-time #dtPicker></owl-date-time>
+                        </div>
+    
+                        <mat-icon>date_range</mat-icon>
+                    </div>
+                    <mat-error *ngIf="myForm.get('absoluteDateControl')?.touched && (formControlhasError('absoluteDateControl', 'required') || this.myForm.get('absoluteDateControl').value.indexOf(null) != -1)">
+                        This field is required
+                    </mat-error>
+    
+                    <mat-error *ngIf="this.absoluteDatesDifferenceTooBig">
+                        Time difference is too big
+                    </mat-error>
+                </div> -->
 
                 <div id="end-timedate-block">
                     <div id="end-date-selector">
                         <mat-form-field>
                             <mat-label>End date</mat-label>
                             <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker2"
-                                formControlName="_absoluteDateEnd" placeholder="Click the icon">
+                                formControlName="_absoluteDateEndControl" placeholder="MM/DD/YYYY">
                             <mat-hint>Max: 1 month ago</mat-hint>
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker-toggle matSuffix [for]="picker2" class="date-icon"></mat-datepicker-toggle>
                             <mat-datepicker #picker2></mat-datepicker>
                         </mat-form-field>
                     </div>
 
                     <div id="end-time-selector">
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeEnd">
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeEndControl">
                         </ngx-timepicker-field>
                     </div>
                 </div>
+
+                <mat-error *ngIf="this.absoluteDatesDifferenceTooBig">
+                    Time difference is too big
+                </mat-error>
 
             </div>
         </ng-template>
