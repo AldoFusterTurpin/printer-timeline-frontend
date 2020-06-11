@@ -8,7 +8,9 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
   styleUrls: ['./printer-timeline-parameters.component.scss']
 })
 export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
-  private timeUnitsUntouchedBefore: boolean;
+  public readonly initialStartTime = '00:00';
+  public readonly initialEndTime = '00:00';
+  private timeUnitsUntouchedBefore: boolean; 
   private selectedFilesValues = [];
   private selectedRequestsValues = [];
   private selectedOthersValues = [];
@@ -29,9 +31,9 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
       _relativeTimeValueControl: ['', [Validators.required]],
       _relativeTimeUnitsControl: ['', [Validators.required]],
       _absoluteDateStartControl: [null, [Validators.required]],
-      _absoluteTimeStartControl: ['', [Validators.required]],
+      _absoluteTimeStartControl: [this.initialStartTime, [Validators.required]],
       _absoluteDateEndControl: [null, [Validators.required]],
-      _absoluteTimeEndControl: ['', [Validators.required]]
+      _absoluteTimeEndControl: [this.initialEndTime, [Validators.required]]
     })
   }
 
@@ -75,27 +77,26 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     this.relativeUnitsControlSubscription = this.relativeUnitsControl.valueChanges.subscribe(val => {
       if (this.timeUnitsUntouchedBefore) {
         this.relativeValueControl.setValue('');
+      } else {
+        this.timeUnitsUntouchedBefore = true;
       }
-      this.timeUnitsUntouchedBefore = true;
-
       this.controlRelativeTimeMaxValue(this.relativeValueControl.value);
     });
   }
 
   private controlAbsoluteDate() {
-    if (this.absoluteDateStart.value === null) {
+    if (this.absoluteDateStart.value === null || this.absoluteDateEnd.value === null) {
       return;
     }
     let startTime = this.absoluteTimeStart.value;
     this.absoluteDateStart.value.setHours(startTime.slice(0, 2), startTime.slice(3, 5), 0);
 
-    if (this.absoluteDateEnd.value === null) {
-      return;
-    }
     let endTime = this.absoluteTimeEnd.value;
     this.absoluteDateEnd.value.setHours(endTime.slice(0, 2), endTime.slice(3, 5), 0);
 
+    this.startTimePreviousThanEnd = this.absoluteDateStart.value < this.absoluteDateEnd.value;
     this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStart.value, this.absoluteDateEnd.value);
+    console.log(this.startTimePreviousThanEnd)
   }
 
   private diff_seconds(start: Date, end: Date): number {
@@ -105,7 +106,6 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   private datesDifferenceIsOkay(start: Date, end: Date) {
     let diff = this.diff_seconds(start, end);
-    console.log(diff);
     return diff < 3600;
   }
 
@@ -211,6 +211,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   public relativeValueTooBig: boolean;
   public absoluteDatesDifferenceTooBig: boolean;
+  public startTimePreviousThanEnd: boolean;
 
   public relativeUnits;
 
@@ -261,6 +262,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.formIsValid = this.relativeValueTooBig = this.timeUnitsUntouchedBefore = this.absoluteDatesDifferenceTooBig = false;
+    this.startTimePreviousThanEnd = true;
 
     this.minDate = this.createMinDate();
     this.maxDate = new Date();

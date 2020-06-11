@@ -100,6 +100,7 @@
                 </mat-error>
             </mat-form-field>
         </div>
+
         <ng-template #absoluteTime>
             <div id="absolute-time-block">
                 <div id="start-timedate-block">
@@ -115,31 +116,10 @@
                     </div>
 
                     <div id="start-time-selector">
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeStartControl">
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeStartControl" [defaultTime]="this.initialStartTime">
                         </ngx-timepicker-field>
                     </div>
                 </div>
-
-                <!-- <div id="absolute-time-block">
-                    <div id="absolute-time-selector-with-icon">
-                        <div id="absolute-time-selector">
-                            <label> </label>
-                            <input formControlName="absoluteDateControl" [selectMode]="'range'"
-                                [owlDateTimeTrigger]="dtPicker" [owlDateTime]="dtPicker" [min]="minDate" [max]="maxDate"
-                                placeholder="Click me!">
-                            <owl-date-time #dtPicker></owl-date-time>
-                        </div>
-    
-                        <mat-icon>date_range</mat-icon>
-                    </div>
-                    <mat-error *ngIf="myForm.get('absoluteDateControl')?.touched && (formControlhasError('absoluteDateControl', 'required') || this.myForm.get('absoluteDateControl').value.indexOf(null) != -1)">
-                        This field is required
-                    </mat-error>
-    
-                    <mat-error *ngIf="this.absoluteDatesDifferenceTooBig">
-                        Time difference is too big
-                    </mat-error>
-                </div> -->
 
                 <div id="end-timedate-block">
                     <div id="end-date-selector">
@@ -154,14 +134,20 @@
                     </div>
 
                     <div id="end-time-selector">
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeEndControl">
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeEndControl" [defaultTime]="this.initialEndTime">
                         </ngx-timepicker-field>
                     </div>
                 </div>
-
-                <mat-error *ngIf="this.absoluteDatesDifferenceTooBig">
-                    Time difference is too big
+                
+                <mat-error *ngIf="!this.startTimePreviousThanEnd; else blockStartPreviousThanEnd">
+                    Start must be previous than end
                 </mat-error>
+
+                <ng-template #blockStartPreviousThanEnd>
+                    <mat-error *ngIf="this.absoluteDatesDifferenceTooBig">
+                        Time difference is too big
+                    </mat-error>
+                </ng-template>
 
             </div>
         </ng-template>
