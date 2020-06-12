@@ -1,5 +1,4 @@
 <form id="form" [formGroup]="myForm" novalidate (submit)="submitForm()" #myform="ngForm">
-
     <section id="printer-info">
         <h2>Printer information</h2>
         <div id="printer-info-elements">
@@ -35,7 +34,6 @@
             </div>
         </div>
 
-
         <div id="requests-block" class="checkboxes">
             <h4 id="requests-headers">Requests</h4>
             <div>
@@ -61,7 +59,7 @@
         <h2>Time range</h2>
 
         <div id="time-type">
-            <mat-radio-group formControlName="_typeOfDateControl" aria-label="Select an option" color="primary">
+            <mat-radio-group formControlName="_typeOfDateControl" color="primary">
                 <mat-radio-button value="relative">Relative</mat-radio-button>
                 <mat-radio-button value="absolute">Absolute</mat-radio-button>
             </mat-radio-group>
@@ -118,7 +116,9 @@
                     </div>
 
                     <div id="start-time-selector">
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeStartControl" [defaultTime]="this.initialStartTime">
+                        <!-- https://github.com/Agranom/ngx-material-timepicker#ngxtimepickerfieldcomponent -->
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24"
+                            formControlName="_absoluteTimeStartControl" [defaultTime]="this.initialStartTime">
                         </ngx-timepicker-field>
                         <p class="utc">UTC</p>
                     </div>
@@ -137,12 +137,14 @@
                     </div>
 
                     <div id="end-time-selector">
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" formControlName="_absoluteTimeEndControl" [defaultTime]="this.initialEndTime">
+                        <!-- https://github.com/Agranom/ngx-material-timepicker#ngxtimepickerfieldcomponent -->
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24"
+                            formControlName="_absoluteTimeEndControl" [defaultTime]="this.initialEndTime">
                         </ngx-timepicker-field>
                         <p class="utc">UTC</p>
                     </div>
                 </div>
-                
+
                 <mat-error *ngIf="!this.startTimePreviousThanEnd; else blockStartPreviousThanEnd">
                     Start must be previous than end
                 </mat-error>
@@ -158,5 +160,4 @@
     </div>
 
     <button mat-flat-button color="primary" [disabled]="!formIsValid">Next</button>
-
 </form>
