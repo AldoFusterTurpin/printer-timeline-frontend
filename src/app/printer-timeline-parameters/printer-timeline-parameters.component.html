@@ -27,7 +27,7 @@
             <h4 id="files-header">Files</h4>
             <div>
                 <div *ngFor="let control of filesControl.controls; let i = index">
-                    <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
+                    <mat-checkbox color="primary" (change)="getSelectedFiles()" [formControl]="control"
                         id="inlineCheckbox_{{i}}"> </mat-checkbox>
                     <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
                 </div>
@@ -38,7 +38,7 @@
             <h4 id="requests-headers">Requests</h4>
             <div>
                 <div *ngFor="let control of requestsControl.controls; let i = index">
-                    <mat-checkbox color="primary" (change)="getSelectedRequestsValue()" [formControl]="control"
+                    <mat-checkbox color="primary" (change)="getSelectedRequests()" [formControl]="control"
                         id="inlineCheckbox2_{{i}}"> </mat-checkbox>
                     <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
                 </div>
@@ -48,7 +48,7 @@
         <div id="others-block" class="checkboxes">
             <h4 id="others-header">Others</h4>
             <div *ngFor="let control of othersControl.controls; let i = index">
-                <mat-checkbox color="primary" (change)="getSelectedOthersValue()" [formControl]="control"
+                <mat-checkbox color="primary" (change)="getSelectedOthers()" [formControl]="control"
                     id="inlineCheckbox3_{{i}}"> </mat-checkbox>
                 <label class="" for="inlineCheckbox{{i}}">{{others[i]}}</label>
             </div>
@@ -76,7 +76,7 @@
                 </mat-error>
 
                 <mat-error
-                    *ngIf="!formControlhasError('_relativeTimeValueControl', 'required') && !this.allNumbers(this.relativeValueControl.value)">
+                    *ngIf="!formControlhasError('_relativeTimeValueControl', 'required') && !this.allCharsAreNumbers(this.relativeTimeValueControl.value)">
                     Unsupported chars
                 </mat-error>
 

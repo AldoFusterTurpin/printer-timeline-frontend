@@ -10,9 +10,9 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   private timeUnitsTouchedBefore: boolean;
 
-  private selectedFiles;
-  private selectedRequests;
-  private selectedOthers;
+  private selectedFiles: String[];
+  private selectedRequests: String[];
+  private selectedOthers: String[];
 
   private timeTypeSubscription;
   private relativeTimeValueSubscription;
@@ -41,16 +41,16 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     })
   }
 
-  get relativeValueControl() { return this.myForm.get('_relativeTimeValueControl'); }
+  get relativeTimeValueControl() { return this.myForm.get('_relativeTimeValueControl'); }
   get typeOfDateControl() { return this.myForm.get('_typeOfDateControl'); }
   get filesControl() { return <FormArray>this.myForm.get('_filesControl'); }
   get requestsControl() { return <FormArray>this.myForm.get('_requestsControl'); }
   get othersControl() { return <FormArray>this.myForm.get('_othersControl'); }
-  get relativeUnitsControl() { return this.myForm.get('_relativeTimeUnitsControl'); }
-  get absoluteDateStart() { return this.myForm.get('_absoluteDateStartControl'); }
-  get absoluteTimeStart() { return this.myForm.get('_absoluteTimeStartControl'); }
-  get absoluteDateEnd() { return this.myForm.get('_absoluteDateEndControl'); }
-  get absoluteTimeEnd() { return this.myForm.get('_absoluteTimeEndControl'); }
+  get relativeTimeUnitsControl() { return this.myForm.get('_relativeTimeUnitsControl'); }
+  get absoluteDateStartControl() { return this.myForm.get('_absoluteDateStartControl'); }
+  get absoluteTimeStartControl() { return this.myForm.get('_absoluteTimeStartControl'); }
+  get absoluteDateEndControl() { return this.myForm.get('_absoluteDateEndControl'); }
+  get absoluteTimeEndControl() { return this.myForm.get('_absoluteTimeEndControl'); }
 
   private addFilesControls() {
     const arr = this.files.map(item => {
@@ -73,79 +73,66 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     return this.fb.array(arr);
   }
 
-  private setRelativeValueIsTooBig(isTooBig: boolean) {
+  private setRelativeTimeValueIsTooBig(isTooBig: boolean) {
     this.relativeValueTooBig = isTooBig;
     if (isTooBig) {
-      this.relativeValueControl.setErrors({ 'incorrect': isTooBig });
+      this.relativeTimeValueControl.setErrors({ 'incorrect': isTooBig });
     }
   }
 
-  private controlRelativeTimeMaxValue(formValueString: string) {
-    if (this.allNumbers(formValueString)) {
-      let formUnits = this.relativeUnitsControl.value.realValue;
+  private controlMaxValueOfRelativeTime(formValueString: string) {
+    if (this.allCharsAreNumbers(formValueString)) {
+      let formUnits = this.relativeTimeUnitsControl.value.realValue;
       let formValue = parseInt(formValueString);
 
       if (formUnits === 'minutes') {
         if (formValue > 60) {
-          this.setRelativeValueIsTooBig(true);
+          this.setRelativeTimeValueIsTooBig(true);
         } else {
-          this.setRelativeValueIsTooBig(false);
+          this.setRelativeTimeValueIsTooBig(false);
         }
       } else if (formUnits === 'seconds') {
         if (formValue > 3600) {
-          this.setRelativeValueIsTooBig(true);
+          this.setRelativeTimeValueIsTooBig(true);
         } else {
-          this.setRelativeValueIsTooBig(false);
+          this.setRelativeTimeValueIsTooBig(false);
         }
       }
     } else {
-      this.setRelativeValueIsTooBig(false);
+      this.setRelativeTimeValueIsTooBig(false);
     }
   }
 
   private createTimeTypeSubscription() {
     this.timeTypeSubscription = this.typeOfDateControl.valueChanges.subscribe(val => {
       if (val === 'absolute') {
-        this.relativeValueControl.setValue('0', {emitEvent: false});
+        this.relativeTimeValueControl.setValue('');
+        this.relativeTimeUnitsControl.setValue('');
       }
     });
   }
 
   private createRelativeTimeValueSubscription() {
-    this.relativeTimeValueSubscription = this.relativeValueControl.valueChanges.subscribe(val => {
-      this.controlRelativeTimeMaxValue(val);
+    this.relativeTimeValueSubscription = this.relativeTimeValueControl.valueChanges.subscribe(val => {
+      this.controlMaxValueOfRelativeTime(val);
     });
   }
 
   private createRelativeTimeUnitsSubscription() {
-    this.relativeTimeUnitsSubscription = this.relativeUnitsControl.valueChanges.subscribe(val => {
+    this.relativeTimeUnitsSubscription = this.relativeTimeUnitsControl.valueChanges.subscribe(val => {
       if (this.timeUnitsTouchedBefore) {
-        this.relativeValueControl.setValue('');
+        this.relativeTimeValueControl.setValue('');
       } else {
         this.timeUnitsTouchedBefore = true;
       }
 
-      this.controlRelativeTimeMaxValue(this.relativeValueControl.value);
+      this.controlMaxValueOfRelativeTime(this.relativeTimeValueControl.value);
     });
   }
 
-  private controlAbsoluteDate() {
-    if (this.absoluteDateStart.value === null || this.absoluteDateEnd.value === null) {
-      return;
-    }
-    let startTime = this.absoluteTimeStart.value;
-    this.absoluteDateStart.value.setHours(startTime.slice(0, 2), startTime.slice(3, 5), 0);
-
-    let endTime = this.absoluteTimeEnd.value;
-    this.absoluteDateEnd.value.setHours(endTime.slice(0, 2), endTime.slice(3, 5), 0);
-
-    this.startTimePreviousThanEnd = this.absoluteDateStart.value < this.absoluteDateEnd.value;
-    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStart.value, this.absoluteDateEnd.value);
-  }
-
   private secondsDiff(start: Date, end: Date): number {
-    let diff = (end.getTime() - start.getTime()) / 1000;
-    return Math.abs(Math.round(diff));
+    let secondsDiff = (end.getTime() - start.getTime()) / 1000;
+    return Math.abs(Math.round(secondsDiff));
   }
 
   private datesDifferenceIsOkay(start: Date, end: Date) {
@@ -154,16 +141,12 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   private controlFormIsValid() {
-    this.formIsValid = this.printerInfoIsValid() && this.dataTypesIsValid() && this.timeIsValid();
+    this.formIsValid = this.printerInfoIsValid() && this.dataTypesAreValid() && this.timeIsValid();
   }
 
   private createFormSubscription() {
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
-      this.controlAbsoluteDate(); 
-
-      //console.log('this.relativeValueControl.errors: ' + this.relativeValueControl.errors);
-      //console.log('this.relativeValueTooBig: ' + this.relativeValueTooBig);
       console.log(this.myForm.value);
     });
   }
@@ -185,27 +168,57 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     return !this.formControlhasError('_PnControl', 'required') && !this.formControlhasError('_SnControl', 'required');
   }
 
-  private dataTypesIsValid(): boolean {
-    return this.filesControl.value.indexOf(true) != -1 || this.requestsControl.value.indexOf(true) != -1 || this.othersControl.value.indexOf(true) != -1;
+  private dataTypesAreValid(): boolean {
+    return this.filesControl.value.indexOf(true) != -1
+      || this.requestsControl.value.indexOf(true) != -1
+      || this.othersControl.value.indexOf(true) != -1;
+  }
+
+  private controlAbsoluteDate() {
+    if (this.absoluteDateStartControl.value === null || this.absoluteDateEndControl.value === null) {
+      return;
+    }
+    let startTime = this.absoluteTimeStartControl.value;
+    this.absoluteDateStartControl.value.setHours(parseInt(startTime.slice(0, 2)), 
+                                                  parseInt(startTime.slice(3, 5), 0));  
+
+    let endTime = this.absoluteTimeEndControl.value;
+    this.absoluteDateEndControl.value.setHours(parseInt(endTime.slice(0, 2)), 
+                                        parseInt(endTime.slice(3, 5), 0));
+
+    this.startTimePreviousThanEnd = this.absoluteDateStartControl.value < this.absoluteDateEndControl.value;
+    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStartControl.value, this.absoluteDateEndControl.value);
   }
 
   private timeIsValid(): boolean {
     if (this.typeOfDateControl.value === 'relative') {
-      return !this.relativeValueTooBig && !this.formControlhasError('_relativeTimeUnitsControl', 'required') && this.allNumbers(this.relativeValueControl.value);
+      return !this.relativeValueTooBig 
+              && !this.formControlhasError('_relativeTimeUnitsControl', 'required')
+              && !this.formControlhasError('_relativeTimeValueControl', 'required')
+              && this.allCharsAreNumbers(this.relativeTimeValueControl.value);
     }
 
-    if (this.typeOfDateControl.value === 'absolute') {
-      let startOk = !this.formControlhasError('_absoluteDateStartControl', 'required') &&
-        this.absoluteDateStart.value != null &&
-        !this.formControlhasError('_absoluteTimeStartControl', 'required') &&
-        this.absoluteTimeStart.value != '';
+    else if (this.typeOfDateControl.value === 'absolute') {
+      let startOk = !this.formControlhasError('_absoluteDateStartControl', 'required') 
+                      && this.absoluteDateStartControl.value != null 
+                      && !this.formControlhasError('_absoluteTimeStartControl', 'required') 
+                      && this.absoluteTimeStartControl.value != '';
+      if (!startOk) {
+        return false;
+      }
 
       let endOk = !this.formControlhasError('_absoluteDateEndControl', 'required')
-        && this.absoluteDateEnd.value != null &&
-        !this.formControlhasError('_absoluteTimeEndControl', 'required') &&
-        this.absoluteTimeEnd.value != '';
+                    && this.absoluteDateEndControl.value != null 
+                    && !this.formControlhasError('_absoluteTimeEndControl', 'required') 
+                    && this.absoluteTimeEndControl.value != '';
 
-      return startOk && endOk && !this.absoluteDatesDifferenceTooBig;
+      if (!endOk) {
+          return false;
+      }
+
+      this.controlAbsoluteDate();
+
+      return !this.absoluteDatesDifferenceTooBig && this.startTimePreviousThanEnd;
     }
   }
 
@@ -229,10 +242,10 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   public maxDate: Date;
 
   public submitForm(): void {
-    //console.log(this.myForm.value);
+    console.log(this.myForm.value);
   }
 
-  public getSelectedFilesValue() {
+  public getSelectedFiles() {
     this.selectedFiles = [];
     this.filesControl.controls.forEach((control, i) => {
       if (control.value) {
@@ -241,7 +254,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     });
   }
 
-  public getSelectedRequestsValue() {
+  public getSelectedRequests() {
     this.selectedRequests = [];
     this.requestsControl.controls.forEach((control, i) => {
       if (control.value) {
@@ -250,7 +263,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     });
   }
 
-  public getSelectedOthersValue() {
+  public getSelectedOthers() {
     this.selectedOthers = [];
     this.othersControl.controls.forEach((control, i) => {
       if (control.value) {
@@ -263,7 +276,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
     return this.myForm.get(controlName).hasError(error);
   }
 
-  public allNumbers(text): boolean {
+  public allCharsAreNumbers(text): boolean {
     let numbers = /^[0-9]+$/;
     return text.match(numbers);
   }
