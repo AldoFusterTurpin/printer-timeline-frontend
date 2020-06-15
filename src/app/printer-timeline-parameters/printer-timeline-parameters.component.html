@@ -1,21 +1,20 @@
 <form id="form" [formGroup]="myForm" novalidate (submit)="submitForm()" #myform="ngForm">
-
     <section id="printer-info">
         <h2>Printer information</h2>
         <div id="printer-info-elements">
             <mat-form-field id="product-number">
                 <mat-label>Product Number (Pn)</mat-label>
-                <input matInput formControlName="PnControl">
-                <mat-error *ngIf="errorHandling('PnControl', 'required')">
-                    This field is <strong>mandatory</strong>
+                <input matInput formControlName="_PnControl">
+                <mat-error *ngIf="formControlhasError('_PnControl', 'required')">
+                    This field is required
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field id="serial-number">
                 <mat-label>Serial Number (Sn)</mat-label>
-                <input matInput formControlName="SnControl">
-                <mat-error *ngIf="errorHandling('SnControl', 'required')">
-                    This field is <strong>mandatory</strong>
+                <input matInput formControlName="_SnControl">
+                <mat-error *ngIf="formControlhasError('_SnControl', 'required')">
+                    This field is required
                 </mat-error>
             </mat-form-field>
         </div>
@@ -24,37 +23,141 @@
     <h2>Data types</h2>
     <section id="data-types">
 
-        <div id="files" class="checkboxes">
+        <div id="files-block" class="checkboxes">
             <h4 id="files-header">Files</h4>
-            <div *ngFor="let control of filesArray.controls; let i = index">
-                <mat-checkbox color="primary" (change)="getSelectedFilesValue()" [formControl]="control"
-                    id="inlineCheckbox_{{i}}"> </mat-checkbox>
-                <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
+            <div>
+                <div *ngFor="let control of filesControl.controls; let i = index">
+                    <mat-checkbox color="primary" (change)="getSelectedFiles()" [formControl]="control"
+                        id="inlineCheckbox_{{i}}"> </mat-checkbox>
+                    <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
+                </div>
             </div>
         </div>
 
-        <div class="checkboxes">
+        <div id="requests-block" class="checkboxes">
             <h4 id="requests-headers">Requests</h4>
-            <div *ngFor="let control of requestsArray.controls; let i = index">
-                <mat-checkbox color="primary" (change)="getSelectedRequestsValue()" [formControl]="control"
-                    id="inlineCheckbox2_{{i}}"> </mat-checkbox>
-                <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
+            <div>
+                <div *ngFor="let control of requestsControl.controls; let i = index">
+                    <mat-checkbox color="primary" (change)="getSelectedRequests()" [formControl]="control"
+                        id="inlineCheckbox2_{{i}}"> </mat-checkbox>
+                    <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
+                </div>
             </div>
         </div>
 
-        <div class="checkboxes">
+        <div id="others-block" class="checkboxes">
             <h4 id="others-header">Others</h4>
-            <div *ngFor="let control of othersArray.controls; let i = index">
-                <mat-checkbox color="primary" (change)="getSelectedOthersValue()" [formControl]="control"
+            <div *ngFor="let control of othersControl.controls; let i = index">
+                <mat-checkbox color="primary" (change)="getSelectedOthers()" [formControl]="control"
                     id="inlineCheckbox3_{{i}}"> </mat-checkbox>
                 <label class="" for="inlineCheckbox{{i}}">{{others[i]}}</label>
             </div>
         </div>
     </section>
 
-    <section class="form-section" id="time-range">
-        <app-time-range-selector></app-time-range-selector>
-    </section>
+    <div id="time-selector">
+        <h2>Time range</h2>
 
-    <button mat-flat-button color="primary">Next</button>
+        <div id="time-type">
+            <mat-radio-group formControlName="_typeOfDateControl" color="primary">
+                <mat-radio-button value="relative">Relative</mat-radio-button>
+                <mat-radio-button value="absolute">Absolute</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div id="relative-time-block" *ngIf="typeOfDateControl.value === 'relative'; else absoluteTime">
+            <p>Last</p>
+            <mat-form-field id="relative-time-value">
+                <mat-label>Time value </mat-label>
+                <input matInput formControlName="_relativeTimeValueControl" pattern="[0-9]*" placeholder="Ex. 15">
+
+                <mat-error *ngIf="relativeValueTooBig">
+                    Value is too big
+                </mat-error>
+
+                <mat-error
+                    *ngIf="!formControlhasError('_relativeTimeValueControl', 'required') && !this.allCharsAreNumbers(this.relativeTimeValueControl.value)">
+                    Unsupported chars
+                </mat-error>
+
+                <mat-error *ngIf="formControlhasError('_relativeTimeValueControl', 'required')">
+                    This field is required
+                </mat-error>
+
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Time units</mat-label>
+                <mat-select formControlName="_relativeTimeUnitsControl" required>
+                    <mat-option *ngFor="let unit of relativeUnits" [value]="unit">
+                        {{unit.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formControlhasError('_relativeTimeValueControl', 'required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+
+            <p>Local</p>
+        </div>
+
+        <ng-template #absoluteTime>
+            <div id="absolute-time-block">
+                <div id="start-timedate-block">
+                    <div id="start-date-selector">
+                        <mat-form-field>
+                            <mat-label>Start date</mat-label>
+                            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1"
+                                formControlName="_absoluteDateStartControl" placeholder="MM/DD/YYYY">
+                            <mat-hint>Max: 1 month ago</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker1" class="date-icon"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div id="start-time-selector">
+                        <!-- https://github.com/Agranom/ngx-material-timepicker#ngxtimepickerfieldcomponent -->
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24"
+                            formControlName="_absoluteTimeStartControl" [defaultTime]="this.initialStartTime">
+                        </ngx-timepicker-field>
+                        <p class="utc">UTC</p>
+                    </div>
+                </div>
+
+                <div id="end-timedate-block">
+                    <div id="end-date-selector">
+                        <mat-form-field>
+                            <mat-label>End date</mat-label>
+                            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker2"
+                                formControlName="_absoluteDateEndControl" placeholder="MM/DD/YYYY">
+                            <mat-hint>Max: 1 month ago</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker2" class="date-icon"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div id="end-time-selector">
+                        <!-- https://github.com/Agranom/ngx-material-timepicker#ngxtimepickerfieldcomponent -->
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24"
+                            formControlName="_absoluteTimeEndControl" [defaultTime]="this.initialEndTime">
+                        </ngx-timepicker-field>
+                        <p class="utc">UTC</p>
+                    </div>
+                </div>
+
+                <mat-error *ngIf="!this.startTimePreviousThanEnd; else blockStartPreviousThanEnd">
+                    Start must be previous than end
+                </mat-error>
+
+                <ng-template #blockStartPreviousThanEnd>
+                    <mat-error *ngIf="this.absoluteDatesDifferenceTooBig">
+                        Time difference is too big
+                    </mat-error>
+                </ng-template>
+
+            </div>
+        </ng-template>
+    </div>
+
+    <button mat-flat-button color="primary" [disabled]="!formIsValid">Next</button>
 </form>

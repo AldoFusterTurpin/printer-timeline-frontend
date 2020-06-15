@@ -3,7 +3,8 @@
     flex-direction: column;
     display: flex;
     align-items: center;
-} 
+    justify-content: center;
+}
 
 #printer-info {
     flex: auto;
@@ -25,7 +26,7 @@
 
 #product-number {
     margin-right: 20px;
-} 
+}
 
 #data-types {
     flex: 1;
@@ -36,7 +37,43 @@
     width: 700px;
 }
 
-#files-header, #requests-headers, #others-header {
+@media only screen and (max-width: 800px) {
+    #data-types {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #files-block,
+    #requests-block,
+    #others-block {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    #printer-info-elements {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #product-number,
+    #serial-number {
+        margin-right: 0px;
+    }
+}
+
+#files-header,
+#requests-headers,
+#others-header {
     align-self: center;
 }
 
@@ -54,4 +91,71 @@
 
 .checkboxes label {
     margin: 0px 20px 0px 6px;
-} 
+}
+
+.mat-form-field {
+    margin-right: 10px;
+}
+
+#time-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+#start-timedate-block,
+#end-timedate-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#time-type {
+    margin-bottom: 20px;
+}
+
+#relative-time-value {
+    margin-right: 20px;
+    margin-left: 15px;
+}
+
+#relative-time-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#absolute-time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#absolute-time-selector {
+    margin-right: 10px;
+}
+
+#start-date-selector,
+#end-date-selector {
+    margin-right: 20px;
+}
+
+#start-time-selector,
+#end-time-selector {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.date-icon {
+    font-size: 20px;
+}
+
+.utc {
+    margin-left: 10px;
+}
