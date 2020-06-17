@@ -56,7 +56,7 @@ export class DataTypesFilterComponent {
     return this.myForm.controls[control].hasError(error);
   }
 
-  submitForm() {
+  public submitForm() {
     console.log(this.myForm.value)
   }
 }

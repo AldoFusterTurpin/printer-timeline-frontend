@@ -147,7 +147,6 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
   private createFormSubscription() {
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
-      console.log(this.myForm.value);
     });
   }
 

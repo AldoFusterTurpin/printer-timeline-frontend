@@ -3,7 +3,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
 import { TopBarComponent } from './top-bar/top-bar.component';
 
 //external time picker
@@ -28,9 +27,6 @@ import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.
     AppRoutingModule,
     AngularMaterialModule,
     NgxMaterialTimepickerModule,
-    RouterModule.forRoot([
-      { path: 'printer-timeline-parameters', component: PrinterTimelineParametersComponent },
-    ])
   ],
   providers: [],
   bootstrap: [AppComponent],
