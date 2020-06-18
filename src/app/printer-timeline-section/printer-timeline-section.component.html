@@ -1,0 +1,11 @@
+<div *ngIf="!this.showTimeline; else timelineBlock">
+    <app-printer-timeline-parameters (formSubmited)="onFormSubmited($event)"></app-printer-timeline-parameters>
+</div>
+
+<ng-template #timelineBlock>
+    <button mat-raised-button color="primary" (click)="this.hideTimeline()">
+        <mat-icon>arrow_left</mat-icon> Back
+    </button>
+    
+    <app-printer-timeline-view></app-printer-timeline-view>
+</ng-template>

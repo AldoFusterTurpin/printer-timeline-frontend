@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PrinterTimelineParametersComponent } from './printer-timeline-parameters/printer-timeline-parameters.component';
+import { PrinterTimelineSectionComponent } from './printer-timeline-section/printer-timeline-section.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'printer-timeline-parameters', pathMatch: 'full' },
-  { path: 'printer-timeline-parameters', component: PrinterTimelineParametersComponent }
+  { path: '', redirectTo: 'printer-timeline-section', pathMatch: 'full' },
+  { path: 'printer-timeline-section', component: PrinterTimelineSectionComponent }
 ];
 
 @NgModule({

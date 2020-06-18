@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 
@@ -8,6 +8,10 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
   styleUrls: ['./printer-timeline-parameters.component.scss']
 })
 export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
+
+  @Output()
+  formSubmited: EventEmitter<boolean> = new EventEmitter<boolean>();
+  
   private timeUnitsTouchedBefore: boolean;
 
   private selectedFiles: String[];
@@ -242,6 +246,7 @@ export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
   public submitForm(): void {
     console.log(this.myForm.value);
+    this.formSubmited.emit(true);
   }
 
   public getSelectedFiles() {
