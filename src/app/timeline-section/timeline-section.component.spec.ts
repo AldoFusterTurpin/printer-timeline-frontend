@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrinterTimelineSectionComponent } from './timeline-section.component';
+import { TimelineSectionComponent } from './timeline-section.component';
 
-describe('PrinterTimelineSectionComponent', () => {
-  let component: PrinterTimelineSectionComponent;
-  let fixture: ComponentFixture<PrinterTimelineSectionComponent>;
+describe('TimelineSectionComponent', () => {
+  let component: TimelineSectionComponent;
+  let fixture: ComponentFixture<TimelineSectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrinterTimelineSectionComponent ]
+      declarations: [ TimelineSectionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrinterTimelineSectionComponent);
+    fixture = TestBed.createComponent(TimelineSectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

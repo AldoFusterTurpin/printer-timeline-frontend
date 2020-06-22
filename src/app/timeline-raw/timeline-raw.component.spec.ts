@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrinterTimelineViewComponent } from './timeline-view.component';
+import { TimelineRawComponent } from './timeline-raw.component';
 
-describe('PrinterTimelineViewComponent', () => {
-  let component: PrinterTimelineViewComponent;
-  let fixture: ComponentFixture<PrinterTimelineViewComponent>;
+describe('TimelineRawComponent', () => {
+  let component: TimelineRawComponent;
+  let fixture: ComponentFixture<TimelineRawComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrinterTimelineViewComponent ]
+      declarations: [ TimelineRawComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrinterTimelineViewComponent);
+    fixture = TestBed.createComponent(TimelineRawComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

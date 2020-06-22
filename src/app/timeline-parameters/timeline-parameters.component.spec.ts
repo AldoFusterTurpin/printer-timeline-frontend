@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrinterTimelineParametersComponent } from './timeline-parameters.component';
+import { TimelineParametersComponent } from './timeline-parameters.component';
 
-describe('PrinterTimelineParametersComponent', () => {
-  let component: PrinterTimelineParametersComponent;
-  let fixture: ComponentFixture<PrinterTimelineParametersComponent>;
+describe('TimelineParametersComponent', () => {
+  let component: TimelineParametersComponent;
+  let fixture: ComponentFixture<TimelineParametersComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrinterTimelineParametersComponent ]
+      declarations: [ TimelineParametersComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrinterTimelineParametersComponent);
+    fixture = TestBed.createComponent(TimelineParametersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

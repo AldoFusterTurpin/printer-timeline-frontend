@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './timeline-section.component.html',
   styleUrls: ['./timeline-section.component.scss']
 })
-export class PrinterTimelineSectionComponent implements OnInit {
+export class TimelineSectionComponent implements OnInit {
   public showTimeline: boolean;
 
   public onFormSubmited(formSubmited: boolean) {

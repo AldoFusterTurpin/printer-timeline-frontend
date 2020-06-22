@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
   templateUrl: './timeline-parameters.component.html',
   styleUrls: ['./timeline-parameters.component.scss']
 })
-export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
+export class TimelineParametersComponent implements OnInit, OnDestroy {
 
   @Output()
   formSubmited: EventEmitter<boolean> = new EventEmitter<boolean>();

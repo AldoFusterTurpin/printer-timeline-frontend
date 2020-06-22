@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataTypesFilterComponent } from './data-types-filter.component';
 
-describe('PrinterTimelineParametersComponent', () => {
+describe('TimelineParametersComponent', () => {
   let component: DataTypesFilterComponent;
   let fixture: ComponentFixture<DataTypesFilterComponent>;
 
