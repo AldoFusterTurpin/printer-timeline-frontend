@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrinterTimelineViewComponent } from './printer-timeline-view.component';
+import { PrinterTimelineViewComponent } from './timeline-view.component';
 
 describe('PrinterTimelineViewComponent', () => {
   let component: PrinterTimelineViewComponent;

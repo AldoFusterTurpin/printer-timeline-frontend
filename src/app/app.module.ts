@@ -13,8 +13,8 @@ import { AngularMaterialModule } from './material.module';
 
 import { PrinterTimelineParametersComponent } from './timeline-parameters/timeline-parameters.component';
 import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.component';
-import { PrinterTimelineSectionComponent } from './printer-timeline-section/printer-timeline-section.component';
-import { PrinterTimelineViewComponent } from './printer-timeline-view/printer-timeline-view.component';
+import { PrinterTimelineSectionComponent } from './timeline-section/timeline-section.component';
+import { PrinterTimelineViewComponent } from './timeline-view/timeline-view.component';
 
 
 @NgModule({

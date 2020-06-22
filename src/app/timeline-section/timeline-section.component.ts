@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-printer-timeline-section',
-  templateUrl: './printer-timeline-section.component.html',
-  styleUrls: ['./printer-timeline-section.component.scss']
+  selector: 'app-timeline-section',
+  templateUrl: './timeline-section.component.html',
+  styleUrls: ['./timeline-section.component.scss']
 })
 export class PrinterTimelineSectionComponent implements OnInit {
   public showTimeline: boolean;
