@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrinterTimelineParametersComponent } from './printer-timeline-parameters.component';
+import { PrinterTimelineParametersComponent } from './timeline-parameters.component';
 
 describe('PrinterTimelineParametersComponent', () => {
   let component: PrinterTimelineParametersComponent;

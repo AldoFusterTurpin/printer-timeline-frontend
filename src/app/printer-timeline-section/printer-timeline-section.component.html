@@ -1,5 +1,5 @@
 <div *ngIf="!this.showTimeline; else timelineBlock">
-    <app-printer-timeline-parameters (formSubmited)="onFormSubmited($event)"></app-printer-timeline-parameters>
+    <app-timeline-parameters (formSubmited)="onFormSubmited($event)"></app-timeline-parameters>
 </div>
 
 <ng-template #timelineBlock>

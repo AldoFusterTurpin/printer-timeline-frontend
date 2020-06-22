@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-printer-timeline-parameters',
-  templateUrl: './printer-timeline-parameters.component.html',
-  styleUrls: ['./printer-timeline-parameters.component.scss']
+  selector: 'app-timeline-parameters',
+  templateUrl: './timeline-parameters.component.html',
+  styleUrls: ['./timeline-parameters.component.scss']
 })
 export class PrinterTimelineParametersComponent implements OnInit, OnDestroy {
 
