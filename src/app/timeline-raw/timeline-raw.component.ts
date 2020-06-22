@@ -8,7 +8,7 @@ import { TimelineService } from '../timeline.service';
   styleUrls: ['./timeline-raw.component.scss']
 })
 export class TimelineRawComponent implements OnInit {
-  uploadedXmls: JSON;
+  uploadedXmls: JSON = null;
 
   constructor(private timelineService: TimelineService) { }
 

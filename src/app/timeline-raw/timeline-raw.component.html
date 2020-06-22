@@ -1,5 +1,7 @@
-<p>timeline-raw works!</p>
 
-<div>
-    <p></p>
-</div>
+<mat-spinner *ngIf="uploadedXmls === null; else elseBlock"></mat-spinner>
+<ng-template #elseBlock>
+    <div>
+        <p>We have the data</p>
+    </div>
+</ng-template>

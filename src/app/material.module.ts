@@ -20,6 +20,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -41,6 +42,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
       MatSelectModule,
       MatRadioModule,
       MatCheckboxModule,
+      MatProgressSpinnerModule,
    ],
    exports: [
       MatButtonModule,
@@ -58,6 +60,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
       MatSelectModule,
       MatRadioModule,
       MatCheckboxModule,
+      MatProgressSpinnerModule,
    ],
    providers: [
       MatDatepickerModule,

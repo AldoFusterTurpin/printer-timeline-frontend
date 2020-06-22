@@ -8,7 +8,7 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TimelineService {
-  private apiUrl = '0.0.0.0:8080';
+  private apiUrl = 'http://0.0.0.0:8080/api';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -16,8 +16,8 @@ export class TimelineService {
 
   getUploadedXmls(): Observable<any> {
     //const url = `${this.apiUrl}/api/open_xml?pn=${pn}&sn=${sn}&time_type=relative&offset_units=minutes&offset_value=15`;
-    const url = this.apiUrl + `/api/open_xml?pn=K4G10A&sn=SG58P1R001&time_type=relative&offset_units=minutes&offset_value=15`;
-    return this.http.get<any>('http://0.0.0.0:8080/api/open_xml?pn=K4G10A&sn=SG58P1R001&time_type=relative&offset_units=minutes&offset_value=5')
+    const url = `${this.apiUrl}/open_xml?pn=K4G10A&sn=SG58P1R001&time_type=relative&offset_units=minutes&offset_value=15`;
+    return this.http.get<any>(url)
       .pipe(
         tap(res => console.log(res)),
         catchError(this.handleError<any>('getUploadedXmls'))
