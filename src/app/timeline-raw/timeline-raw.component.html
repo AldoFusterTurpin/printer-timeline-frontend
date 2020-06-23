@@ -1,7 +1,10 @@
 
-<mat-spinner *ngIf="uploadedXmls === null; else elseBlock"></mat-spinner>
+<mat-spinner *ngIf="uploadedXmlsResponse === null; else elseBlock"></mat-spinner>
 <ng-template #elseBlock>
-    <div>
-        <p>We have the data</p>
-    </div>
+    <ul >
+        <li *ngFor="let xml of uploadedXmls; let i = index">
+            <p>Element {{i}}:</p>
+            <p>{{xml}}</p>
+        </li>
+      </ul>
 </ng-template>

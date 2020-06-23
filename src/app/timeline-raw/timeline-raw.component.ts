@@ -8,17 +8,16 @@ import { TimelineService } from '../timeline.service';
   styleUrls: ['./timeline-raw.component.scss']
 })
 export class TimelineRawComponent implements OnInit {
-  uploadedXmls: JSON = null;
+  uploadedXmlsResponse: JSON = null;
+  uploadedXmls:Array<JSON> = null; 
 
   constructor(private timelineService: TimelineService) { }
 
   ngOnInit(): void {
-    this.getUploadedXmls();
+    this.timelineService.data.subscribe(data => {
+      this.uploadedXmlsResponse = data;
+      this.uploadedXmls = data['Results'];
+      console.log(data);
+    })
   }
-
-  getUploadedXmls(): void {
-    this.timelineService.getUploadedXmls()
-      .subscribe(xmls => this.uploadedXmls = xmls);
-  }
-
 }

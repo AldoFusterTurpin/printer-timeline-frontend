@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
+import { TimelineService } from '../timeline.service';
+
 
 @Component({
   selector: 'app-timeline-parameters',
@@ -244,9 +246,16 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   public minDate: Date;
   public maxDate: Date;
 
+  getUploadedXmls(): void {
+    //this.absoluteTimeStartControl.value
+    this.timelineService.getUploadedXmls("K4G10A", "SG58P1R001", "1592926825", "1592927365")
+      .subscribe();
+  }
+
   public submitForm(): void {
     console.log(this.myForm.value);
     this.formSubmited.emit(true);
+    this.getUploadedXmls();
   }
 
   public getSelectedFiles() {
@@ -285,7 +294,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     return text.match(numbers);
   }
 
-  constructor(public fb: FormBuilder) {
+  constructor(public fb: FormBuilder, private timelineService: TimelineService) {
   }
 
   ngOnInit(): void {
