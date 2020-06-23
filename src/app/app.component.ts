@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IconService } from './icon.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'printer-timeline';
+
+  constructor(private iconService: IconService) {
+  }
+
+  ngOnInit() {
+    this.iconService.registerIcons();
+  }
 }
