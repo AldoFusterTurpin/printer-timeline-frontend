@@ -15,11 +15,9 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   formSubmited: EventEmitter<boolean> = new EventEmitter<boolean>();
   
   private timeUnitsTouchedBefore = false;
-
   private selectedFiles: String[] = [];
   private selectedRequests: String[] = [];
   private selectedOthers: String[] = [];
-
   private timeTypeSubscription;
   private relativeTimeValueSubscription;
   private relativeTimeUnitsSubscription;
@@ -29,32 +27,34 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     return this.fb.group({
       _PnControl: ['', [Validators.required]],
       _SnControl: ['', [Validators.required]],
-
       _filesControl: this.addFilesControls(),
       _requestsControl: this.addRequestsControls(),
       _othersControl: this.addOthersControls(),
-
       _typeOfDateControl: ['relative', [Validators.required]],
-
       _relativeTimeValueControl: ['', [Validators.required]],
       _relativeTimeUnitsControl: ['', [Validators.required]],
-
       _absoluteDateStartControl: [null, [Validators.required]],
       _absoluteTimeStartControl: [this.initialStartTime, [Validators.required]],
-
       _absoluteDateEndControl: [null, [Validators.required]],
       _absoluteTimeEndControl: [this.initialEndTime, [Validators.required]]
     })
   }
 
-  get relativeTimeValueControl() { return this.myForm.get('_relativeTimeValueControl'); }
-  get typeOfDateControl() { return this.myForm.get('_typeOfDateControl'); }
+  get pnControl() { return this.myForm.get('_PnControl'); }
+  get snControl() { return this.myForm.get('_SnControl'); }
+
   get filesControl() { return <FormArray>this.myForm.get('_filesControl'); }
   get requestsControl() { return <FormArray>this.myForm.get('_requestsControl'); }
   get othersControl() { return <FormArray>this.myForm.get('_othersControl'); }
+
+  get typeOfDateControl() { return this.myForm.get('_typeOfDateControl'); }
+
+  get relativeTimeValueControl() { return this.myForm.get('_relativeTimeValueControl'); }
   get relativeTimeUnitsControl() { return this.myForm.get('_relativeTimeUnitsControl'); }
+
   get absoluteDateStartControl() { return this.myForm.get('_absoluteDateStartControl'); }
   get absoluteTimeStartControl() { return this.myForm.get('_absoluteTimeStartControl'); }
+
   get absoluteDateEndControl() { return this.myForm.get('_absoluteDateEndControl'); }
   get absoluteTimeEndControl() { return this.myForm.get('_absoluteTimeEndControl'); }
 
@@ -188,17 +188,15 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   public readonly initialStartTime = '00:00';
   public readonly initialEndTime = '00:00';
 
-  public formIsValid = false;
-
   public files: String[] = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
   public requests: String[] = ['Get Configuration Profile', 'Get SQS Credentials'];
   public others: String[] = ['Printer Subscriptions'];
+  public relativeUnits = [{ realValue: 'minutes', viewValue: 'Minutes' }, { realValue: 'seconds', viewValue: 'Seconds' }];
 
   public relativeValueTooBig = false;
   public absoluteDatesDifferenceTooBig = false;
   public startTimePreviousThanEnd = true;
-
-  public relativeUnits = [{ realValue: 'minutes', viewValue: 'Minutes' }, { realValue: 'seconds', viewValue: 'Seconds' }];
+  public formIsValid = false;
 
   public minDate: Date = this.createMinDate();
   public maxDate: Date = new Date();
@@ -283,10 +281,47 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     this.formSubscription.unsubscribe();
   }
 
+  private getTimeRange() {
+    if (this.typeOfDateControl.value === 'absolute') {
+      return {
+        'start': this.absoluteDateStartControl.value,
+        'end': this.absoluteDateEndControl.value
+      }
+    }
+    
+    let start = new Date();
+    if (this.relativeTimeUnitsControl.value.realValue === 'minutes') {
+      start.setMinutes(start.getMinutes() - this.relativeTimeValueControl.value);
+    } else if (this.relativeTimeUnitsControl.value.realValue === 'seconds') {
+      start.setSeconds(start.getSeconds() - this.relativeTimeValueControl.value);
+    }
+    return {
+      'start': start,
+      'end': new Date()
+    }
+  }
+
   public getUploadedXmls(): void {
-    //this.absoluteTimeStartControl.value
-    this.timelineService.getUploadedXmls("K4G10A", "SG58P1R001", "1592926825", "1592927365")
+    let timeRange = this.getTimeRange();
+
+    const startEpoch = Math.round(timeRange.start.getTime() / 1000);  
+    const endEpoch = Math.round(timeRange.end.getTime() / 1000);
+
+    let pn = this.pnControl.value;
+    if (pn === 'any') {
+      pn = '';
+    }
+
+    let sn = this.snControl.value;
+    if (sn === 'any') {
+      sn = '';
+    }
+
+    this.timelineService.getUploadedXmls(pn, sn, startEpoch.toString(), endEpoch.toString())
       .subscribe();
+
+    /* this.timelineService.getUploadedXmls("K4G10A", "SG58P1R001", "1592926825", "1592927365")
+      .subscribe(); */
   }
 
   public submitForm(): void {
