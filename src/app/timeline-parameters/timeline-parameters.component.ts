@@ -307,18 +307,17 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     const startEpoch = Math.round(timeRange.start.getTime() / 1000);  
     const endEpoch = Math.round(timeRange.end.getTime() / 1000);
 
-    let pn = this.pnControl.value;
+    let pn = this.pnControl.value.toLowerCase();
     if (pn === 'any') {
       pn = '';
     }
 
-    let sn = this.snControl.value;
+    let sn = this.snControl.value.toLowerCase();
     if (sn === 'any') {
       sn = '';
     }
 
-    this.timelineService.getUploadedXmls(pn, sn, startEpoch.toString(), endEpoch.toString())
-      .subscribe();
+    this.timelineService.getUploadedXmls(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
 
     /* this.timelineService.getUploadedXmls("K4G10A", "SG58P1R001", "1592926825", "1592927365")
       .subscribe(); */
@@ -326,7 +325,12 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
   public submitForm(): void {
     console.log(this.myForm.value);
+
     this.formSubmited.emit(true);
+    
+    let timeRange = this.getTimeRange();
+    this.timelineService.setTimeRange(timeRange.start, timeRange.end).subscribe();
+
     this.getUploadedXmls();
   }
 }

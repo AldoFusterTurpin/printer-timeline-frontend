@@ -1,21 +1,24 @@
-<mat-spinner *ngIf="uploadedXmlsResponse === null; else elseBlock"></mat-spinner>
-<ng-template #elseBlock>
-    <!-- <ul >
-        <li *ngFor="let xml of uploadedXmls; let i = index">
-            <p>Element {{i}}:</p>
-            <p>{{xml}}</p>
-        </li>
-      </ul> -->
+<mat-spinner *ngIf="uploadedXmlsResponse === null; else dataReady"></mat-spinner>
+<ng-template #dataReady>
+    <div>
+       <p>Time range:</p>
+       <p>Start: {{start}}</p>
+       <p>End: {{end}}</p>
+    </div>
+    <div id="uploaded-xmls">
+        <p>Found {{uploadedXmls.length}} Uploaded XMLs:</p>
 
-    <ul>
-        <li *ngFor="let xml of uploadedXmls; let i = index">
-            <div>
-                
-                <button mat-icon-button color="primary">
-                    <mat-icon svgIcon="xml" matListIcon></mat-icon>
-                </button>
-                <p> {{xml[0]['Value']}} </p>
-            </div>
-        </li>
-    </ul>
+        <ul>
+            <li *ngFor="let xml of uploadedXmls; let i = index">
+                <div>
+
+                    <button mat-icon-button color="primary">
+                        <mat-icon svgIcon="xml" matListIcon></mat-icon>
+                    </button>
+                    <p> {{xml[0]['Value']}} </p>
+                </div>
+            </li>
+        </ul>
+
+    </div>
 </ng-template>
