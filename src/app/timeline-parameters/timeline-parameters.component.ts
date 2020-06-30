@@ -14,11 +14,11 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   @Output()
   formSubmited: EventEmitter<boolean> = new EventEmitter<boolean>();
   
-  private timeUnitsTouchedBefore: boolean;
+  private timeUnitsTouchedBefore = false;
 
-  private selectedFiles: String[];
-  private selectedRequests: String[];
-  private selectedOthers: String[];
+  private selectedFiles: String[] = [];
+  private selectedRequests: String[] = [];
+  private selectedOthers: String[] = [];
 
   private timeTypeSubscription;
   private relativeTimeValueSubscription;
@@ -109,58 +109,17 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createTimeTypeSubscription() {
-    this.timeTypeSubscription = this.typeOfDateControl.valueChanges.subscribe(val => {
-      if (val === 'absolute') {
-        this.relativeTimeValueControl.setValue('');
-        this.relativeTimeUnitsControl.setValue('');
-      }
-    });
-  }
-
-  private createRelativeTimeValueSubscription() {
-    this.relativeTimeValueSubscription = this.relativeTimeValueControl.valueChanges.subscribe(val => {
-      this.controlMaxValueOfRelativeTime(val);
-    });
-  }
-
-  private createRelativeTimeUnitsSubscription() {
-    this.relativeTimeUnitsSubscription = this.relativeTimeUnitsControl.valueChanges.subscribe(val => {
-      if (this.timeUnitsTouchedBefore) {
-        this.relativeTimeValueControl.setValue('');
-      } else {
-        this.timeUnitsTouchedBefore = true;
-      }
-
-      this.controlMaxValueOfRelativeTime(this.relativeTimeValueControl.value);
-    });
-  }
-
   private secondsDiff(start: Date, end: Date): number {
     let secondsDiff = (end.getTime() - start.getTime()) / 1000;
     return Math.abs(Math.round(secondsDiff));
   }
 
   private datesDifferenceIsOkay(start: Date, end: Date) {
-    let secondsDiff = this.secondsDiff(start, end);
-    return secondsDiff <= 3600;
+    return this.secondsDiff(start, end) <= 3600;
   }
 
   private controlFormIsValid() {
     this.formIsValid = this.printerInfoIsValid() && this.dataTypesAreValid() && this.timeIsValid();
-  }
-
-  private createFormSubscription() {
-    this.formSubscription = this.myForm.valueChanges.subscribe(val => {
-      this.controlFormIsValid();
-    });
-  }
-
-  private onChanges(): void {
-    this.createTimeTypeSubscription();
-    this.createRelativeTimeValueSubscription();
-    this.createRelativeTimeUnitsSubscription();
-    this.createFormSubscription();
   }
 
   private createMinDate() {
@@ -174,8 +133,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   private dataTypesAreValid(): boolean {
-    return this.filesControl.value.indexOf(true) != -1
-      || this.requestsControl.value.indexOf(true) != -1
+    return this.filesControl.value.indexOf(true) != -1 || this.requestsControl.value.indexOf(true) != -1 
       || this.othersControl.value.indexOf(true) != -1;
   }
 
@@ -192,7 +150,8 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
                                         parseInt(endTime.slice(3, 5), 0));
 
     this.startTimePreviousThanEnd = this.absoluteDateStartControl.value < this.absoluteDateEndControl.value;
-    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStartControl.value, this.absoluteDateEndControl.value);
+    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStartControl.value, 
+                                                                      this.absoluteDateEndControl.value);
   }
 
   private timeIsValid(): boolean {
@@ -203,7 +162,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
               && this.allCharsAreNumbers(this.relativeTimeValueControl.value);
     }
 
-    else if (this.typeOfDateControl.value === 'absolute') {
+    if (this.typeOfDateControl.value === 'absolute') {
       let startOk = !this.formControlhasError('_absoluteDateStartControl', 'required') 
                       && this.absoluteDateStartControl.value != null 
                       && !this.formControlhasError('_absoluteTimeStartControl', 'required') 
@@ -216,7 +175,6 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
                     && this.absoluteDateEndControl.value != null 
                     && !this.formControlhasError('_absoluteTimeEndControl', 'required') 
                     && this.absoluteTimeEndControl.value != '';
-
       if (!endOk) {
           return false;
       }
@@ -230,33 +188,23 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   public readonly initialStartTime = '00:00';
   public readonly initialEndTime = '00:00';
 
-  public myForm: FormGroup;
-  public formIsValid: boolean;
+  public formIsValid = false;
 
-  public files: Array<String>;
-  public requests: Array<String>;
-  public others: Array<String>;
+  public files: String[] = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
+  public requests: String[] = ['Get Configuration Profile', 'Get SQS Credentials'];
+  public others: String[] = ['Printer Subscriptions'];
 
-  public relativeValueTooBig: boolean;
-  public absoluteDatesDifferenceTooBig: boolean;
-  public startTimePreviousThanEnd: boolean;
+  public relativeValueTooBig = false;
+  public absoluteDatesDifferenceTooBig = false;
+  public startTimePreviousThanEnd = true;
 
-  public relativeUnits;
+  public relativeUnits = [{ realValue: 'minutes', viewValue: 'Minutes' }, { realValue: 'seconds', viewValue: 'Seconds' }];
 
-  public minDate: Date;
-  public maxDate: Date;
+  public minDate: Date = this.createMinDate();
+  public maxDate: Date = new Date();
 
-  getUploadedXmls(): void {
-    //this.absoluteTimeStartControl.value
-    this.timelineService.getUploadedXmls("K4G10A", "SG58P1R001", "1592926825", "1592927365")
-      .subscribe();
-  }
-
-  public submitForm(): void {
-    console.log(this.myForm.value);
-    this.formSubmited.emit(true);
-    this.getUploadedXmls();
-  }
+  //must be last thing to do. If not, variables with values not initialized can exist
+  public myForm: FormGroup = this.createForm();
 
   public getSelectedFiles() {
     this.selectedFiles = [];
@@ -297,26 +245,34 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   constructor(public fb: FormBuilder, private timelineService: TimelineService) {
   }
 
+  private onChanges(): void {
+    this.timeTypeSubscription = this.typeOfDateControl.valueChanges.subscribe(val => {
+      if (val === 'absolute') {
+        this.relativeTimeValueControl.setValue('');
+        this.relativeTimeUnitsControl.setValue('');
+      }
+    });
+
+    this.relativeTimeValueSubscription = this.relativeTimeValueControl.valueChanges.subscribe(val => {
+      this.controlMaxValueOfRelativeTime(val);
+    });
+
+    this.relativeTimeUnitsSubscription = this.relativeTimeUnitsControl.valueChanges.subscribe(val => {
+      if (this.timeUnitsTouchedBefore) {
+        this.relativeTimeValueControl.setValue('');
+      } else {
+        this.timeUnitsTouchedBefore = true;
+      }
+
+      this.controlMaxValueOfRelativeTime(this.relativeTimeValueControl.value);
+    });
+    
+    this.formSubscription = this.myForm.valueChanges.subscribe(val => {
+      this.controlFormIsValid();
+    });
+  }
+
   ngOnInit(): void {
-    this.formIsValid = this.relativeValueTooBig = this.timeUnitsTouchedBefore = this.absoluteDatesDifferenceTooBig = false;
-    this.startTimePreviousThanEnd = true;
-
-    this.minDate = this.createMinDate();
-    this.maxDate = new Date();
-
-    this.files = ['OpenXML', 'Cloud JSON', 'RTA (Real Time Alerts)', 'HB (Heart Beats)'];
-    this.selectedFiles = [];
-
-    this.requests = ['Get Configuration Profile', 'Get SQS Credentials'];
-    this.selectedRequests = [];
-
-    this.others = ['Printer Subscriptions'];
-    this.selectedOthers = [];
-
-    this.relativeUnits = [{ realValue: 'minutes', viewValue: 'Minutes' }, { realValue: 'seconds', viewValue: 'Seconds' }];
-
-    this.myForm = this.createForm();
-
     this.onChanges();
   }
 
@@ -325,5 +281,17 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     this.relativeTimeValueSubscription.unsubscribe();
     this.relativeTimeUnitsSubscription.unsubscribe();
     this.formSubscription.unsubscribe();
+  }
+
+  public getUploadedXmls(): void {
+    //this.absoluteTimeStartControl.value
+    this.timelineService.getUploadedXmls("K4G10A", "SG58P1R001", "1592926825", "1592927365")
+      .subscribe();
+  }
+
+  public submitForm(): void {
+    console.log(this.myForm.value);
+    this.formSubmited.emit(true);
+    this.getUploadedXmls();
   }
 }
