@@ -318,9 +318,6 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     }
 
     this.timelineService.getUploadedXmls(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
-
-    /* this.timelineService.getUploadedXmls("K4G10A", "SG58P1R001", "1592926825", "1592927365")
-      .subscribe(); */
   }
 
   public submitForm(): void {

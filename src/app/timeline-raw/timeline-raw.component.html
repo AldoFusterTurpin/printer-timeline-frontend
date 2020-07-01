@@ -1,24 +1,32 @@
-<mat-spinner *ngIf="uploadedXmlsResponse === null; else dataReady"></mat-spinner>
+<mat-spinner style="margin:0 auto;" *ngIf="uploadedXmlsResponse === null; else dataReady"></mat-spinner>
 <ng-template #dataReady>
     <div>
-       <p>Time range:</p>
-       <p>Start: {{start}}</p>
-       <p>End: {{end}}</p>
+        <p>Time range: {{start}} - {{end}}</p>
     </div>
-    <div id="uploaded-xmls">
-        <p>Found {{uploadedXmls.length}} Uploaded XMLs:</p>
-
-        <ul>
-            <li *ngFor="let xml of uploadedXmls; let i = index">
-                <div>
-
-                    <button mat-icon-button color="primary">
-                        <mat-icon svgIcon="xml" matListIcon></mat-icon>
-                    </button>
-                    <p> {{xml[0]['Value']}} </p>
-                </div>
-            </li>
-        </ul>
-
+    <div>
+        <p>Found {{uploadedXmls.length}} Uploaded OpenXMLs:</p>
+        <div id="uploaded-xmls-list">
+            <div class="cards-wrapper">
+                <mat-card class="example-card" *ngFor="let xml of uploadedXmls; let i = index">
+                    <mat-card-header>
+                        <div mat-card-avatar class="uploaded-xml-image"></div>
+                        <mat-card-title>{{uploadedXmls[i][0]['Value']}}</mat-card-title>
+                        <mat-card-subtitle>#{{i}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p><b>PN</b> {{uploadedXmls[i][1]['Value']}}</p>
+                        <p><b>SN</b> {{uploadedXmls[i][2]['Value']}}</p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Preview file">
+                            <mat-icon class="icon-display">preview</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file">
+                            <mat-icon class="icon-display">cloud_download</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
     </div>
 </ng-template>

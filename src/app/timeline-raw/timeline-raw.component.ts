@@ -23,9 +23,8 @@ export class TimelineRawComponent implements OnInit {
     })
 
     this.timelineService.timeRangeData.subscribe(data => {
-      console.log(data)      
-      this.start = data.start;
-      this.end = data.end;
+      this.start = data.startTime;
+      this.end = data.endTime;
     })
   }
 }

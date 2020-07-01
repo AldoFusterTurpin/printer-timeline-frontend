@@ -1,16 +1,18 @@
-<mat-toolbar>
-    <img id="hp_logo" width="40" height="40" alt="Hp Logo" src="../assets/images/hp_logo.png" />
-    <span id="web-title"> Cloud Connector </span>
+<div class="tool-bar-wrapper">
+    <mat-toolbar>
+        <img id="hp_logo" width="40" height="40" alt="Hp Logo" src="../assets/images/hp_logo.png" />
+        <span id="web-title"> Cloud Connector </span>
 
-    <div id="toolbar-buttons-container">
-        <button mat-button class="toolbar-button">
-            <mat-icon>print</mat-icon> Printers Info
-        </button>
-        <button mat-button class="toolbar-button" [routerLink]="['/timeline-section']">
-            <mat-icon>timeline</mat-icon> Printer Timeline
-        </button>
-    </div>
-    <span class="example-spacer"></span>
-</mat-toolbar>
+        <div id="toolbar-buttons-container">
+            <button mat-button class="toolbar-button">
+                <mat-icon>print</mat-icon> Printers Info
+            </button>
+            <button mat-button class="toolbar-button" [routerLink]="['/timeline-section']">
+                <mat-icon>timeline</mat-icon> Printer Timeline
+            </button>
+        </div>
+        <span class="example-spacer"></span>
+    </mat-toolbar>
 
-<hr class="solid">
+    <hr class="solid">
+</div>

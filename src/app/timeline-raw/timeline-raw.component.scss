@@ -1,0 +1,28 @@
+.uploaded-xml-image {
+  background-image: url('../../assets/svg/icons/xml.svg');
+  background-size: cover;
+}
+
+.example-card {
+    width: 200px;
+    max-width: 200px;
+    box-sizing: border-box;
+    margin: 10px;
+}
+
+.cards-wrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: left;
+    align-content: left;
+    overflow: auto;
+}
+
+.mat-card-title {
+    font-size: 15px;
+}
+
+.icon-display {
+    transform: scale(1.1);
+ }
