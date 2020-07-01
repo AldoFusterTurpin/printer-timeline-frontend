@@ -1,3 +1,4 @@
+//TODO: add pagination to table
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { TimelineService } from '../timeline.service';
@@ -11,17 +12,15 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./timeline-raw.component.scss']
 })
 export class TimelineRawComponent implements OnInit {
-  public uploadedXmlTableData = []; //[{ 'pn!sn': '1', 'count': 2 }, { 'pn!sn': '2', 'count': 2 }];
+  public uploadedXmlTableData = [];
 
-  //to delete
-  displayedColumns: string[] = ['pn!sn', 'count'];
+  displayedColumns: string[] = ['pn!sn', 'count', '%'];
   dataSource = new MatTableDataSource(this.uploadedXmlTableData);
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  ////////////////////////////////////
 
   public start: any;
   public end: any;
@@ -51,6 +50,7 @@ export class TimelineRawComponent implements OnInit {
         printerCountMap.set(key, 1);
       }
     }
+
     //sort the map by value
     printerCountMap[Symbol.iterator] = function* () {
       yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
@@ -59,8 +59,9 @@ export class TimelineRawComponent implements OnInit {
     for (let [key, value] of printerCountMap) {
       let row = {
         'pn!sn': key,
-        'count': value
-      };
+        'count': value,
+        '%': ((value / this.uploadedXmls.length) * 100).toFixed(2)
+      };  
 
       this.uploadedXmlTableData.push(row);
     }
