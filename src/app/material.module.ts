@@ -24,6 +24,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatTableModule} from '@angular/material/table';
 
 
 
@@ -49,6 +50,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
       MatCardModule,
       MatTooltipModule,
       MatProgressBarModule,
+      MatTableModule,
    ],
    exports: [
       MatButtonModule,
@@ -69,7 +71,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
       MatProgressSpinnerModule,
       MatCardModule,
       MatTooltipModule,
-      MatProgressBarModule
+      MatProgressBarModule,
+      MatTableModule
    ],
    providers: [
       MatDatepickerModule,

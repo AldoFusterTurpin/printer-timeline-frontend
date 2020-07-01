@@ -324,10 +324,12 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     console.log(this.myForm.value);
 
     this.formSubmited.emit(true);
-    
+
     let timeRange = this.getTimeRange();
     this.timelineService.setTimeRange(timeRange.start, timeRange.end).subscribe();
 
-    this.getUploadedXmls();
+    if (this.filesControl.value[0]) {
+      this.getUploadedXmls();
+    }
   }
 }

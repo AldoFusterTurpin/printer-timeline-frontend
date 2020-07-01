@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 export class TimelineService {
   private apiUrl = 'http://0.0.0.0:8080/api';
 
-  private timeRangeSource = new BehaviorSubject<any>(0);
+  private timeRangeSource = new Subject<any>(); //should use ReplaySubject(1) because subscription after emitting value
   timeRangeData = this.timeRangeSource.asObservable();
 
   private dataSource = new Subject<JSON>();
@@ -27,11 +27,12 @@ export class TimelineService {
       'end': end
     };
 
-    console.log("Just before 'of': ");
+    console.log("Just before 'of'");
 
     return of(timeRange)
       .pipe(
         tap((res) => { 
+          console.log(res);
           this.timeRangeSource.next(res); 
         }),
         catchError(this.handleError<any>('setTimeRange'))

@@ -1,6 +1,6 @@
 .uploaded-xml-image {
-  background-image: url('../../assets/svg/icons/xml.svg');
-  background-size: cover;
+    background-image: url("../../assets/svg/icons/xml.svg");
+    background-size: cover;
 }
 
 .example-card {
@@ -12,7 +12,7 @@
 
 .cards-wrapper {
     display: flex;
-    flex: 1;
+    flex: auto;
     flex-direction: row;
     justify-content: left;
     align-content: left;
@@ -25,4 +25,22 @@
 
 .icon-display {
     transform: scale(1.1);
- }
+}
+
+#timelines-wrapper {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    justify-content: left;
+    align-content: left;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}

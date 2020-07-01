@@ -3,30 +3,65 @@
     <div>
         <p>Time range: {{start}} - {{end}}</p>
     </div>
-    <div>
-        <p>Found {{uploadedXmls.length}} Uploaded OpenXMLs:</p>
-        <div id="uploaded-xmls-list">
-            <div class="cards-wrapper">
-                <mat-card class="example-card" *ngFor="let xml of uploadedXmls; let i = index">
-                    <mat-card-header>
-                        <div mat-card-avatar class="uploaded-xml-image"></div>
-                        <mat-card-title>{{uploadedXmls[i][0]['Value']}}</mat-card-title>
-                        <mat-card-subtitle>#{{i}}</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <p><b>PN</b> {{uploadedXmls[i][1]['Value']}}</p>
-                        <p><b>SN</b> {{uploadedXmls[i][2]['Value']}}</p>
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Preview file">
-                            <mat-icon class="icon-display">preview</mat-icon>
-                        </button>
-                        <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file">
-                            <mat-icon class="icon-display">cloud_download</mat-icon>
-                        </button>
-                    </mat-card-actions>
-                </mat-card>
+    <div id="timelines-wrapper">
+        <div id="uploaded-xmls">
+            <p>Found {{uploadedXmls.length}} Uploaded OpenXMLs:</p>
+
+            <mat-form-field>
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+              </mat-form-field>
+              
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+              
+                <ng-container matColumnDef="pn!sn">
+                  <th mat-header-cell *matHeaderCellDef> Pn!Sn</th>
+                  <td mat-cell *matCellDef="let element"> {{element['pn!sn']}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="count">
+                  <th mat-header-cell *matHeaderCellDef> Count </th>
+                  <td mat-cell *matCellDef="let element"> {{element['count']}} </td>
+                </ng-container>
+              
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr>
+              </table>
+
+            <div id="uploaded-xmls-list">
+                <div class="cards-wrapper">
+                    <mat-card class="example-card" *ngFor="let xml of uploadedXmls; let i = index">
+                        <mat-card-header>
+                            <div mat-card-avatar class="uploaded-xml-image"></div>
+                            <mat-card-title>{{uploadedXmls[i][0]['Value']}}</mat-card-title>
+                            <mat-card-subtitle>#{{i}}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p><b>PN</b> {{uploadedXmls[i][1]['Value']}}</p>
+                            <p><b>SN</b> {{uploadedXmls[i][2]['Value']}}</p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-icon-button color="primary" aria-label="Download icon"
+                                matTooltip="Preview file">
+                                <mat-icon class="icon-display">preview</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary" aria-label="Download icon"
+                                matTooltip="Download file">
+                                <mat-icon class="icon-display">cloud_download</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
             </div>
+        </div>
+        <div id="cloud-jsons">
+        
         </div>
     </div>
 </ng-template>
