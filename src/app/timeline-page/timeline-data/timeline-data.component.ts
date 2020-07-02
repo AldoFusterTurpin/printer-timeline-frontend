@@ -1,14 +1,14 @@
 import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
-import { TimelineService } from '../timeline.service';
+import { TimelineService } from '../../timeline.service';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-timeline-raw',
-  templateUrl: './timeline-raw.component.html',
-  styleUrls: ['./timeline-raw.component.scss']
+  selector: 'app-timeline-data',
+  templateUrl: './timeline-data.component.html',
+  styleUrls: ['./timeline-data.component.scss']
 })
 export class TimelineRawComponent implements OnInit, AfterViewInit {   
   public uploadedXmlTableData = [];

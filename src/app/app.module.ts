@@ -13,10 +13,11 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 //external file with all the components of Angular material used in the app
 import { AngularMaterialModule } from './material.module';
 
-import { TimelineParametersComponent } from './timeline-parameters/timeline-parameters.component';
+import { TimelineParametersComponent } from './timeline-page/timeline-parameters/timeline-parameters.component';
+
 import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.component';
-import { TimelineSectionComponent } from './timeline-section/timeline-section.component';
-import { TimelineRawComponent } from './timeline-raw/timeline-raw.component';
+import { TimelineSectionComponent } from './timeline-page//timeline-section/timeline-section.component';
+import { TimelineRawComponent } from './timeline-page/timeline-data/timeline-data.component';
 
 
 @NgModule({

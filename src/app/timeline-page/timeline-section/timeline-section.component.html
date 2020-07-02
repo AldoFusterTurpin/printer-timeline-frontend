@@ -3,9 +3,9 @@
 </div>
 
 <ng-template #timelineBlock>
-    <button mat-raised-button color="primary" (click)="this.hideTimeline()">
+    <button id="back-button" mat-raised-button color="primary" (click)="this.hideTimeline()">
         <mat-icon>arrow_left</mat-icon> Back
     </button>
     
-    <app-timeline-raw></app-timeline-raw>
+    <app-timeline-data></app-timeline-data>
 </ng-template>

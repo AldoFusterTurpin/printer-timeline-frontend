@@ -3,7 +3,7 @@
     <div>
         <mat-sidenav-container>
             <mat-sidenav #sidenav mode="side" opened="false" position="end">
-                <hr class="solid">
+                <button id="close-sidenav-button" mat-raised-button color="accent" (click)="sidenav.close()">Close</button>
                 <h4>Details</h4>
                 <hr class="solid">
                 <p>xml example goes here</p>
@@ -88,7 +88,7 @@
                                     </div>
 
                                     <mat-action-row>
-                                        <button mat-button color="warn"
+                                        <button mat-button color="accent"
                                             (click)="uploadedXmlPanel.close()">Close</button>
                                     </mat-action-row>
                                 </mat-expansion-panel>
@@ -112,7 +112,7 @@
                                                 matTooltip="Preview file">
                                                 <mat-icon class="icon-display">preview</mat-icon>
                                             </button>
-                                            <button mat-icon-button color="accent" aria-label="Download icon"
+                                            <button mat-icon-button color="primary" aria-label="Download icon"
                                                 matTooltip="Download file">
                                                 <mat-icon class="icon-display">cloud_download</mat-icon>
                                             </button>

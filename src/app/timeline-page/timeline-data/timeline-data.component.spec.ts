@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimelineRawComponent } from './timeline-raw.component';
+import { TimelineRawComponent } from './timeline-data.component';
 
 describe('TimelineRawComponent', () => {
   let component: TimelineRawComponent;

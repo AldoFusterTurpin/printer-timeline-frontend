@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TimelineSectionComponent } from './timeline-section/timeline-section.component';
+import { TimelineSectionComponent } from './timeline-page/timeline-section/timeline-section.component';
+//before: '../timeline-section/timeline-section.component';
 
 
 const routes: Routes = [

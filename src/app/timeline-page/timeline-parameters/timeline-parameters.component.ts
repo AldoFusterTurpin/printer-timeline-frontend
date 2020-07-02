@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
-import { TimelineService } from '../timeline.service';
+import { TimelineService } from '../../timeline.service';
 
 
 @Component({

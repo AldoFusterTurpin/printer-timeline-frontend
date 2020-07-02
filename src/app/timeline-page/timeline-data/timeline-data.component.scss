@@ -1,5 +1,5 @@
 .uploaded-xml-image {
-    background-image: url("../../assets/svg/icons/xml.svg");
+    background-image: url("../../../assets/svg/icons/xml.svg");
     background-size: cover;
 }
 
@@ -68,4 +68,8 @@ h4 {
 
 .mat-column-select {
     overflow: initial;
-  }
+}
+
+#close-sidenav-button {
+    width: 100%;
+}
