@@ -1,108 +1,132 @@
 <mat-spinner style="margin:0 auto;" *ngIf="uploadedXmlsResponse === null; else dataReady"></mat-spinner>
 <ng-template #dataReady>
-    <mat-sidenav-container>
-        <mat-sidenav #sidenav mode="side" opened="true" position="end">
-            <hr class="solid">
-            <h4>Details</h4>
-            <hr class="solid">
-            <p>xml example goes here</p>
-        </mat-sidenav>
+    <div>
+        <mat-sidenav-container>
+            <mat-sidenav #sidenav mode="side" opened="false" position="end">
+                <hr class="solid">
+                <h4>Details</h4>
+                <hr class="solid">
+                <p>xml example goes here</p>
+            </mat-sidenav>
 
-        <mat-sidenav-content>
-            <button mat-raised-button (click)="sidenav.toggle()" color="accent">Close</button>
-            <div id="timeline-section">
-                <div id="time-range-info">
-                    <h4>Time range</h4>
-                    <p><b>From</b> {{start}} </p>
-                    <p><b>To</b> {{end}}</p>
-                </div>
-                <div id="timelines-wrapper">
-                    <div id="uploaded-xmls">
-                        <p>Found {{uploadedXmls.length}} Uploaded OpenXMLs:</p>
+            <mat-sidenav-content>
+                <button mat-raised-button (click)="sidenav.toggle()" color="accent">Close</button>
+                <div id="timeline-section">
+                    <div id="time-range-info">
+                        <h4>Time range</h4>
+                        <p><b>From</b> {{start}} </p>
+                        <p><b>To</b> {{end}}</p>
+                    </div>
+                    <div id="timelines-wrapper">
+                        <div id="uploaded-xmls">
+                            <p>Found {{uploadedXmls.length}} Uploaded OpenXMLs:</p>
 
-                        <mat-form-field>
-                            <mat-label>Filter</mat-label>
-                            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. K4G10A!SG58P1R001" #input>
-                        </mat-form-field>
+                            <mat-accordion>
+                                <mat-expansion-panel #uploadedXmlPanel open="false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Uploaded OpenXmls summary table
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            Open panel to see table
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
 
-                        <div class="mat-elevation-z8">
-                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-                                
-                                <ng-container matColumnDef="select">
-                                    <th mat-header-cell *matHeaderCellDef>
-                                      <mat-checkbox (change)="$event ? masterToggle() : null"
-                                                    [checked]="selection.hasValue() && isAllSelected()"
-                                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                                    [aria-label]="checkboxLabel()">
-                                      </mat-checkbox>
-                                    </th>
-                                    <td mat-cell *matCellDef="let row">
-                                      <mat-checkbox (click)="$event.stopPropagation()"
-                                                    (change)="$event ? selection.toggle(row) : null"
-                                                    [checked]="selection.isSelected(row)"
-                                                    [aria-label]="checkboxLabel(row)">
-                                      </mat-checkbox>
-                                    </td>
-                                  </ng-container>
+                                    <mat-form-field>
+                                        <mat-label>Filter table rows</mat-label>
+                                        <input matInput (keyup)="applyFilter($event)"
+                                            placeholder="Ex. K4G10A!SG58P1R001" #input>
+                                    </mat-form-field>
 
-                                <ng-container matColumnDef="pn!sn">
-                                    <th mat-header-cell *matHeaderCellDef> Pn!Sn</th>
-                                    <td mat-cell *matCellDef="let element"> {{element['pn!sn']}} </td>
-                                </ng-container>
+                                    <div class="mat-elevation-z8">
+                                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-                                <ng-container matColumnDef="count">
-                                    <th mat-header-cell *matHeaderCellDef> Count </th>
-                                    <td mat-cell *matCellDef="let element"> {{element['count']}} </td>
-                                </ng-container>
+                                            <ng-container matColumnDef="select">
+                                                <th mat-header-cell *matHeaderCellDef>
+                                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                        [checked]="selection.hasValue() && isAllSelected()"
+                                                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                                        [aria-label]="checkboxLabel()">
+                                                    </mat-checkbox>
+                                                </th>
+                                                <td mat-cell *matCellDef="let row">
+                                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                                        (change)="$event ? selection.toggle(row) : null"
+                                                        [checked]="selection.isSelected(row)"
+                                                        [aria-label]="checkboxLabel(row)">
+                                                    </mat-checkbox>
+                                                </td>
+                                            </ng-container>
 
-                                <ng-container matColumnDef="%">
-                                    <th mat-header-cell *matHeaderCellDef> % </th>
-                                    <td mat-cell *matCellDef="let element"> {{element['%']}} </td>
-                                </ng-container>
+                                            <ng-container matColumnDef="pn!sn">
+                                                <th mat-header-cell *matHeaderCellDef> Pn!Sn</th>
+                                                <td mat-cell *matCellDef="let element"> {{element['pn!sn']}} </td>
+                                            </ng-container>
 
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                            <ng-container matColumnDef="count">
+                                                <th mat-header-cell *matHeaderCellDef> Count </th>
+                                                <td mat-cell *matCellDef="let element"> {{element['count']}} </td>
+                                            </ng-container>
 
-                                <tr class="mat-row" *matNoDataRow>
-                                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                                </tr>
-                            </table>
+                                            <ng-container matColumnDef="%">
+                                                <th mat-header-cell *matHeaderCellDef> % </th>
+                                                <td mat-cell *matCellDef="let element"> {{element['%']}} </td>
+                                            </ng-container>
 
-                            <mat-paginator [length]="uploadedXmlTableData.length" [pageSize]="20"
-                                [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-                        </div>
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-                        <div id="uploaded-xmls-list">
-                            <div class="cards-wrapper">
-                                <mat-card class="example-card" *ngFor="let xml of uploadedXmls; let i = index">
-                                    <mat-card-header>
-                                        <div mat-card-avatar class="uploaded-xml-image"></div>
-                                        <mat-card-title>{{uploadedXmls[i][0]['Value']}}</mat-card-title>
-                                        <mat-card-subtitle>#{{i}}</mat-card-subtitle>
-                                    </mat-card-header>
-                                    <mat-card-content>
-                                        <p><b>PN</b> {{uploadedXmls[i][1]['Value']}}</p>
-                                        <p><b>SN</b> {{uploadedXmls[i][2]['Value']}}</p>
-                                    </mat-card-content>
-                                    <mat-card-actions>
-                                        <button mat-icon-button color="primary" aria-label="Download icon"
-                                            matTooltip="Preview file">
-                                            <mat-icon class="icon-display">preview</mat-icon>
-                                        </button>
-                                        <button mat-icon-button color="primary" aria-label="Download icon"
-                                            matTooltip="Download file">
-                                            <mat-icon class="icon-display">cloud_download</mat-icon>
-                                        </button>
-                                    </mat-card-actions>
-                                </mat-card>
+                                            <tr class="mat-row" *matNoDataRow>
+                                                <td class="mat-cell" colspan="4">No data matching the filter
+                                                    "{{input.value}}"
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <mat-paginator [length]="uploadedXmlTableData.length" [pageSize]="20"
+                                            [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                                    </div>
+
+                                    <mat-action-row>
+                                        <button mat-button color="warn"
+                                            (click)="uploadedXmlPanel.close()">Close</button>
+                                    </mat-action-row>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+
+                            <div id="uploaded-xmls-list">
+                                <div class="cards-wrapper">
+                                    <mat-card class="example-card" *ngFor="let xml of uploadedXmls; let i = index">
+                                        <!-- <mat-card class="example-card" *ngFor="let xml of this.selection.selected; let i = index"> -->
+                                        <mat-card-header>
+                                            <div mat-card-avatar class="uploaded-xml-image"></div>
+                                            <mat-card-title>{{uploadedXmls[i][0]['Value']}}</mat-card-title>
+                                            <mat-card-subtitle>#{{i}}</mat-card-subtitle>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <p><b>PN</b> {{uploadedXmls[i][1]['Value']}}</p>
+                                            <p><b>SN</b> {{uploadedXmls[i][2]['Value']}}</p>
+                                        </mat-card-content>
+                                        <mat-card-actions>
+                                            <button mat-icon-button color="primary" aria-label="Download icon"
+                                                matTooltip="Preview file">
+                                                <mat-icon class="icon-display">preview</mat-icon>
+                                            </button>
+                                            <button mat-icon-button color="primary" aria-label="Download icon"
+                                                matTooltip="Download file">
+                                                <mat-icon class="icon-display">cloud_download</mat-icon>
+                                            </button>
+                                        </mat-card-actions>
+                                    </mat-card>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="cloud-jsons">
-
+                        
+                        <div id="cloud-jsons">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+    </div>
 </ng-template>

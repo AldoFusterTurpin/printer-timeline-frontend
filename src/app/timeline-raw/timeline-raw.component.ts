@@ -13,6 +13,8 @@ import { MatTableDataSource } from '@angular/material/table';
 export class TimelineRawComponent implements OnInit, AfterViewInit {   
   public uploadedXmlTableData = [];
 
+  public selection = new SelectionModel<any>(true, []);
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -35,11 +37,10 @@ export class TimelineRawComponent implements OnInit, AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
-  public selection = new SelectionModel<any>(true, []);
   public displayedColumns: string[] = ['select', 'pn!sn', 'count', '%'];
   public dataSource;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -51,12 +52,46 @@ export class TimelineRawComponent implements OnInit, AfterViewInit {
 
   public uploadedXmlsResponse: JSON = null;
   public uploadedXmls: JSON[] = null;
+  public selectedUploadedXmls = null;
   public resultsLength = 0;
 
   private uploadedXmlSubscription: Subscription;
   private timeSubscription: Subscription;
 
   constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+    this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(data => {
+      this.uploadedXmlsResponse = data;
+      this.uploadedXmls = data['Results'];
+      this.selectedUploadedXmls = this.uploadedXmls;
+      this.createUploadedXmlTableData();
+
+      this.dataSource = new MatTableDataSource(this.uploadedXmlTableData);
+      this.dataSource.paginator = this.paginator;
+
+      //select all elements of table
+      this.dataSource.data.forEach(row => this.selection.select(row));
+    })
+
+    this.timeSubscription = this.timelineService.timeRangeData.subscribe(
+      (data: any) => {
+      this.start = data.start;
+      this.end = data.end;
+      this.changeDetector.detectChanges();
+    })
+  }
+
+  ngAfterViewInit(): void {
+    /*this.dataSource = new MatTableDataSource(this.uploadedXmlTableData);
+    this.dataSource.paginator = this.paginator;
+    this.changeDetector.detectChanges(); */
+  }
+
+  ngOnDestroy(): void {
+    this.uploadedXmlSubscription.unsubscribe();
+    this.timeSubscription.unsubscribe();
+  }
 
   private createUploadedXmlTableData() {
     //key: pn!sn
@@ -89,30 +124,8 @@ export class TimelineRawComponent implements OnInit, AfterViewInit {
     this.resultsLength = this.uploadedXmlTableData.length;
   }
 
-  ngOnInit(): void {
-    this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(data => {
-      this.uploadedXmlsResponse = data;
-      this.uploadedXmls = data['Results'];
-      this.createUploadedXmlTableData();
-      this.dataSource.paginator = this.paginator;
-    })
-
-    this.timeSubscription = this.timelineService.timeRangeData.subscribe(
-      (data: any) => {
-      this.start = data.start;
-      this.end = data.end;
-      this.changeDetector.detectChanges();
-    })
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource = new MatTableDataSource(this.uploadedXmlTableData);
-    this.dataSource.paginator = this.paginator;
-    this.changeDetector.detectChanges(); 
-  }
-
-  ngOnDestroy(): void {
-    this.uploadedXmlSubscription.unsubscribe();
-    this.timeSubscription.unsubscribe();
+  public shouldAppear(row: any) {
+    console.log(row);
+    return true;
   }
 }
