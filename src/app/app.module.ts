@@ -17,7 +17,7 @@ import { TimelineParametersComponent } from './timeline-page/timeline-parameters
 
 import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.component';
 import { TimelineSectionComponent } from './timeline-page//timeline-section/timeline-section.component';
-import { TimelineRawComponent } from './timeline-page/timeline-data/timeline-data.component';
+import { TimelineDataComponent } from './timeline-page/timeline-data/timeline-data.component';
 
 
 @NgModule({
@@ -27,7 +27,7 @@ import { TimelineRawComponent } from './timeline-page/timeline-data/timeline-dat
     TimelineParametersComponent,
     DataTypesFilterComponent,
     TimelineSectionComponent,
-    TimelineRawComponent,
+    TimelineDataComponent,
   ],
   imports: [
     BrowserModule,

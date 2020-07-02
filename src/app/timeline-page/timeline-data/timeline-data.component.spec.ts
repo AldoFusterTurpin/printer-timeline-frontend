@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimelineRawComponent } from './timeline-data.component';
+import { TimelineDataComponent } from './timeline-data.component';
 
-describe('TimelineRawComponent', () => {
-  let component: TimelineRawComponent;
-  let fixture: ComponentFixture<TimelineRawComponent>;
+describe('TimelineDataComponent', () => {
+  let component: TimelineDataComponent;
+  let fixture: ComponentFixture<TimelineDataComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimelineRawComponent ]
+      declarations: [ TimelineDataComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimelineRawComponent);
+    fixture = TestBed.createComponent(TimelineDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

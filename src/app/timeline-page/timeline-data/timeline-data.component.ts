@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './timeline-data.component.html',
   styleUrls: ['./timeline-data.component.scss']
 })
-export class TimelineRawComponent implements OnInit, AfterViewInit {   
+export class TimelineDataComponent implements OnInit, AfterViewInit {   
   public uploadedXmlTableData = [];
 
   public selection = new SelectionModel<any>(true, []);
