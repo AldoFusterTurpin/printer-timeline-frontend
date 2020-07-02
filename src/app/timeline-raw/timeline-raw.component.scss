@@ -44,3 +44,28 @@ table {
     font-size: 14px;
     width: 100%;
 }
+
+#time-range-info {
+    align-self: center;
+    text-align: center;
+    box-sizing: content-box;
+    border: solid rgb(19, 143, 222);
+    border-style: solid;
+    border-width: 3px;
+    display: inline-block;
+    padding: 5px;
+}
+
+#timeline-section{
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+h4 {
+    text-align: center;
+}
+
+.mat-column-select {
+    overflow: initial;
+  }

@@ -26,6 +26,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 
 
@@ -53,6 +54,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
       MatProgressBarModule,
       MatTableModule,
       MatPaginatorModule,
+      MatSidenavModule,
    ],
    exports: [
       MatButtonModule,
@@ -75,7 +77,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
       MatTooltipModule,
       MatProgressBarModule,
       MatTableModule,
-      MatPaginatorModule
+      MatPaginatorModule,
+      MatSidenavModule
    ],
    providers: [
       MatDatepickerModule,

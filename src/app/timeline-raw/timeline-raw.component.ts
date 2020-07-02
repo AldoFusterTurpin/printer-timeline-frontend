@@ -1,4 +1,5 @@
 import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import { TimelineService } from '../timeline.service';
 import { Subscription } from 'rxjs';
@@ -9,10 +10,33 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './timeline-raw.component.html',
   styleUrls: ['./timeline-raw.component.scss']
 })
-export class TimelineRawComponent implements OnInit, AfterViewInit { 
+export class TimelineRawComponent implements OnInit, AfterViewInit {   
   public uploadedXmlTableData = [];
 
-  public displayedColumns: string[] = ['pn!sn', 'count', '%'];
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  public selection = new SelectionModel<any>(true, []);
+  public displayedColumns: string[] = ['select', 'pn!sn', 'count', '%'];
   public dataSource;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -75,21 +99,16 @@ export class TimelineRawComponent implements OnInit, AfterViewInit {
 
     this.timeSubscription = this.timelineService.timeRangeData.subscribe(
       (data: any) => {
-      //console.log("Time range received in timeline raw");
-      console.log(data);
       this.start = data.start;
       this.end = data.end;
-      console.log(this.start);
-      console.log(this.end);
       this.changeDetector.detectChanges();
     })
   }
 
   ngAfterViewInit(): void {
     this.dataSource = new MatTableDataSource(this.uploadedXmlTableData);
-    this.changeDetector.detectChanges();
-
-    this.dataSource.paginator = this.paginator; 
+    this.dataSource.paginator = this.paginator;
+    this.changeDetector.detectChanges(); 
   }
 
   ngOnDestroy(): void {
