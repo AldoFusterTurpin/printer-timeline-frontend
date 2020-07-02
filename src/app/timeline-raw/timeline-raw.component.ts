@@ -1,41 +1,40 @@
-//TODO: add pagination to table
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-
+import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
 import { TimelineService } from '../timeline.service';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-
 
 @Component({
   selector: 'app-timeline-raw',
   templateUrl: './timeline-raw.component.html',
   styleUrls: ['./timeline-raw.component.scss']
 })
-export class TimelineRawComponent implements OnInit {
+export class TimelineRawComponent implements OnInit, AfterViewInit { 
   public uploadedXmlTableData = [];
 
-  displayedColumns: string[] = ['pn!sn', 'count', '%'];
-  dataSource = new MatTableDataSource(this.uploadedXmlTableData);
+  public displayedColumns: string[] = ['pn!sn', 'count', '%'];
+  public dataSource;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  public start: any;
-  public end: any;
+  public start: Date;
+  public end: Date;
 
   public uploadedXmlsResponse: JSON = null;
   public uploadedXmls: JSON[] = null;
+  public resultsLength = 0;
 
   private uploadedXmlSubscription: Subscription;
   private timeSubscription: Subscription;
 
-  constructor(private timelineService: TimelineService,
-    private changeDetector: ChangeDetectorRef) { }
+  constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
 
   private createUploadedXmlTableData() {
-
     //key: pn!sn
     //value: number of uploaded XMLs by that printer in the selected time range
     let printerCountMap = new Map();
@@ -50,12 +49,10 @@ export class TimelineRawComponent implements OnInit {
         printerCountMap.set(key, 1);
       }
     }
-
     //sort the map by value
     printerCountMap[Symbol.iterator] = function* () {
       yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
     }
-
     for (let [key, value] of printerCountMap) {
       let row = {
         'pn!sn': key,
@@ -65,29 +62,34 @@ export class TimelineRawComponent implements OnInit {
 
       this.uploadedXmlTableData.push(row);
     }
-    console.log(this.uploadedXmlTableData);
+    this.resultsLength = this.uploadedXmlTableData.length;
   }
 
   ngOnInit(): void {
-    this.uploadedXmlsResponse = null;
-    this.uploadedXmls = null;
-
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(data => {
       this.uploadedXmlsResponse = data;
       this.uploadedXmls = data['Results'];
-
       this.createUploadedXmlTableData();
+      this.dataSource.paginator = this.paginator;
     })
 
-    this.timeSubscription = this.timelineService.timeRangeData.subscribe(data => {
+    this.timeSubscription = this.timelineService.timeRangeData.subscribe(
+      (data: any) => {
       //console.log("Time range received in timeline raw");
-      //console.log(data);
-      this.start = data.startTime;
-      this.end = data.endTime;
-      //console.log(this.start);
-      //console.log(this.end);
+      console.log(data);
+      this.start = data.start;
+      this.end = data.end;
+      console.log(this.start);
+      console.log(this.end);
       this.changeDetector.detectChanges();
     })
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource = new MatTableDataSource(this.uploadedXmlTableData);
+    this.changeDetector.detectChanges();
+
+    this.dataSource.paginator = this.paginator; 
   }
 
   ngOnDestroy(): void {

@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 export class TimelineService {
   private apiUrl = 'http://0.0.0.0:8080/api';
 
-  private timeRangeSource = new Subject<any>(); //should use ReplaySubject(1) because subscription after emitting value
+  private timeRangeSource = new ReplaySubject<Object>(1);
   timeRangeData = this.timeRangeSource.asObservable();
 
   private dataSource = new Subject<JSON>();
@@ -27,12 +27,12 @@ export class TimelineService {
       'end': end
     };
 
-    console.log("Just before 'of'");
+    //console.log("Just before 'of'");
 
     return of(timeRange)
       .pipe(
         tap((res) => { 
-          console.log(res);
+          //console.log(res);
           this.timeRangeSource.next(res); 
         }),
         catchError(this.handleError<any>('setTimeRange'))

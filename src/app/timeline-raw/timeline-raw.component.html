@@ -1,5 +1,37 @@
 <mat-spinner style="margin:0 auto;" *ngIf="uploadedXmlsResponse === null; else dataReady"></mat-spinner>
 <ng-template #dataReady>
+    <!-- TOD: delete section below -->
+   <!--  <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+      
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef> Weight </th>
+            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef> Symbol </th>
+            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div> -->
+
+
     <div>
         <p>Time range: {{start}} - {{end}}</p>
     </div>
@@ -9,34 +41,37 @@
 
             <mat-form-field>
                 <mat-label>Filter</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-              </mat-form-field>
-              
-              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-              
-                <ng-container matColumnDef="pn!sn">
-                  <th mat-header-cell *matHeaderCellDef> Pn!Sn</th>
-                  <td mat-cell *matCellDef="let element"> {{element['pn!sn']}} </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="count">
-                  <th mat-header-cell *matHeaderCellDef> Count </th>
-                  <td mat-cell *matCellDef="let element"> {{element['count']}} </td>
-                </ng-container>
-                
-                <ng-container matColumnDef="%">
-                    <th mat-header-cell *matHeaderCellDef> % </th>
-                    <td mat-cell *matCellDef="let element"> {{element['%']}} </td>
-                </ng-container>
-              
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              
-                <!-- Row shown when there is no matching data. -->
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                </tr>
-              </table>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. K4G10A!SG58P1R001" #input>
+            </mat-form-field>
+
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <ng-container matColumnDef="pn!sn">
+                        <th mat-header-cell *matHeaderCellDef> Pn!Sn</th>
+                        <td mat-cell *matCellDef="let element"> {{element['pn!sn']}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="count">
+                        <th mat-header-cell *matHeaderCellDef> Count </th>
+                        <td mat-cell *matCellDef="let element"> {{element['count']}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="%">
+                        <th mat-header-cell *matHeaderCellDef> % </th>
+                        <td mat-cell *matCellDef="let element"> {{element['%']}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    </tr>
+                </table>
+
+                <mat-paginator [length]="uploadedXmlTableData.length" [pageSize]="20" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
 
             <div id="uploaded-xmls-list">
                 <div class="cards-wrapper">
@@ -65,7 +100,7 @@
             </div>
         </div>
         <div id="cloud-jsons">
-        
+
         </div>
     </div>
 </ng-template>
