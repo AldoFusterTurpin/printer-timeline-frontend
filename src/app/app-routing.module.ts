@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TimelineSectionComponent } from './timeline-page/timeline-section/timeline-section.component';
-//before: '../timeline-section/timeline-section.component';
+import { TimelineSectionWrapperComponent } from './timeline-page/timeline-section-wrapper/timeline-section-wrapper.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'timeline-section', pathMatch: 'full' },
-  { path: 'timeline-section', component: TimelineSectionComponent }
+  { path: '', redirectTo: 'timeline-section-wrapper', pathMatch: 'full' },
+  { path: 'timeline-section-wrapper', component: TimelineSectionWrapperComponent }
 ];
 
 @NgModule({

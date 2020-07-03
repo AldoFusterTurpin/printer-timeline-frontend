@@ -1,4 +1,5 @@
 <mat-spinner style="margin:0 auto;" *ngIf="uploadedXmlsResponse === null; else dataReady"></mat-spinner>
+
 <ng-template #dataReady>
     <div>
         <mat-sidenav-container>
@@ -11,7 +12,7 @@
 
             <mat-sidenav-content>
                 <button mat-raised-button (click)="sidenav.toggle()" color="accent">Close</button>
-                <div id="timeline-section">
+                <div id="timeline-section-wrapper">
                     <div id="time-range-info">
                         <h4>Time range</h4>
                         <p><b>From</b> {{start}} </p>
@@ -32,15 +33,14 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <mat-form-field>
-                                        <mat-label>Filter table rows</mat-label>
-                                        <input matInput (keyup)="applyFilter($event)"
-                                            placeholder="Ex. K4G10A!SG58P1R001" #input>
-                                    </mat-form-field>
-
                                     <div class="mat-elevation-z8">
-                                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                                        <mat-form-field>
+                                            <mat-label>Filter table rows</mat-label>
+                                            <input matInput (keyup)="applyFilter($event)"
+                                                placeholder="Ex. K4G10A!SG58P1R001" #input>
+                                        </mat-form-field>
 
+                                        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 summary-table">
                                             <ng-container matColumnDef="select">
                                                 <th mat-header-cell *matHeaderCellDef>
                                                     <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -83,13 +83,13 @@
                                             </tr>
                                         </table>
 
-                                        <mat-paginator [length]="uploadedXmlTableData.length" [pageSize]="20"
+                                        <mat-paginator [length]="resultsLength" [pageSize]="20"
                                             [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
                                     </div>
 
                                     <mat-action-row>
-                                        <button mat-button color="accent"
-                                            (click)="uploadedXmlPanel.close()">Close</button>
+                                        <button mat-raised-button color="accent"
+                                            (click)="uploadedXmlPanel.close()">Close panel</button>
                                     </mat-action-row>
                                 </mat-expansion-panel>
                             </mat-accordion>

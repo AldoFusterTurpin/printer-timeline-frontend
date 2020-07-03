@@ -40,7 +40,16 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = ['select', 'pn!sn', 'count', '%'];
   public dataSource;
 
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  //@ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  private paginator: MatPaginator;
+
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+    console.log("Set mat paginator called");
+    this.paginator = mp;
+    if (this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+    }
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -61,13 +70,17 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
   constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(data => {
       this.uploadedXmlsResponse = data;
       this.uploadedXmls = data['Results'];
-      this.selectedUploadedXmls = this.uploadedXmls;
-      this.createUploadedXmlTableData();
 
-      this.dataSource = new MatTableDataSource(this.uploadedXmlTableData);
+      this.selectedUploadedXmls = this.uploadedXmls; //TODO not using
+
+      let uploadedXmlTableData = this.createUploadedXmlTableData(this.uploadedXmls);
+      this.resultsLength = uploadedXmlTableData.length;
+
+      this.dataSource = new MatTableDataSource(uploadedXmlTableData);
       this.dataSource.paginator = this.paginator;
 
       //select all elements of table
@@ -93,11 +106,13 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
     this.timeSubscription.unsubscribe();
   }
 
-  private createUploadedXmlTableData() {
+  private createUploadedXmlTableData(uploadedXmls) {
+    let uploadedXmlTableData = [];
+
     //key: pn!sn
     //value: number of uploaded XMLs by that printer in the selected time range
     let printerCountMap = new Map();
-    for (const element of this.uploadedXmls) {
+    for (const element of uploadedXmls) {
       let pn = element[1]['Value'];
       let sn = element[2]['Value'];
       let key = pn + '!' + sn;
@@ -119,9 +134,10 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
         '%': ((value / this.uploadedXmls.length) * 100).toFixed(2)
       };  
 
-      this.uploadedXmlTableData.push(row);
+      uploadedXmlTableData.push(row);
     }
-    this.resultsLength = this.uploadedXmlTableData.length;
+
+    return uploadedXmlTableData;
   }
 
   public shouldAppear(row: any) {

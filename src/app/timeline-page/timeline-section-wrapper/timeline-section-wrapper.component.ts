@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-timeline-section',
-  templateUrl: './timeline-section.component.html',
-  styleUrls: ['./timeline-section.component.scss']
+  selector: 'app-timeline-section-wrapper',
+  templateUrl: './timeline-section-wrapper.component.html',
+  styleUrls: ['./timeline-section-wrapper.component.scss']
 })
-export class TimelineSectionComponent implements OnInit {
+export class TimelineSectionWrapperComponent implements OnInit {
   public showTimeline: boolean;
 
   public onFormSubmited(formSubmited: boolean) {

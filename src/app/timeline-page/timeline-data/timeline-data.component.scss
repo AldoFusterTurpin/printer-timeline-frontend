@@ -56,7 +56,7 @@ table {
     padding: 5px;
 }
 
-#timeline-section{
+#timeline-section-wrapper{
     flex: auto;
     display: flex;
     flex-direction: column;
@@ -72,4 +72,11 @@ h4 {
 
 #close-sidenav-button {
     width: 100%;
+}
+
+/* TODO: is not working but something is shown at the right of the table*/
+.summary-table {
+    overflow-y: scroll !important;
+    position:relative !important; 
+    height: 300px !important;
 }
