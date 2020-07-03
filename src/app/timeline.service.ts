@@ -17,11 +17,12 @@ export class TimelineService {
   private dataSource = new Subject<JSON>();
   uploadedXmlData = this.dataSource.asObservable();
 
+  /* unused:
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  }; */
 
-  setTimeRange(start: Date, end: Date): Observable<any> {
+  public setTimeRange(start: Date, end: Date): Observable<any> {
     let timeRange = {
       'start': start,
       'end': end
@@ -37,7 +38,7 @@ export class TimelineService {
       );
   }
 
-  getUploadedXmls(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+  public getUploadedXmls(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
     const url = `${this.apiUrl}/open_xml?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(

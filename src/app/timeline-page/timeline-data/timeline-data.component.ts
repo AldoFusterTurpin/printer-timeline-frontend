@@ -99,9 +99,22 @@ export class TimelineDataComponent implements AfterViewInit {
     this.timeSubscription.unsubscribe();
   }
 
-  private createUploadedXmlTableData(uploadedXmls) {
+  
+  private createTableDataArrayFromMap(myMap: Map<string, number>) {
     let uploadedXmlTableData = [];
-
+    
+    for (let [key, value] of myMap) {
+      let row = {
+        'pn!sn': key,
+        'count': value,
+        '%': ((value / this.uploadedXmls.length) * 100).toFixed(2)
+      };  
+      uploadedXmlTableData.push(row);
+    }
+    return uploadedXmlTableData;
+  }
+  
+  private createCountMapFromArray(uploadedXmls: any[]) {
     //key: pn!sn
     //value: number of uploaded XMLs by that printer in the selected time range
     let printerCountMap = new Map();
@@ -121,19 +134,12 @@ export class TimelineDataComponent implements AfterViewInit {
     printerCountMap[Symbol.iterator] = function* () {
       yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
     }
+    return printerCountMap;
+  }
 
-    //create table data array
-    for (let [key, value] of printerCountMap) {
-      let row = {
-        'pn!sn': key,
-        'count': value,
-        '%': ((value / this.uploadedXmls.length) * 100).toFixed(2)
-      };  
-
-      uploadedXmlTableData.push(row);
-    }
-
-    return uploadedXmlTableData;
+  private createUploadedXmlTableData(uploadedXmls: any[]) {
+    let printerCountMap = this.createCountMapFromArray(uploadedXmls);
+    return this.createTableDataArrayFromMap(printerCountMap);
   }
 
   public shouldAppear(row: any) {
