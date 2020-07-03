@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, AfterViewInit} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import { TimelineService } from '../../timeline.service';
@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './timeline-data.component.html',
   styleUrls: ['./timeline-data.component.scss']
 })
-export class TimelineDataComponent implements OnInit, AfterViewInit {   
+export class TimelineDataComponent implements AfterViewInit {   
   public uploadedXmlTableData = [];
 
   public selection = new SelectionModel<any>(true, []);
@@ -40,11 +40,9 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
   public displayedColumns: string[] = ['select', 'pn!sn', 'count', '%'];
   public dataSource;
 
-  //@ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   private paginator: MatPaginator;
 
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
-    console.log("Set mat paginator called");
     this.paginator = mp;
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;
@@ -69,8 +67,7 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
 
   constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
 
-  ngOnInit(): void {
-
+  ngAfterViewInit(): void {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(data => {
       this.uploadedXmlsResponse = data;
       this.uploadedXmls = data['Results'];
@@ -81,9 +78,11 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
       this.resultsLength = uploadedXmlTableData.length;
 
       this.dataSource = new MatTableDataSource(uploadedXmlTableData);
+
+      //1r: pillar los selected
+      //2n: en el uploadedXmls.filter(pos de arrays estan en tabla)
       this.dataSource.paginator = this.paginator;
 
-      //select all elements of table
       this.dataSource.data.forEach(row => this.selection.select(row));
     })
 
@@ -93,12 +92,6 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
       this.end = data.end;
       this.changeDetector.detectChanges();
     })
-  }
-
-  ngAfterViewInit(): void {
-    /*this.dataSource = new MatTableDataSource(this.uploadedXmlTableData);
-    this.dataSource.paginator = this.paginator;
-    this.changeDetector.detectChanges(); */
   }
 
   ngOnDestroy(): void {
@@ -123,10 +116,13 @@ export class TimelineDataComponent implements OnInit, AfterViewInit {
         printerCountMap.set(key, 1);
       }
     }
+
     //sort the map by value
     printerCountMap[Symbol.iterator] = function* () {
       yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
     }
+
+    //create table data array
     for (let [key, value] of printerCountMap) {
       let row = {
         'pn!sn': key,

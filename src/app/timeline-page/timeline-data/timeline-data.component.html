@@ -4,10 +4,11 @@
     <div>
         <mat-sidenav-container>
             <mat-sidenav #sidenav mode="side" opened="false" position="end">
-                <button id="close-sidenav-button" mat-raised-button color="accent" (click)="sidenav.close()">Close</button>
+                <button id="close-sidenav-button" mat-raised-button color="accent"
+                    (click)="sidenav.close()">Close</button>
                 <h4>Details</h4>
                 <hr class="solid">
-                <p>xml example goes here</p>
+                <p>XML details goes here</p>
             </mat-sidenav>
 
             <mat-sidenav-content>
@@ -20,20 +21,19 @@
                     </div>
                     <div id="timelines-wrapper">
                         <div id="uploaded-xmls">
-                            <p>Found {{uploadedXmls.length}} Uploaded OpenXMLs:</p>
-
                             <mat-accordion>
                                 <mat-expansion-panel #uploadedXmlPanel open="false">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
-                                            Uploaded OpenXmls summary table
+                                            Uploaded OpenXMLs summary table
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            Open panel to see table
+                                            Click me!
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
                                     <div class="mat-elevation-z8">
+                                        <p style="text-align: center;"><b>{{resultsLength}}</b>  Printers sent OpenXML files in the selected time range</p>
                                         <mat-form-field>
                                             <mat-label>Filter table rows</mat-label>
                                             <input matInput (keyup)="applyFilter($event)"
@@ -46,7 +46,9 @@
                                                     <mat-checkbox (change)="$event ? masterToggle() : null"
                                                         [checked]="selection.hasValue() && isAllSelected()"
                                                         [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                                        [aria-label]="checkboxLabel()">
+                                                        [aria-label]="checkboxLabel()"
+                                                        matTooltip="Select/unselect all table rows"
+                                                        matTooltipPosition="above">
                                                     </mat-checkbox>
                                                 </th>
                                                 <td mat-cell *matCellDef="let row">
@@ -75,24 +77,20 @@
 
                                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-                                            <tr class="mat-row" *matNoDataRow>
-                                                <td class="mat-cell" colspan="4">No data matching the filter
-                                                    "{{input.value}}"
-                                                </td>
-                                            </tr>
                                         </table>
 
-                                        <mat-paginator [length]="resultsLength" [pageSize]="20"
-                                            [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                                        <mat-paginator [length]="resultsLength" [pageSize]="10" [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
                                     </div>
 
                                     <mat-action-row>
                                         <button mat-raised-button color="accent"
-                                            (click)="uploadedXmlPanel.close()">Close panel</button>
+                                            (click)="uploadedXmlPanel.close()">Close panel
+                                        </button>
                                     </mat-action-row>
                                 </mat-expansion-panel>
                             </mat-accordion>
+
+                            <p>Found {{uploadedXmls.length}} Uploaded OpenXMLs:</p>
 
                             <div id="uploaded-xmls-list">
                                 <div class="cards-wrapper">

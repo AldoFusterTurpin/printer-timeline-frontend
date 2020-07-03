@@ -27,12 +27,10 @@ export class TimelineService {
       'end': end
     };
 
-    //console.log("Just before 'of'");
 
     return of(timeRange)
       .pipe(
         tap((res) => { 
-          //console.log(res);
           this.timeRangeSource.next(res); 
         }),
         catchError(this.handleError<any>('setTimeRange'))
