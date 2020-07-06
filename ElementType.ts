@@ -1,8 +1,8 @@
 export enum ElementType {
-    OpenXml = "OPEN_XML",
-    CloudJson = "CLOUD_JSON",
-    Rta = "REAL_TIME_ALERT(RTA)",
-    Hb = "HEART_BEAT(HB)",
-    Gcp = "GET_CONFIGURATION_PROFILE",
-    Gsqs = "GET_SQS_CREDENTIALS"
+    OpenXml = "OpenXML",
+    CloudJson = "Cloud JSON",
+    Rta = "Real Time Alert (RTA)",
+    Hb = "Heart Beat (HB)",
+    Gcp = "Get Configuration Profile (GCP)",
+    Gsqs = "Get SQS credentials (SQS)"
 }

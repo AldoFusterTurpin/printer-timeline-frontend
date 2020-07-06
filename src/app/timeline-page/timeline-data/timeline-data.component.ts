@@ -1,7 +1,6 @@
 import { Component, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
 import { TimelineService } from '../../timeline.service';
 import { Subscription } from 'rxjs';
-import { ApiResponse } from 'apiResponse';
 import { TimelineData } from 'timelineData';
 import { ElementType } from 'ElementType';
 
@@ -11,15 +10,10 @@ import { ElementType } from 'ElementType';
   styleUrls: ['./timeline-data.component.scss']
 })
 export class TimelineDataComponent implements AfterViewInit {
-
   public start: Date;
   public end: Date;
 
-
   public uploadedXmlTimelineData: TimelineData = null;
-  
-  /* public uploadedXmlsResponse: ApiResponse = null;
-  public uploadedXmls: JSON[] = null; */
 
   private uploadedXmlSubscription: Subscription;
   private timeSubscription: Subscription;
@@ -29,10 +23,8 @@ export class TimelineDataComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
       (data: any) => {
-        this.uploadedXmlTimelineData = new TimelineData(data, ElementType.OpenXml);
-        console.log(this.uploadedXmlTimelineData);
-        /* this.uploadedXmlsResponse = data;
-        this.uploadedXmls = data['Results']; */
+        let tableDescription = 'Printers sent '+ ElementType.OpenXml + 'files in the selected time range';
+        this.uploadedXmlTimelineData = new TimelineData(data, ElementType.OpenXml, tableDescription);
       })
 
     this.timeSubscription = this.timelineService.timeRangeData.subscribe(

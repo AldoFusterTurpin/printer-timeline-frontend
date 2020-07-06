@@ -11,11 +11,10 @@
             </mat-expansion-panel-header>
 
             <div class="mat-elevation-z8">
-                <p style="text-align: center;"><b>{{resultsLength}}</b>  Printers sent {{timelineData.elementName}} files in the selected time range</p>
+                <p style="text-align: center;"><b>{{tableLength}}</b> {{timelineData.tableDescription}}</p>
                 <mat-form-field>
                     <mat-label>Filter table rows</mat-label>
-                    <input matInput (keyup)="applyFilter($event)"
-                        placeholder="Ex. K4G10A!SG58P1R001" #input>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. K4G10A!SG58P1R001" #input>
                 </mat-form-field>
 
                 <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8 summary-table">
@@ -24,15 +23,13 @@
                             <mat-checkbox (change)="$event ? masterToggle() : null"
                                 [checked]="selection.hasValue() && isAllSelected()"
                                 [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                [aria-label]="checkboxLabel()"
-                                matTooltip="Select/unselect all table rows"
+                                [aria-label]="checkboxLabel()" matTooltip="Select/unselect all table rows"
                                 matTooltipPosition="above">
                             </mat-checkbox>
                         </th>
                         <td mat-cell *matCellDef="let row">
                             <mat-checkbox (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(row) : null"
-                                [checked]="selection.isSelected(row)"
+                                (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
                                 [aria-label]="checkboxLabel(row)">
                             </mat-checkbox>
                         </td>
@@ -57,43 +54,45 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
 
-                <mat-paginator [length]="resultsLength" [pageSize]="10" [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+                <mat-paginator [length]="tableLength" [pageSize]="10" [pageSizeOptions]="[10, 20, 50, 100]"
+                    showFirstLastButtons></mat-paginator>
             </div>
 
             <mat-action-row>
-                <button mat-raised-button color="accent"
-                    (click)="uploadedXmlPanel.close()">Close panel
-                </button>
+                <button mat-raised-button color="primary" (click)="filterSelectedItems()">Apply checkboxes filter</button>
+                <button mat-raised-button color="accent" (click)="uploadedXmlPanel.close()">Hide table</button>
             </mat-action-row>
         </mat-expansion-panel>
     </mat-accordion>
 
-    <p>Found {{timelineData.apiResponse['Results'].length}} {{timelineData.elementName}}:</p>
+    <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate" color="primary"> </mat-progress-bar>
+
+    <p>Found {{timelineData.apiResponse['Results'].length}} {{timelineData.elementName}}s in total (showing {{selectedData.length}} elements):</p>
 
     <div id="uploaded-xmls-list">
         <div class="cards-wrapper">
-            <mat-card class="example-card" *ngFor="let xml of timelineData.apiResponse['Results']; let i = index">
-                <!-- <mat-card class="example-card" *ngFor="let xml of this.selection.selected; let i = index"> -->
-                <mat-card-header>
-                    <div mat-card-avatar class="uploaded-xml-image"></div>
-                    <mat-card-title>{{timelineData.apiResponse['Results'][i][0]['Value']}}</mat-card-title>
-                    <mat-card-subtitle>#{{i}}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <p><b>PN</b> {{timelineData.apiResponse['Results'][i][1]['Value']}}</p>
-                    <p><b>SN</b> {{timelineData.apiResponse['Results'][i][2]['Value']}}</p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-icon-button color="primary" aria-label="Download icon"
-                        matTooltip="Preview file">
-                        <mat-icon class="icon-display">preview</mat-icon>
-                    </button>
-                    <button mat-icon-button color="primary" aria-label="Download icon"
-                        matTooltip="Download file">
-                        <mat-icon class="icon-display">cloud_download</mat-icon>
-                    </button>
-                </mat-card-actions>
-            </mat-card>
+            <div *ngFor="let xml of selectedData; let i = index">
+                <mat-card class="example-card">
+                    <!-- <mat-card class="example-card" *ngFor="let xml of this.selection.selected; let i = index"> -->
+                    <mat-card-header>
+                        <div mat-card-avatar class="uploaded-xml-image"></div>
+                        <mat-card-title>{{xml[0]['Value']}}</mat-card-title>
+                        <mat-card-subtitle>#{{i}}</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p><b>PN</b> {{xml[1]['Value']}}</p>
+                        <p><b>SN</b> {{xml[2]['Value']}}</p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Preview file">
+                            <mat-icon class="icon-display">preview</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file">
+                            <mat-icon class="icon-display">cloud_download</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
         </div>
     </div>
 </div>

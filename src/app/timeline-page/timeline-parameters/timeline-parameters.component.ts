@@ -201,7 +201,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   public minDate: Date = this.createMinDate();
   public maxDate: Date = new Date();
 
-  //must be last thing to do. If not, variables with values not initialized can exist
+  //must be last thing to do. If not, it can exist variables with values not initialized
   public myForm: FormGroup = this.createForm();
 
   public getSelectedFiles() {

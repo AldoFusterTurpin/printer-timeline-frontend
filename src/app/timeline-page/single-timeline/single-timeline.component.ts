@@ -1,32 +1,32 @@
-import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
-import {SelectionModel} from '@angular/cdk/collections';
-import {MatPaginator} from '@angular/material/paginator';
+import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges } from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import {TimelineData} from '../../../../timelineData';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { TimelineData } from '../../../../timelineData';
 
 @Component({
   selector: 'app-single-timeline',
   templateUrl: './single-timeline.component.html',
   styleUrls: ['./single-timeline.component.scss']
 })
-export class SingleTimelineComponent implements OnInit, AfterViewInit, OnChanges {
-  @Input() timelineData:TimelineData;
-  apiResponse: JSON;
-  
-  data: JSON[];
+export class SingleTimelineComponent implements OnInit, AfterViewInit {
+  @Input() timelineData: TimelineData;
+
+  public showProgressBar: boolean = false;
 
   public tableData = [];
   public selection = new SelectionModel<any>(true, []);
   public displayedColumns: string[] = ['select', 'pn!sn', 'count', '%'];
-  public tableDataSource;
-  public resultsLength = 0;
+  public tableDataSource = null;
+  public tableLength = 0;
 
   public selectedData = null;
 
   private tablePaginator: MatPaginator;
-  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
-    console.log("set matPaginator called");
-    this.tablePaginator = mp;
+
+  @ViewChild(MatPaginator) set matPaginator(matPaginator: MatPaginator) {
+    this.tablePaginator = matPaginator;
 
     if (this.tableDataSource) {
       this.tableDataSource.paginator = this.tablePaginator;
@@ -38,7 +38,6 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit, OnChanges
     this.tableDataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.tableDataSource.data.length;
@@ -48,8 +47,8 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit, OnChanges
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
-        this.selection.clear() :
-        this.tableDataSource.data.forEach(row => this.selection.select(row));
+      this.selection.clear() :
+      this.tableDataSource.data.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
@@ -60,52 +59,55 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit, OnChanges
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
-  constructor(private changeDetector: ChangeDetectorRef) { }
+  constructor(private _snackBar: MatSnackBar) { }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
 
   ngOnInit(): void {
-    this.selectedData = this.timelineData.apiResponse['Results']; 
-
     let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
-    this.resultsLength = tableData.length;
+    this.tableLength = tableData.length;
 
     this.tableDataSource = new MatTableDataSource(tableData);
 
-    //1r: pillar los selected
-    //2n: en el data.filter(pasar pos de arrays estan en tabla)
-    //this.tableDataSource.tablePaginator = this.tablePaginator;
-
-    this.tableDataSource.data.forEach((row: any) => this.selection.select(row));
-  }   
+    this.masterToggle();
+  }
 
   ngAfterViewInit(): void {
     this.tableDataSource.paginator = this.tablePaginator;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['timelineData']) {
+      this.selectedData = this.timelineData.apiResponse['Results'];
+    }
   }
 
   ngOnDestroy(): void {
   }
 
-  
+
   private createTableDataArrayFromMap(myMap: Map<string, number>) {
     let tableData = [];
-    
+
     for (let [key, value] of myMap) {
       let row = {
         'pn!sn': key,
         'count': value,
         '%': ((value / this.timelineData.apiResponse['Results'].length) * 100).toFixed(2)
-      };  
+      };
       tableData.push(row);
     }
     return tableData;
   }
-  
+
   private createCountMapFromArray(data: any[]) {
     //key: pn!sn
-    //value: number of uploaded XMLs by that printer in the selected time range
+    //value: how many times appears printer in data
+    //i.e: number of data ('howm many' xmls, jsons, etc) sent by that printer in the selected time range
     let printerCountMap = new Map();
     for (const element of data) {
       let pn = element[1]['Value'];
@@ -131,8 +133,42 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit, OnChanges
     return this.createTableDataArrayFromMap(printerCountMap);
   }
 
-  public shouldAppear(row: any) {
-    console.log(row);
-    return true;
+  private createSetOfPrintersFromArrayOfSelectedElements(data: any[]): Set<string> {
+    let set = new Set<string>();
+
+    for (const element of data) {
+      let key = element['pn!sn'];
+      set.add(key);
+    }
+
+    return set;
+  }
+
+  private createSelectedDataFromSet(set: Set<string>) {
+    let selectedData = [];
+
+    for (const element of this.timelineData.apiResponse['Results']) {
+      let pn = element[1]['Value'];
+      let sn = element[2]['Value'];
+      let key = pn + '!' + sn;
+
+      if (set.has(key)) {
+        selectedData.push(element);
+      }
+    }
+
+    return selectedData;
+  }
+
+  public filterSelectedItems() {
+    this.showProgressBar = true;
+    let selectedValues = this.selection.selected;
+
+    setTimeout(() => {
+      let set = this.createSetOfPrintersFromArrayOfSelectedElements(selectedValues);
+      this.selectedData = this.createSelectedDataFromSet(set);
+      this.showProgressBar = false;
+      this.openSnackBar('Data ready below ⬇', 'Got it!');
+    }, 1500);
   }
 }

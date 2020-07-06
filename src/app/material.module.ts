@@ -27,6 +27,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -55,6 +56,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
       MatTableModule,
       MatPaginatorModule,
       MatSidenavModule,
+      MatSnackBarModule
    ],
    exports: [
       MatButtonModule,
@@ -78,7 +80,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
       MatProgressBarModule,
       MatTableModule,
       MatPaginatorModule,
-      MatSidenavModule
+      MatSidenavModule,
+      MatSnackBarModule
    ],
    providers: [
       MatDatepickerModule,
