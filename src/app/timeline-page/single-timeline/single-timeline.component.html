@@ -3,7 +3,7 @@
         <mat-expansion-panel #uploadedXmlPanel open="false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    Uploaded OpenXMLs summary table
+                    {{timelineData.elementName}} summary table
                 </mat-panel-title>
                 <mat-panel-description>
                     Click me!
@@ -11,7 +11,7 @@
             </mat-expansion-panel-header>
 
             <div class="mat-elevation-z8">
-                <p style="text-align: center;"><b>{{resultsLength}}</b>  Printers sent OpenXML files in the selected time range</p>
+                <p style="text-align: center;"><b>{{resultsLength}}</b>  Printers sent {{timelineData.elementName}} files in the selected time range</p>
                 <mat-form-field>
                     <mat-label>Filter table rows</mat-label>
                     <input matInput (keyup)="applyFilter($event)"
@@ -68,20 +68,20 @@
         </mat-expansion-panel>
     </mat-accordion>
 
-    <p>Found {{data.length}} Uploaded OpenXMLs:</p>
+    <p>Found {{timelineData.apiResponse['Results'].length}} {{timelineData.elementName}}:</p>
 
     <div id="uploaded-xmls-list">
         <div class="cards-wrapper">
-            <mat-card class="example-card" *ngFor="let xml of data; let i = index">
+            <mat-card class="example-card" *ngFor="let xml of timelineData.apiResponse['Results']; let i = index">
                 <!-- <mat-card class="example-card" *ngFor="let xml of this.selection.selected; let i = index"> -->
                 <mat-card-header>
                     <div mat-card-avatar class="uploaded-xml-image"></div>
-                    <mat-card-title>{{data[i][0]['Value']}}</mat-card-title>
+                    <mat-card-title>{{timelineData.apiResponse['Results'][i][0]['Value']}}</mat-card-title>
                     <mat-card-subtitle>#{{i}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <p><b>PN</b> {{data[i][1]['Value']}}</p>
-                    <p><b>SN</b> {{data[i][2]['Value']}}</p>
+                    <p><b>PN</b> {{timelineData.apiResponse['Results'][i][1]['Value']}}</p>
+                    <p><b>SN</b> {{timelineData.apiResponse['Results'][i][2]['Value']}}</p>
                 </mat-card-content>
                 <mat-card-actions>
                     <button mat-icon-button color="primary" aria-label="Download icon"

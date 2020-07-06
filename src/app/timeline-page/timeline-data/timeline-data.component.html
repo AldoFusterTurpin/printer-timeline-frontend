@@ -1,4 +1,4 @@
-<mat-spinner style="margin:0 auto;" *ngIf="uploadedXmlsResponse === null; else dataReady"></mat-spinner>
+<mat-spinner style="margin:0 auto;" *ngIf="uploadedXmlTimelineData === null; else dataReady"></mat-spinner>
 
 <ng-template #dataReady>
     <div>
@@ -13,14 +13,14 @@
 
             <mat-sidenav-content>
                 <button mat-raised-button (click)="sidenav.toggle()" color="accent">Close</button>
-                <div id="timeline-section-wrapper">
+                <div id="timeline-page-wrapper">
                     <div id="time-range-info">
                         <h4>Time range</h4>
                         <p><b>From</b> {{start}} </p>
                         <p><b>To</b> {{end}}</p>
                     </div>
                     <div id="timelines-wrapper">
-                        <app-single-timeline [apiResponse]="uploadedXmlsResponse" [data]="uploadedXmls"> 
+                        <app-single-timeline [timelineData]="uploadedXmlTimelineData"> <!-- [apiResponse]="uploadedXmlsResponse" [data]="uploadedXmls" -->
                         </app-single-timeline>
                     </div>
                 </div>

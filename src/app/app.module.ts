@@ -16,7 +16,7 @@ import { AngularMaterialModule } from './material.module';
 import { TimelineParametersComponent } from './timeline-page/timeline-parameters/timeline-parameters.component';
 
 import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.component';
-import { TimelineSectionWrapperComponent } from './timeline-page/timeline-section-wrapper/timeline-section-wrapper.component';
+import { TimelinePageWrapperComponent } from './timeline-page/timeline-page-wrapper/timeline-page-wrapper.component';
 import { TimelineDataComponent } from './timeline-page/timeline-data/timeline-data.component';
 import { SingleTimelineComponent } from './timeline-page/single-timeline/single-timeline.component';
 
@@ -27,7 +27,7 @@ import { SingleTimelineComponent } from './timeline-page/single-timeline/single-
     TopBarComponent,
     TimelineParametersComponent,
     DataTypesFilterComponent,
-    TimelineSectionWrapperComponent,
+    TimelinePageWrapperComponent,
     TimelineDataComponent,
     SingleTimelineComponent,
   ],

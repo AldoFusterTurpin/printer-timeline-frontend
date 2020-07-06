@@ -1,17 +1,19 @@
-import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, Input, OnInit} from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import {TimelineData} from '../../../../timelineData';
 
 @Component({
   selector: 'app-single-timeline',
   templateUrl: './single-timeline.component.html',
   styleUrls: ['./single-timeline.component.scss']
 })
-export class SingleTimelineComponent implements OnInit, AfterViewInit {
-  @Input() apiResponse: JSON;
+export class SingleTimelineComponent implements OnInit, AfterViewInit, OnChanges {
+  @Input() timelineData:TimelineData;
+  apiResponse: JSON;
   
-  @Input() data: JSON[];
+  data: JSON[];
 
   public tableData = [];
   public selection = new SelectionModel<any>(true, []);
@@ -61,9 +63,9 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   constructor(private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.selectedData = this.data; 
+    this.selectedData = this.timelineData.apiResponse['Results']; 
 
-    let tableData = this.createUploadedXmlTableData(this.data);
+    let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
     this.resultsLength = tableData.length;
 
     this.tableDataSource = new MatTableDataSource(tableData);
@@ -79,6 +81,10 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
     this.tableDataSource.paginator = this.tablePaginator;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
   ngOnDestroy(): void {
   }
 
@@ -90,7 +96,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
       let row = {
         'pn!sn': key,
         'count': value,
-        '%': ((value / this.data.length) * 100).toFixed(2)
+        '%': ((value / this.timelineData.apiResponse['Results'].length) * 100).toFixed(2)
       };  
       tableData.push(row);
     }
