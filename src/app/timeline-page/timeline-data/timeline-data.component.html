@@ -17,9 +17,9 @@
                 <button mat-raised-button (click)="sidenav.toggle()" color="accent">Close</button>
                 <div id="timeline-page-wrapper">
                     <div id="time-range-info">
-                        <h4>Time range</h4>
-                        <p><b>From</b> {{start}} </p>
-                        <p><b>To</b> {{end}}</p>
+                        <h4>Time range</h4> 
+                        <p><b>From</b> {{start.toUTCString()}}</p>
+                        <p><b>To</b> {{end.toUTCString()}}</p>
                     </div>
                     <div id="timelines-wrapper">
                         <app-single-timeline [timelineData]="uploadedXmlTimelineData"> <!-- [apiResponse]="uploadedXmlsResponse" [data]="uploadedXmls" -->

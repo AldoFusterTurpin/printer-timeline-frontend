@@ -21,3 +21,9 @@ h4 {
 #close-sidenav-button {
     width: 100%;
 }
+
+#timeline-page-wrapper {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+}
