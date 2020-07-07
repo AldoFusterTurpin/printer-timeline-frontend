@@ -13,7 +13,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
   @Output()
   formSubmited: EventEmitter<boolean> = new EventEmitter<boolean>();
-  
+
   private timeUnitsTouchedBefore = false;
   private selectedFiles: String[] = [];
   private selectedRequests: String[] = [];
@@ -133,7 +133,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   private dataTypesAreValid(): boolean {
-    return this.filesControl.value.indexOf(true) != -1 || this.requestsControl.value.indexOf(true) != -1 
+    return this.filesControl.value.indexOf(true) != -1 || this.requestsControl.value.indexOf(true) != -1
       || this.othersControl.value.indexOf(true) != -1;
   }
 
@@ -142,41 +142,41 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
       return;
     }
     let startTime = this.absoluteTimeStartControl.value;
-    this.absoluteDateStartControl.value.setHours(parseInt(startTime.slice(0, 2)), 
-                                                  parseInt(startTime.slice(3, 5), 0));  
+    this.absoluteDateStartControl.value.setHours(parseInt(startTime.slice(0, 2)),
+      parseInt(startTime.slice(3, 5), 0));
 
     let endTime = this.absoluteTimeEndControl.value;
-    this.absoluteDateEndControl.value.setHours(parseInt(endTime.slice(0, 2)), 
-                                        parseInt(endTime.slice(3, 5), 0));
+    this.absoluteDateEndControl.value.setHours(parseInt(endTime.slice(0, 2)),
+      parseInt(endTime.slice(3, 5), 0));
 
     this.startTimePreviousThanEnd = this.absoluteDateStartControl.value < this.absoluteDateEndControl.value;
-    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStartControl.value, 
-                                                                      this.absoluteDateEndControl.value);
+    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStartControl.value,
+      this.absoluteDateEndControl.value);
   }
 
   private timeIsValid(): boolean {
     if (this.typeOfDateControl.value === 'relative') {
-      return !this.relativeValueTooBig 
-              && !this.formControlhasError('_relativeTimeUnitsControl', 'required')
-              && !this.formControlhasError('_relativeTimeValueControl', 'required')
-              && this.allCharsAreNumbers(this.relativeTimeValueControl.value);
+      return !this.relativeValueTooBig
+        && !this.formControlhasError('_relativeTimeUnitsControl', 'required')
+        && !this.formControlhasError('_relativeTimeValueControl', 'required')
+        && this.allCharsAreNumbers(this.relativeTimeValueControl.value);
     }
 
     if (this.typeOfDateControl.value === 'absolute') {
-      let startOk = !this.formControlhasError('_absoluteDateStartControl', 'required') 
-                      && this.absoluteDateStartControl.value != null 
-                      && !this.formControlhasError('_absoluteTimeStartControl', 'required') 
-                      && this.absoluteTimeStartControl.value != '';
+      let startOk = !this.formControlhasError('_absoluteDateStartControl', 'required')
+        && this.absoluteDateStartControl.value != null
+        && !this.formControlhasError('_absoluteTimeStartControl', 'required')
+        && this.absoluteTimeStartControl.value != '';
       if (!startOk) {
         return false;
       }
 
       let endOk = !this.formControlhasError('_absoluteDateEndControl', 'required')
-                    && this.absoluteDateEndControl.value != null 
-                    && !this.formControlhasError('_absoluteTimeEndControl', 'required') 
-                    && this.absoluteTimeEndControl.value != '';
+        && this.absoluteDateEndControl.value != null
+        && !this.formControlhasError('_absoluteTimeEndControl', 'required')
+        && this.absoluteTimeEndControl.value != '';
       if (!endOk) {
-          return false;
+        return false;
       }
 
       this.controlAbsoluteDate();
@@ -264,7 +264,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
       this.controlMaxValueOfRelativeTime(this.relativeTimeValueControl.value);
     });
-    
+
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
     });
@@ -288,32 +288,39 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
         'end': this.absoluteDateEndControl.value
       }
     }
-    
+
     let start = new Date();
     if (this.relativeTimeUnitsControl.value.realValue === 'minutes') {
       start.setMinutes(start.getMinutes() - this.relativeTimeValueControl.value);
     } else if (this.relativeTimeUnitsControl.value.realValue === 'seconds') {
       start.setSeconds(start.getSeconds() - this.relativeTimeValueControl.value);
     }
+
     return {
       'start': start,
       'end': new Date()
     }
   }
 
+
   public getUploadedXmls(): void {
-    let timeRange = this.getTimeRange();
+    const timeRange = this.getTimeRange();
+    const startDate = timeRange.start;
+    const endDate = timeRange.end;
 
-    const startEpoch = Math.round(timeRange.start.getTime() / 1000);  
-    const endEpoch = Math.round(timeRange.end.getTime() / 1000);
+    console.log(startDate);
+    console.log(endDate);
 
-    let pn = this.pnControl.value.toLowerCase();
-    if (pn === 'any') {
+    const startEpoch = Math.round(startDate.getTime() / 1000);
+    const endEpoch = Math.round(endDate.getTime() / 1000);
+
+    let pn = this.pnControl.value;
+    if (pn === 'any' || pn === 'ANY') {
       pn = '';
     }
 
-    let sn = this.snControl.value.toLowerCase();
-    if (sn === 'any') {
+    let sn = this.snControl.value;
+    if (sn === 'any' || sn === 'ANY') {
       sn = '';
     }
 

@@ -34,7 +34,7 @@ h4 {
 }
 
 .icon-display {
-    transform: scale(1.1);
+    transform: scale(1.5);
 }
 
 #timelines-wrapper {
@@ -48,4 +48,13 @@ h4 {
 
 table {
     width: 100%;
+    box-shadow: 0px !important; //TODO not working disable shadow
+}
+
+#card-content {
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    justify-content: left;
+    align-content: left;
 }

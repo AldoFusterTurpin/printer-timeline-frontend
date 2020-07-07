@@ -11,15 +11,16 @@
                 <h4>Details</h4>
                 <hr class="solid">
                 <p>Element details goes here</p>
+                <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file">
+                    <mat-icon class="icon-display">cloud_download</mat-icon>
+                </button>
             </mat-sidenav>
 
             <mat-sidenav-content>
                 <button mat-raised-button (click)="sidenav.toggle()" color="accent">Close</button>
                 <div id="timeline-page-wrapper">
                     <div id="time-range-info">
-                        <h4>Time range</h4> 
-                        <p><b>From</b> {{start.toUTCString()}}</p>
-                        <p><b>To</b> {{end.toUTCString()}}</p>
+                        <h4>Time range</h4> {{start}} ⏤ {{end}}
                     </div>
                     <div id="timelines-wrapper">
                         <app-single-timeline [timelineData]="uploadedXmlTimelineData"> <!-- [apiResponse]="uploadedXmlsResponse" [data]="uploadedXmls" -->
