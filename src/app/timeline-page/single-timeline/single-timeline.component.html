@@ -1,6 +1,6 @@
-<div id="uploaded-xmls">
+<div id="single-timeline">
     <mat-accordion>
-        <mat-expansion-panel #uploadedXmlPanel open="false">
+        <mat-expansion-panel #detailsPanel open="false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     {{timelineData.elementName}} summary table
@@ -60,7 +60,7 @@
 
             <mat-action-row>
                 <button mat-raised-button color="primary" (click)="filterSelectedItems()">Apply checkboxes filter</button>
-                <button mat-raised-button color="accent" (click)="uploadedXmlPanel.close()">Hide table</button>
+                <button mat-raised-button color="accent" (click)="detailsPanel.close()">Hide table</button>
             </mat-action-row>
         </mat-expansion-panel>
     </mat-accordion>
@@ -69,19 +69,18 @@
 
     <p>Found {{timelineData.apiResponse['Results'].length}} {{timelineData.elementName}}s in total (showing {{selectedData.length}} elements):</p>
 
-    <div id="uploaded-xmls-list">
+    <div id="single-timeline-list">
         <div class="cards-wrapper">
-            <div *ngFor="let xml of selectedData; let i = index">
+            <div *ngFor="let element of selectedData; let i = index">
                 <mat-card class="example-card">
-                    <!-- <mat-card class="example-card" *ngFor="let xml of this.selection.selected; let i = index"> -->
                     <mat-card-header>
-                        <div mat-card-avatar class="uploaded-xml-image"></div>
-                        <mat-card-title>{{xml[0]['Value']}}</mat-card-title>
+                        <div mat-card-avatar class="timeline-element-image"></div>
+                        <mat-card-title>{{element[0]['Value']}}</mat-card-title>
                         <mat-card-subtitle>#{{i}}</mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>
-                        <p><b>PN</b> {{xml[1]['Value']}}</p>
-                        <p><b>SN</b> {{xml[2]['Value']}}</p>
+                        <p><b>PN</b> {{element[1]['Value']}}</p>
+                        <p><b>SN</b> {{element[2]['Value']}}</p>
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Preview file">
