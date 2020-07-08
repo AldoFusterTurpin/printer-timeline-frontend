@@ -20,7 +20,8 @@ h4 {
     flex-direction: row;
     justify-content: left;
     align-content: left;
-    overflow: auto;
+    overflow: scroll;
+    height: 100%; //TODO
 }
 
 @media only screen and (max-width: 800px) {
@@ -43,7 +44,7 @@ h4 {
     flex-direction: column;
     justify-content: left;
     align-content: left;
-    overflow: auto;
+    overflow: scroll;
 }
 
 table {

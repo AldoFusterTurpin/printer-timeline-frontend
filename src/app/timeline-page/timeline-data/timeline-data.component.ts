@@ -10,13 +10,9 @@ import { ElementType } from 'ElementType';
   styleUrls: ['./timeline-data.component.scss']
 })
 export class TimelineDataComponent implements AfterViewInit {
-  public start: Date;
-  public end: Date;
-
   public uploadedXmlTimelineData: TimelineData = null;
 
   private uploadedXmlSubscription: Subscription;
-  private timeSubscription: Subscription;
 
   constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
 
@@ -26,17 +22,9 @@ export class TimelineDataComponent implements AfterViewInit {
         let tableDescription = 'Printers sent '+ ElementType.OpenXml + 'files in the selected time range';
         this.uploadedXmlTimelineData = new TimelineData(data, ElementType.OpenXml, tableDescription);
       })
-
-    this.timeSubscription = this.timelineService.timeRangeData.subscribe(
-      (data: any) => {
-        this.start = data.start;
-        this.end = data.end;
-        this.changeDetector.detectChanges();
-      })
   }
 
   ngOnDestroy(): void {
     this.uploadedXmlSubscription.unsubscribe();
-    this.timeSubscription.unsubscribe();
   }
 }

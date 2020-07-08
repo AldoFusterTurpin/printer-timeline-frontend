@@ -1,3 +1,21 @@
 #back-button {
     margin-bottom: 10px;
 }
+
+#back-button-and-time-range {
+    display: flex;
+    flex: auto;
+    flex-direction: row;
+}
+
+#time-range-info {
+    margin: 0 auto;
+    align-self: center;
+    text-align: center;
+    box-sizing: content-box;
+    border: solid rgb(19, 143, 222);
+    border-style: solid;
+    border-width: 1px;
+    display: inline-block;
+    padding: 5px;
+}

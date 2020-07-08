@@ -3,9 +3,16 @@
 </div>
 
 <ng-template #timelineBlock>
-    <button id="back-button" mat-raised-button color="primary" (click)="this.hideTimeline()">
-        <mat-icon>arrow_left</mat-icon> Back
-    </button>
-    
+    <div id="back-button-and-time-range">
+        <button id="back-button" mat-raised-button color="primary" (click)="this.hideTimeline()">
+            <mat-icon>arrow_left</mat-icon> Back
+        </button>
+
+        <div id="time-range-info">
+            <b>Time range</b> {{start}} ⏤ {{end}}
+        </div>
+
+    </div>
+
     <app-timeline-data></app-timeline-data>
 </ng-template>
