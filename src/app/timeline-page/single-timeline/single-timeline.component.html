@@ -10,14 +10,14 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <div class="mat-elevation-z8">
+            <div>
                 <p style="text-align: center;"><b>{{tableLength}}</b> {{timelineData.tableDescription}}</p>
                 <mat-form-field>
                     <mat-label>Filter table rows</mat-label>
                     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. K4G10A!SG58P1R001" #input>
                 </mat-form-field>
 
-                <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8 summary-table">
+                <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z1">
                     <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>
                             <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -78,7 +78,7 @@
                     <mat-card-header>
                         <!-- <div mat-card-avatar class="timeline-element-image"></div> -->
                         <div mat-card-avatar>
-                            <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Details">
+                            <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details">
                                 <mat-icon svgIcon="xml" class="icon-display"></mat-icon>
                             </button>
                         </div>
