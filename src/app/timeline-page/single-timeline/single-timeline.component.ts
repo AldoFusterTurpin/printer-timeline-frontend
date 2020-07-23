@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { TimelineData } from '../../../../timelineData';
+import { TimelineService } from '../../timeline.service';
 
 @Component({
   selector: 'app-single-timeline',
@@ -59,7 +60,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
@@ -170,5 +171,9 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
       this.showProgressBar = false;
       this.openSnackBar('Data ready below ⬇', 'Got it!');
     }, 1500);
+  }
+
+  public showDetails(element) {
+    this.timelineService.emitDetails(element).subscribe();
   }
 }

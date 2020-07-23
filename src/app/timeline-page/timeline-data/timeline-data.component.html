@@ -4,23 +4,28 @@
     <div>
         <mat-sidenav-container>
             <mat-sidenav #sidenav mode="side" opened="false" position="end">
-                <button id="close-sidenav-button" mat-raised-button color="accent"
-                    (click)="sidenav.close()">Close
+                <button id="close-sidenav-button" mat-raised-button color="accent" (click)="sidenav.close();">Close
                 </button>
-                
+
                 <h4>Details</h4>
                 <hr class="solid">
-                <p>Element details goes here</p>
-                <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file">
-                    <mat-icon class="icon-display">cloud_download</mat-icon>
-                </button>
+
+                <div *ngIf="details !== undefined && details !== null">
+                    <p><b>Timestamp</b> {{details[0]['Value']}}</p>
+                    <p><b>PN</b> {{details[1]['Value']}}</p>
+                    <p><b>SN</b> {{details[2]['Value']}}</p>
+                    <p><b>Topic</b> {{details[6]['Value']}}</p>
+                    <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file">
+                        <mat-icon class="icon-display">cloud_download</mat-icon>
+                    </button>
+                </div>
             </mat-sidenav>
 
             <mat-sidenav-content>
-                <button mat-raised-button (click)="sidenav.toggle()" color="accent">Close</button>
                 <div id="timeline-page-wrapper">
                     <div id="timelines-wrapper">
-                        <app-single-timeline [timelineData]="uploadedXmlTimelineData"> <!-- [apiResponse]="uploadedXmlsResponse" [data]="uploadedXmls" -->
+                        <app-single-timeline [timelineData]="uploadedXmlTimelineData">
+                            <!-- [apiResponse]="uploadedXmlsResponse" [data]="uploadedXmls" -->
                         </app-single-timeline>
                     </div>
                 </div>

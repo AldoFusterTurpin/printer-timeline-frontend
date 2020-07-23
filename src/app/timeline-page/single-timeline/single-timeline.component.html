@@ -78,7 +78,8 @@
                     <mat-card-header>
                         <!-- <div mat-card-avatar class="timeline-element-image"></div> -->
                         <div mat-card-avatar>
-                            <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details">
+                            <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details" 
+                                    (click)="this.showDetails(element)">
                                 <mat-icon svgIcon="xml" class="icon-display"></mat-icon>
                             </button>
                         </div>

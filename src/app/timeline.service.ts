@@ -14,13 +14,11 @@ export class TimelineService {
   private timeRangeSource = new ReplaySubject<Object>(1);
   timeRangeData = this.timeRangeSource.asObservable();
 
+  private detailsSource = new Subject<JSON>();
+  detailsData = this.detailsSource.asObservable();
+
   private dataSource = new Subject<JSON>();
   uploadedXmlData = this.dataSource.asObservable();
-
-  /* unused:
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  }; */
 
   public setTimeRange(start: Date, end: Date): Observable<any> {
     let timeRange = {
@@ -28,13 +26,22 @@ export class TimelineService {
       'end': end
     };
 
-
     return of(timeRange)
       .pipe(
         tap((res) => { 
           this.timeRangeSource.next(res); 
         }),
         catchError(this.handleError<any>('setTimeRange'))
+      );
+  }
+
+  public emitDetails(details): Observable<any> {
+    return of(details)
+      .pipe(
+        tap((res) => { 
+          this.detailsSource.next(res); 
+        }),
+        catchError(this.handleError<any>('emitDetails'))
       );
   }
 
