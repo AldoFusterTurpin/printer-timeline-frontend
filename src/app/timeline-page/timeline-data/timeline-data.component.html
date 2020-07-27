@@ -4,7 +4,7 @@
     <div>
         <mat-sidenav-container>
             <mat-sidenav #sidenav mode="side" opened="false" position="end">
-                <button id="close-sidenav-button" mat-raised-button color="accent" (click)="sidenav.close();">Close
+                <button id="close-sidenav-button" mat-raised-button color="accent" (click)="sidenav.close()">Close
                 </button>
 
                 <h4>Details</h4>
@@ -15,7 +15,8 @@
                     <p><b>PN</b> {{details[1]['Value']}}</p>
                     <p><b>SN</b> {{details[2]['Value']}}</p>
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
-                    <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file">
+                    <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file" 
+                            (click)="downloadFile(details[4]['Value'], details[3]['Value'], details[5]['Value'])">
                         <mat-icon class="icon-display">cloud_download</mat-icon>
                     </button>
                 </div>

@@ -17,6 +17,9 @@ export class TimelineService {
   private detailsSource = new Subject<JSON>();
   detailsData = this.detailsSource.asObservable();
 
+  private S3Source = new Subject<JSON>();
+  S3Data = this.S3Source.asObservable();
+
   private dataSource = new Subject<JSON>();
   uploadedXmlData = this.dataSource.asObservable();
 
@@ -53,6 +56,17 @@ export class TimelineService {
           this.dataSource.next(res);
         }),
         catchError(this.handleError<any>('getUploadedXmls'))
+      );
+  }
+
+  public getS3Object(bucket_region: string, bucket_name: string, object_key: string): Observable<any> {
+    const url = `${this.apiUrl}/object?bucket_region=${bucket_region}&bucket_name=${bucket_name}&object_key=${object_key}`;
+    return this.http.get<any>(url)
+      .pipe(
+        tap((res) => {
+          this.S3Source.next(res);
+        }),
+        catchError(this.handleError<any>('getS3Object'))
       );
   }
 

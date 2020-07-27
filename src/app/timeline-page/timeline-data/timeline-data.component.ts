@@ -14,6 +14,9 @@ export class TimelineDataComponent implements AfterViewInit {
 
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
+  public S3ObjectSubscription: Subscription;
+  public S3Object;
+
   public detailsSubscription: Subscription;
   public details = null;
 
@@ -35,6 +38,17 @@ export class TimelineDataComponent implements AfterViewInit {
         this.sidenav.open();
         console.log(this.details);
       })
+
+      this.S3ObjectSubscription = this.timelineService.S3Data.subscribe(
+        (data: any) => {
+          this.S3Object = data;
+          console.log(typeof this.S3Object);
+          console.log(this.S3Object);
+        })
+  }
+
+  public downloadFile(bucket_region: string, bucket_name: string, object_key: string) {
+    this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
   }
 
   ngOnDestroy(): void {
