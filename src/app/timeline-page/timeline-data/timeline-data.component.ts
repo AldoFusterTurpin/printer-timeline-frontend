@@ -12,7 +12,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class TimelineDataComponent implements AfterViewInit {
 
-  @ViewChild('sidenav') public sidenav: MatSidenav;
+  @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
+  @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
 
   public S3ObjectSubscription: Subscription;
   public S3Object;
@@ -35,19 +36,19 @@ export class TimelineDataComponent implements AfterViewInit {
     this.detailsSubscription = this.timelineService.detailsData.subscribe(
       (data: any) => {
         this.details = data;
-        this.sidenav.open();
+        this.rightSidenav.open();
         console.log(this.details);
       })
 
-      this.S3ObjectSubscription = this.timelineService.S3Data.subscribe(
-        (data: any) => {
-          this.S3Object = data;
-          console.log(typeof this.S3Object);
-          console.log(this.S3Object);
-        })
+    this.S3ObjectSubscription = this.timelineService.S3Data.subscribe(
+      (data: any) => {
+        this.S3Object = data;
+        this.leftSidenav.open();
+        console.log(this.S3Object);
+      })
   }
 
-  public downloadFile(bucket_region: string, bucket_name: string, object_key: string) {
+  public getStoredObject(bucket_region: string, bucket_name: string, object_key: string) {
     this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
   }
 

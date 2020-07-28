@@ -2,9 +2,14 @@
 
 <ng-template #dataReady>
     <div>
-        <mat-sidenav-container>
-            <mat-sidenav #sidenav mode="side" opened="false" position="end">
-                <button id="close-sidenav-button" mat-raised-button color="accent" (click)="sidenav.close()">Close
+        <!-- 
+            if 'height: 100vh' is set in CSS, the tex "Close" of the close button of the left sidenav 
+            is sometimes empty (an unexpected thing). That's why the style is here inline. 
+        --> 
+        <mat-sidenav-container style="height:'100vh'">
+            <mat-sidenav #rightSidenav mode="side" opened="false" position="end">
+                <button class="close-sidenav-button" mat-raised-button color="accent"
+                    (click)="rightSidenav.close()">Close
                 </button>
 
                 <h4>Details</h4>
@@ -15,11 +20,25 @@
                     <p><b>PN</b> {{details[1]['Value']}}</p>
                     <p><b>SN</b> {{details[2]['Value']}}</p>
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
-                    <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download file" 
-                            (click)="downloadFile(details[4]['Value'], details[3]['Value'], details[5]['Value'])">
+                    <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Preview"
+                        (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value'])">
+                        <mat-icon class="icon-display">preview</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download">
                         <mat-icon class="icon-display">cloud_download</mat-icon>
                     </button>
                 </div>
+            </mat-sidenav>
+
+            <mat-sidenav class="custom-sidenav-container" #leftSidenav mode="over" opened="false" position="start">
+                <button class="close-sidenav-button" mat-raised-button color="accent"
+                    (click)="leftSidenav.close()">Close <!-- TODO: add space below -->
+                </button>
+
+                <div *ngIf="S3Object !== undefined && S3Object !== null">
+                    {{S3Object}}
+                </div>  
             </mat-sidenav>
 
             <mat-sidenav-content>
