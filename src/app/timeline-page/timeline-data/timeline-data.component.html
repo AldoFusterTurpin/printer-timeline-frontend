@@ -1,5 +1,5 @@
 
-<mat-spinner style="margin:0 auto;" *ngIf="loading; else dataReady"></mat-spinner>
+<mat-spinner style="margin:0 auto;" *ngIf="loadingSpinner; else dataReady"></mat-spinner>
 
 <ng-template #dataReady>
     <div>
@@ -21,6 +21,7 @@
                     <p><b>PN</b> {{details[1]['Value']}}</p>
                     <p><b>SN</b> {{details[2]['Value']}}</p>
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
+
                     <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Preview"
                         (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value'])">
                         <mat-icon class="icon-display">preview</mat-icon>
@@ -30,12 +31,13 @@
                         <mat-icon class="icon-display">cloud_download</mat-icon>
                     </button>
                 </div>
+
+                <mat-progress-bar *ngIf="loadingS3Object" mode="indeterminate" color="primary"> </mat-progress-bar>
             </mat-sidenav>
 
             <mat-sidenav class="custom-sidenav-container" #leftSidenav mode="over" opened="false" position="start">
-                <button class="close-sidenav-button" mat-raised-button color="accent"
+                <button id ="close-left-sidenav-button" class="close-sidenav-button" mat-raised-button color="accent"
                     (click)="leftSidenav.close()">Close
-                    <!-- TODO: add space below -->
                 </button>
 
                 <div *ngIf="S3Object !== undefined && S3Object !== null">

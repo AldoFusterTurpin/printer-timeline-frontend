@@ -12,7 +12,8 @@ import { error } from 'protractor';
   styleUrls: ['./timeline-data.component.scss']
 })
 export class TimelineDataComponent implements AfterViewInit {
-  public loading = true;
+  public loadingSpinner = true;
+  public loadingS3Object = false;
 
   public httpOpenXmlError;
 
@@ -36,12 +37,12 @@ export class TimelineDataComponent implements AfterViewInit {
         let tableDescription = 'Printers sent ' + ElementType.OpenXml + 'files in the selected time range';
         this.uploadedXmlTimelineData = new TimelineData(data, ElementType.OpenXml, tableDescription);
 
-        this.loading = false;
+        this.loadingSpinner = false;
       }, 
       (err) => { 
         this.httpOpenXmlError = err;
 
-        this.loading = false;
+        this.loadingSpinner = false;
 
         console.log(this.httpOpenXmlError);
       });
@@ -56,12 +57,20 @@ export class TimelineDataComponent implements AfterViewInit {
       });
   }
 
+  public getStoredObject(bucket_region: string, bucket_name: string, object_key: string) {
+    this.loadingS3Object = true; 
+    this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
+  }
+
   public setS3ObjectSubscription() {
     this.S3ObjectSubscription = this.timelineService.S3Data.subscribe(
       (data: any) => {
         this.S3Object = data;
         this.leftSidenav.open();
+        
         console.log(this.S3Object);
+
+        this.loadingS3Object = false;
       });
   }
 
@@ -71,9 +80,6 @@ export class TimelineDataComponent implements AfterViewInit {
     this.setS3ObjectSubscription();
   }
 
-  public getStoredObject(bucket_region: string, bucket_name: string, object_key: string) {
-    this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
-  }
 
   ngOnDestroy(): void {
     this.uploadedXmlSubscription.unsubscribe();
