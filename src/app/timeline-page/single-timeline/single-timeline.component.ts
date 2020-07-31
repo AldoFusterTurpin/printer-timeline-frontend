@@ -2,7 +2,7 @@ import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges } fro
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSnackBar, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 import { TimelineData } from '../../../../timelineData';
 import { TimelineService } from '../../timeline.service';
 
@@ -22,7 +22,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   public tableDataSource = null;
   public tableLength = 0;
 
-  public selectedData = null;
+  public selectedData = [];
 
   private tablePaginator: MatPaginator;
 
@@ -62,28 +62,35 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
   constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
-    });
-  }
-
   ngOnInit(): void {
     let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
     this.tableLength = tableData.length;
 
     this.tableDataSource = new MatTableDataSource(tableData);
 
-    this.masterToggle();
+    //uncomment line below to check all the checkboxes of table on init 
+    //this.masterToggle();
   }
 
   ngAfterViewInit(): void {
     this.tableDataSource.paginator = this.tablePaginator;
+
+    let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply checkboxes filter' to see the changes";
+    let action = 'Got it!';
+    let durationMs =  20000;
+    let verticalPosition: MatSnackBarVerticalPosition = 'top';
+    this._snackBar.open(message, action, {
+      duration: durationMs,
+      verticalPosition: verticalPosition,
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['timelineData']) {
-      this.selectedData = this.timelineData.apiResponse['Results'];
+      /* uncomment line below if want to show all the timeline elements on init or
+      keep it commented and user will select different pn!sn */
+
+      //this.selectedData = this.timelineData.apiResponse['Results'];
     }
   }
 
@@ -169,7 +176,13 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
       let set = this.createSetOfPrintersFromArrayOfSelectedElements(selectedValues);
       this.selectedData = this.createSelectedDataFromSet(set);
       this.showProgressBar = false;
-      this.openSnackBar('Data ready below ⬇', 'Got it!');
+
+      let message = 'Data ready below ⬇';
+      let action = 'Got it!';
+      let durationMs =  4000;
+      this._snackBar.open(message, action, {
+        duration: durationMs
+      });
     }, 1500);
   }
 
