@@ -308,9 +308,6 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     const startDate = timeRange.start;
     const endDate = timeRange.end;
 
-    //console.log(startDate);
-    //console.log(endDate);
-
     const startEpoch = Math.round(startDate.getTime() / 1000);
     const endEpoch = Math.round(endDate.getTime() / 1000);
 

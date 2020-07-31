@@ -1,11 +1,5 @@
 
-<mat-spinner style="margin:0 auto;" *ngIf="uploadedXmlTimelineData === undefined; else dataReady"></mat-spinner>
-
-<div *ngIf="myError !== undefined;" style="margin:0 auto;">
-    <p>Response status code: {{myError?.status}}</p>
-    <p>Response status text: {{myError?.statusText}}</p>
-    <p>Response error: {{myError?.error}}</p>
-</div>
+<mat-spinner style="margin:0 auto;" *ngIf="loading; else dataReady"></mat-spinner>
 
 <ng-template #dataReady>
     <div>
@@ -52,9 +46,21 @@
             <mat-sidenav-content>
                 <div id="timeline-page-wrapper">
                     <div id="timelines-wrapper">
-                        <div *ngIf="(uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null)">
-                            <app-single-timeline [timelineData]="uploadedXmlTimelineData">
-                            </app-single-timeline>
+                        <div id="openxml-section">
+                            <p> <strong>OpenXml</strong> section</p>
+                            <div *ngIf="myError !== undefined;">
+                                <p>Response status code: {{myError?.status}}</p>
+                                <p>Response status text: {{myError?.statusText}}</p>
+                                <p>Response error: {{myError?.error}}</p>
+                            </div>
+    
+                            <div *ngIf="(uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null)">
+                                <app-single-timeline [timelineData]="uploadedXmlTimelineData">
+                                </app-single-timeline>
+                            </div>
+                            
+                            <hr class="solid">
+
                         </div>
                     </div>
                 </div>

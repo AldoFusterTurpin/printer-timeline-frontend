@@ -12,6 +12,8 @@ import { error } from 'protractor';
   styleUrls: ['./timeline-data.component.scss']
 })
 export class TimelineDataComponent implements AfterViewInit {
+  public loading = true;
+
   public myError;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
@@ -34,10 +36,13 @@ export class TimelineDataComponent implements AfterViewInit {
         let tableDescription = 'Printers sent ' + ElementType.OpenXml + 'files in the selected time range';
         this.uploadedXmlTimelineData = new TimelineData(data, ElementType.OpenXml, tableDescription);
 
-        console.log(this.uploadedXmlTimelineData);
+        this.loading = false;
       }, 
       (err) => { 
         this.myError = err;
+
+        this.loading = false;
+
         console.log(this.myError);
       });
   }
