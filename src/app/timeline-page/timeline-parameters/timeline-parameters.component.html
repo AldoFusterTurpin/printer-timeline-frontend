@@ -28,7 +28,7 @@
             <div>
                 <div *ngFor="let control of filesControl.controls; let i = index">
                     <mat-checkbox color="primary" (change)="getSelectedFiles()" [formControl]="control"
-                        id="inlineCheckbox_{{i}}"> </mat-checkbox>
+                        id="inlineCheckbox_{{i}}" [matTooltip]="filesToolTips[i]"> </mat-checkbox>
                     <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
                 </div>
             </div>
@@ -39,7 +39,7 @@
             <div>
                 <div *ngFor="let control of requestsControl.controls; let i = index">
                     <mat-checkbox color="primary" (change)="getSelectedRequests()" [formControl]="control"
-                        id="inlineCheckbox2_{{i}}"> </mat-checkbox>
+                        id="inlineCheckbox2_{{i}}" [matTooltip]="requestsToolTips[i]"> </mat-checkbox>
                     <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
                 </div>
             </div>
@@ -49,7 +49,7 @@
             <h4 id="others-header">Others</h4>
             <div *ngFor="let control of othersControl.controls; let i = index">
                 <mat-checkbox color="primary" (change)="getSelectedOthers()" [formControl]="control"
-                    id="inlineCheckbox3_{{i}}"> </mat-checkbox>
+                    id="inlineCheckbox3_{{i}}" [matTooltip]="othersToolTips[i]"> </mat-checkbox>
                 <label class="" for="inlineCheckbox{{i}}">{{others[i]}}</label>
             </div>
         </div>
