@@ -47,18 +47,18 @@
                 <div id="timeline-page-wrapper">
                     <div id="timelines-wrapper">
                         <div id="openxml-section">
-                            <p> <strong>OpenXml</strong> section</p>
-                            <div *ngIf="myError !== undefined;">
-                                <p>Response status code: {{myError?.status}}</p>
-                                <p>Response status text: {{myError?.statusText}}</p>
-                                <p>Response error: {{myError?.error}}</p>
+                            <p> <strong>OpenXML</strong> section</p>
+                            <div *ngIf="httpOpenXmlError !== undefined;">
+                                <p>Response status code: {{httpOpenXmlError?.status}}</p>
+                                <p>Response status text: {{httpOpenXmlError?.statusText}}</p>
+                                <p>Response error: {{httpOpenXmlError?.error}}</p>
                             </div>
     
                             <div *ngIf="(uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null)">
                                 <app-single-timeline [timelineData]="uploadedXmlTimelineData">
                                 </app-single-timeline>
                             </div>
-                            
+
                             <hr class="solid">
 
                         </div>

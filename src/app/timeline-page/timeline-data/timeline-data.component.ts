@@ -14,7 +14,7 @@ import { error } from 'protractor';
 export class TimelineDataComponent implements AfterViewInit {
   public loading = true;
 
-  public myError;
+  public httpOpenXmlError;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
   @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
@@ -39,11 +39,11 @@ export class TimelineDataComponent implements AfterViewInit {
         this.loading = false;
       }, 
       (err) => { 
-        this.myError = err;
+        this.httpOpenXmlError = err;
 
         this.loading = false;
 
-        console.log(this.myError);
+        console.log(this.httpOpenXmlError);
       });
   }
 
