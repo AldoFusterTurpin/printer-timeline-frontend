@@ -308,8 +308,8 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     const startDate = timeRange.start;
     const endDate = timeRange.end;
 
-    console.log(startDate);
-    console.log(endDate);
+    //console.log(startDate);
+    //console.log(endDate);
 
     const startEpoch = Math.round(startDate.getTime() / 1000);
     const endEpoch = Math.round(endDate.getTime() / 1000);
@@ -328,7 +328,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    console.log(this.myForm.value);
+    //console.log(this.myForm.value);
 
     this.formSubmited.emit(true);
 

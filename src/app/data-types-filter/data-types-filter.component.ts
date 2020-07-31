@@ -57,6 +57,6 @@ export class DataTypesFilterComponent {
   }
 
   public submitForm() {
-    console.log(this.myForm.value)
+    //console.log(this.myForm.value)
   }
 }
