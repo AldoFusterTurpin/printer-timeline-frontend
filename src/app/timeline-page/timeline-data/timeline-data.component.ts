@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { TimelineData } from 'timelineData';
 import { ElementType } from 'ElementType';
 import { MatSidenav } from '@angular/material/sidenav';
-import { error } from 'protractor';
 
 @Component({
   selector: 'app-timeline-data',
@@ -12,10 +11,14 @@ import { error } from 'protractor';
   styleUrls: ['./timeline-data.component.scss']
 })
 export class TimelineDataComponent implements AfterViewInit {
+  elementType = ElementType;
+  
   public loadingSpinner = true;
   public loadingS3Object = false;
 
   public httpOpenXmlError;
+
+  public httpS3Error;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
   @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
@@ -34,8 +37,9 @@ export class TimelineDataComponent implements AfterViewInit {
   private setUploadedXmlSubscription() {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
       (data: any) => {
-        let tableDescription = 'Printers sent ' + ElementType.OpenXml + 'files in the selected time range';
-        this.uploadedXmlTimelineData = new TimelineData(data, ElementType.OpenXml, tableDescription);
+        let type = ElementType.OpenXml;
+        let tableDescription = 'Printers sent ' + type + 'files in the selected time range';
+        this.uploadedXmlTimelineData = new TimelineData(data, type, tableDescription);
 
         this.loadingSpinner = false;
       }, 
@@ -71,6 +75,13 @@ export class TimelineDataComponent implements AfterViewInit {
         console.log(this.S3Object);
 
         this.loadingS3Object = false;
+      }, 
+      (err) => { 
+        this.httpS3Error = err;
+
+        this.loadingS3Object = false;
+
+        console.log(this.httpS3Error);
       });
   }
 

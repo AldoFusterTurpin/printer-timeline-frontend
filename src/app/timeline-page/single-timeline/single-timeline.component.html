@@ -54,9 +54,8 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
 
-                <mat-paginator [length]="tableLength" [pageSize]="5" 
-                                [pageSizeOptions]="[5,10, 20, 50, 100]"
-                                showFirstLastButtons>
+                <mat-paginator [length]="tableLength" [pageSize]="5" [pageSizeOptions]="[5,10, 20, 50, 100]"
+                    showFirstLastButtons>
                 </mat-paginator>
             </div>
 
@@ -80,9 +79,12 @@
                     <mat-card-header>
                         <!-- <div mat-card-avatar class="timeline-element-image"></div> -->
                         <div mat-card-avatar>
-                            <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details" 
-                                    (click)="this.showDetails(element)">
-                                <mat-icon svgIcon="xml" class="icon-display"></mat-icon>
+                            <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details"
+                                (click)="this.showDetails(element)">
+                                <div [ngSwitch]="timelineData.elementName">
+                                    <mat-icon *ngSwitchCase="elementType.OpenXml" svgIcon="xml" class="icon-display">
+                                    </mat-icon>
+                                </div>
                             </button>
                         </div>
                         <mat-card-title>{{element[0]['Value']}}</mat-card-title>

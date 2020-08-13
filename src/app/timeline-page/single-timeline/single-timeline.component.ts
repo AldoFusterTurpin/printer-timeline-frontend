@@ -3,7 +3,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatSnackBar, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+
 import { TimelineData } from '../../../../timelineData';
+import { ElementType } from 'ElementType';
 import { TimelineService } from '../../timeline.service';
 
 @Component({
@@ -12,6 +14,8 @@ import { TimelineService } from '../../timeline.service';
   styleUrls: ['./single-timeline.component.scss']
 })
 export class SingleTimelineComponent implements OnInit, AfterViewInit {
+  elementType = ElementType;
+
   @Input() timelineData: TimelineData;
 
   public showProgressBar: boolean = false;
@@ -88,7 +92,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['timelineData']) {
       /* uncomment line below if want to show all the timeline elements on init or
-      keep it commented and user will select different pn!sn */
+      keep it commented and user will select different pn!sn to show them */
 
       //this.selectedData = this.timelineData.apiResponse['Results'];
     }
@@ -148,7 +152,6 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
       let key = element['pn!sn'];
       set.add(key);
     }
-
     return set;
   }
 
@@ -164,7 +167,6 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
         selectedData.push(element);
       }
     }
-
     return selectedData;
   }
 
@@ -179,9 +181,8 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
       let message = 'Data ready below ⬇';
       let action = 'Got it!';
-      let durationMs =  4000;
       this._snackBar.open(message, action, {
-        duration: durationMs
+        duration: 5000
       });
     }, 1500);
   }
