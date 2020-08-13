@@ -190,4 +190,10 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   public showDetails(element) {
     this.timelineService.emitDetails(element).subscribe();
   }
+
+  public stringDateToDateObject(inputDate: string): Date {
+    let ISO8601DateString = inputDate.replace(' ', 'T') + 'Z';
+    const date = new Date(ISO8601DateString);
+    return date;
+  }
 }

@@ -12,12 +12,11 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class TimelineDataComponent implements AfterViewInit {
   elementType = ElementType;
-  
+
   public loadingSpinner = true;
   public loadingS3Object = false;
 
   public httpOpenXmlError;
-
   public httpS3Error;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
@@ -94,5 +93,12 @@ export class TimelineDataComponent implements AfterViewInit {
 
   ngOnDestroy(): void {
     this.uploadedXmlSubscription.unsubscribe();
+  }
+
+  //TODO: move this function to a common file because is duplicated in single-timeline.component.ts
+  public stringDateToDateObject(inputDate: string): Date {
+    let ISO8601DateString = inputDate.replace(' ', 'T') + 'Z';
+    const date = new Date(ISO8601DateString);
+    return date;
   }
 }

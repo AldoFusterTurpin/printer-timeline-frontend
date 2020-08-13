@@ -16,7 +16,7 @@
                 <hr class="solid">
 
                 <div *ngIf="details !== undefined && details !== null">
-                    <p><b>Timestamp</b> {{details[0]['Value']}}</p>
+                    <p><b>Timestamp</b> {{ stringDateToDateObject(details[0]['Value']).toString() }}</p>
                     <p><b>PN</b> {{details[1]['Value']}}</p>
                     <p><b>SN</b> {{details[2]['Value']}}</p>
                     <p><b>Topic</b> {{details[6]['Value']}}</p>

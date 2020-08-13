@@ -77,7 +77,6 @@
             <div *ngFor="let element of selectedData; let i = index">
                 <mat-card class="example-card">
                     <mat-card-header>
-                        <!-- <div mat-card-avatar class="timeline-element-image"></div> -->
                         <div mat-card-avatar>
                             <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details"
                                 (click)="this.showDetails(element)">
@@ -86,8 +85,9 @@
                                     </mat-icon>
                                 </div>
                             </button>
-                        </div>
-                        <mat-card-title>{{element[0]['Value']}}</mat-card-title>
+                        </div> 
+                        <!-- TODO: idea: add some separator when whe change of minute to have a nice view  -->
+                        <mat-card-title>{{ stringDateToDateObject(element[0]['Value']).toTimeString().slice(0, 8) }}</mat-card-title>
                         <mat-card-subtitle>#{{i}}</mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>
