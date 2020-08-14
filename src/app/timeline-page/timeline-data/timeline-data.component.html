@@ -16,7 +16,7 @@
                 <hr class="solid">
 
                 <div *ngIf="details !== undefined && details !== null">
-                    <p><b>Timestamp</b> {{ stringDateToDateObject(details[0]['Value']).toString() }}</p>
+                    <p><b>Timestamp</b> {{ stringDateToDateObject(details[0]['Value']).toISOString().slice(0, -1).replace('T', ' ') }}</p>
                     <p><b>PN</b> {{details[1]['Value']}}</p>
                     <p><b>SN</b> {{details[2]['Value']}}</p>
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
@@ -39,11 +39,13 @@
                     (click)="leftSidenav.close()">Close preview
                 </button>
 
+                <!-- TODO: is this bloc correct? Should be S3error instead? -->
                 <div *ngIf="httpOpenXmlError !== undefined;">
                     <p>Response status code: {{httpOpenXmlError?.status}}</p>
                     <p>Response status text: {{httpOpenXmlError?.statusText}}</p>
                     <p>Response error: {{httpOpenXmlError?.error}}</p>
                 </div>
+                <!-- -------------------------------------------------------- -->
 
                 <div *ngIf="S3Object !== undefined && S3Object !== null">
                     {{S3Object}}

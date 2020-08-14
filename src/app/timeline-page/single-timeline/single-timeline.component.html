@@ -3,7 +3,7 @@
         <mat-expansion-panel #detailsPanel expanded="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    {{timelineData.elementName}} summary table
+                    {{timelineData?.elementName}} summary table
                 </mat-panel-title>
                 <mat-panel-description>
                     Click me!
@@ -11,7 +11,7 @@
             </mat-expansion-panel-header>
 
             <div>
-                <p style="text-align: center;"><b>{{tableLength}}</b> {{timelineData.tableDescription}}</p>
+                <p style="text-align: center;"><b>{{tableLength}}</b> {{timelineData?.tableDescription}}</p>
                 <mat-form-field>
                     <mat-label>Filter table rows</mat-label>
                     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. K4G10A!SG58P1R001" #input>
@@ -69,7 +69,7 @@
 
     <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate" color="primary"> </mat-progress-bar>
 
-    <p>Found {{timelineData.apiResponse['Results'].length}} {{timelineData.elementName}}s in total (showing
+    <p>Found {{timelineData?.apiResponse['Results'].length}} {{timelineData?.elementName}}s in total (showing
         {{selectedData.length}} elements):</p>
 
     <div id="single-timeline-list">
@@ -80,14 +80,15 @@
                         <div mat-card-avatar>
                             <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details"
                                 (click)="this.showDetails(element)">
-                                <div [ngSwitch]="timelineData.elementName">
+                                <div [ngSwitch]="timelineData?.elementName">
                                     <mat-icon *ngSwitchCase="elementType.OpenXml" svgIcon="xml" class="icon-display">
                                     </mat-icon>
                                 </div>
                             </button>
                         </div> 
                         <!-- TODO: idea: add some separator when whe change of minute to have a nice view  -->
-                        <mat-card-title>{{ stringDateToDateObject(element[0]['Value']).toTimeString().slice(0, 8) }}</mat-card-title>
+                        <!-- TODO: when the hour of the current element is different to the previous, show the hour -->
+                        <mat-card-title>{{ stringDateToDateObject(element[0]['Value']).toISOString().slice(11, -1) }}</mat-card-title>
                         <mat-card-subtitle>#{{i}}</mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>

@@ -67,17 +67,20 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    /* three lines above moved to ngOnChanges function
     let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
     this.tableLength = tableData.length;
-
     this.tableDataSource = new MatTableDataSource(tableData);
+    */
 
     //uncomment line below to check all the checkboxes of table on init 
     //this.masterToggle();
   }
 
   ngAfterViewInit(): void {
-    this.tableDataSource.paginator = this.tablePaginator;
+    if (this.tableDataSource) {
+      this.tableDataSource.paginator = this.tablePaginator;
+    }
 
     let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply checkboxes filter' to see the changes";
     let action = 'Got it!';
@@ -91,9 +94,12 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['timelineData']) {
-      /* uncomment line below if want to show all the timeline elements on init or
-      keep it commented and user will select different pn!sn to show them */
+      
+      let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
+      this.tableLength = tableData.length;
+      this.tableDataSource = new MatTableDataSource(tableData);
 
+      /* uncomment line below if want to show all the timeline elements on init  */
       //this.selectedData = this.timelineData.apiResponse['Results'];
     }
   }

@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimelineDataComponent } from './timeline-data.component';
+import { TimelineService } from 'src/app/timeline.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('TimelineDataComponent', () => {
   let component: TimelineDataComponent;
@@ -8,7 +10,8 @@ describe('TimelineDataComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimelineDataComponent ]
+      declarations: [ TimelineDataComponent],
+      providers: [TimelineService, HttpClient, HttpHandler],
     })
     .compileComponents();
   }));

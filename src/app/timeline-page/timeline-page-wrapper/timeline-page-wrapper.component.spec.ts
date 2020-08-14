@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimelinePageWrapperComponent } from './timeline-page-wrapper.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TimelinePageWrapperComponent', () => {
   let component: TimelinePageWrapperComponent;
@@ -8,7 +9,8 @@ describe('TimelinePageWrapperComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimelinePageWrapperComponent ]
+      declarations: [ TimelinePageWrapperComponent ],
+      imports: [HttpClientTestingModule], 
     })
     .compileComponents();
   }));
