@@ -3,7 +3,7 @@
 
     <mat-form-field appearance="outline">
         <mat-label>Data to display</mat-label>
-        <mat-select multiple formControlName="dataTypes" panelOpen="True">
+        <mat-select ngDefaultControl multiple formControlName="dataTypes" panelOpen="True">
             <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
                 <mat-option *ngFor="let d of group.data" [value]="d.value">
                     {{d.viewValue}}

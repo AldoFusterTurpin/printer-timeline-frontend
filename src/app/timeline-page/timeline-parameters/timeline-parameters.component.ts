@@ -7,7 +7,7 @@ import { TimelineService } from '../../timeline.service';
 @Component({
   selector: 'app-timeline-parameters',
   templateUrl: './timeline-parameters.component.html',
-  styleUrls: ['./timeline-parameters.component.scss']
+  styleUrls: ['./timeline-parameters.component.scss'],
 })
 export class TimelineParametersComponent implements OnInit, OnDestroy {
 
@@ -212,7 +212,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   public minDate: Date = this.createMinDate();
   public maxDate: Date = new Date();
 
-  //must be last thing to do. If not, it can exist variables with values not initialized
+  //must be last thing to do. If not, can exist some variables with values not initialized.
   public myForm: FormGroup = this.createForm();
 
   public getSelectedFiles() {
@@ -278,6 +278,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
+      console.log(this.myForm.value);
     });
   }
 
