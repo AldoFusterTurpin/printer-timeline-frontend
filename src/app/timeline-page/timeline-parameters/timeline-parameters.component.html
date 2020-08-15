@@ -4,7 +4,7 @@
         <div id="printer-info-elements">
             <mat-form-field id="product-number">
                 <mat-label>Product Number (Pn)</mat-label>
-                <input ngDefaultControl matInput formControlName="_PnControl">
+                <input matInput formControlName="_PnControl">
                 <mat-error *ngIf="formControlhasError('_PnControl', 'required')">
                     This field is required
                 </mat-error>
@@ -12,7 +12,7 @@
 
             <mat-form-field id="serial-number">
                 <mat-label>Serial Number (Sn)</mat-label>
-                <input ngDefaultControl matInput formControlName="_SnControl">
+                <input matInput formControlName="_SnControl">
                 <mat-error *ngIf="formControlhasError('_SnControl', 'required')">
                     This field is required
                 </mat-error>
@@ -27,12 +27,8 @@
             <h4 id="files-header">Files</h4>
             <div>
                 <div *ngFor="let control of filesControl.controls; let i = index">
-                    <mat-checkbox ngDefaultControl color="primary" 
-                                (change)="getSelectedFiles()" 
-                                [formControl]="control"
-                                id="inlineCheckbox_{{i}}" 
-                                [matTooltip]="filesToolTips[i]" 
-                                matTooltipPosition="before"> 
+                    <mat-checkbox ngDefaultControl color="primary" (change)="getSelectedFiles()" [formControl]="control"
+                        id="inlineCheckbox_{{i}}" [matTooltip]="filesToolTips[i]" matTooltipPosition="before">
                     </mat-checkbox>
                     <label class="" for="inlineCheckbox{{i}}">{{files[i]}}</label>
                 </div>
@@ -43,12 +39,9 @@
             <h4 id="requests-headers">Requests</h4>
             <div>
                 <div *ngFor="let control of requestsControl.controls; let i = index">
-                    <mat-checkbox  ngDefaultControl color="primary" 
-                                (change)="getSelectedRequests()" 
-                                [formControl]="control"
-                                id="inlineCheckbox2_{{i}}" 
-                                [matTooltip]="requestsToolTips[i]"
-                                matTooltipPosition="below"> 
+                    <mat-checkbox ngDefaultControl color="primary" (change)="getSelectedRequests()"
+                        [formControl]="control" id="inlineCheckbox2_{{i}}" [matTooltip]="requestsToolTips[i]"
+                        matTooltipPosition="below">
                     </mat-checkbox>
                     <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
                 </div>
@@ -58,13 +51,8 @@
         <div id="others-block" class="checkboxes">
             <h4 id="others-header">Others</h4>
             <div *ngFor="let control of othersControl.controls; let i = index">
-                <mat-checkbox ngDefaultControl 
-                            color="primary" 
-                            (change)="getSelectedOthers()" 
-                            [formControl]="control"
-                            id="inlineCheckbox3_{{i}}" 
-                            [matTooltip]="othersToolTips[i]"
-                            matTooltipPosition="below"> 
+                <mat-checkbox ngDefaultControl color="primary" (change)="getSelectedOthers()" [formControl]="control"
+                    id="inlineCheckbox3_{{i}}" [matTooltip]="othersToolTips[i]" matTooltipPosition="below">
                 </mat-checkbox>
                 <label class="" for="inlineCheckbox{{i}}">{{others[i]}}</label>
             </div>
@@ -75,38 +63,30 @@
         <h2>Time range</h2>
 
         <div id="time-type">
-            <mat-radio-group ngDefaultControl formControlName="_typeOfDateControl" aria-label="Select an option" color="primary">
+            <mat-radio-group ngDefaultControl formControlName="_typeOfDateControl" aria-label="Select an option"
+                color="primary">
                 <mat-radio-button value="relative">Relative</mat-radio-button>
                 <mat-radio-button value="absolute">Absolute</mat-radio-button>
-            </mat-radio-group>  
-
-            <!-- <div>
-                <input id="rel" type="radio" value="relative" formControlName="_typeOfDateControl">
-                <label for="rel">Relative</label>
-             </div>
-          
-             <div>
-                <input id="abs" type="radio" value="absolute" formControlName="_typeOfDateControl">
-                <label for="abs">Absolute</label>
-             </div> -->
+            </mat-radio-group>
         </div>
 
         <div id="relative-time-block" *ngIf="typeOfDateControl.value === 'relative'; else absoluteTime">
             <p>Last</p>
             <mat-form-field id="relative-time-value">
                 <mat-label>Time value </mat-label>
-                <input matInput ngDefaultControl formControlName="_relativeTimeValueControl" pattern="[0-9]*" placeholder="Ex. 15">
+                <input matInput formControlName="_relativeTimeValueControl" pattern="[0-9]*"
+                    placeholder="Ex. 15">
 
-                <mat-error ngDefaultControl *ngIf="relativeValueTooBig">
+                <mat-error *ngIf="relativeValueTooBig">
                     Value is too big
                 </mat-error>
 
-                <mat-error ngDefaultControl
+                <mat-error
                     *ngIf="!formControlhasError('_relativeTimeValueControl', 'required') && !this.allCharsAreNumbers(this.relativeTimeValueControl.value)">
                     Unsupported chars
                 </mat-error>
 
-                <mat-error ngDefaultControl *ngIf="formControlhasError('_relativeTimeValueControl', 'required')">
+                <mat-error *ngIf="formControlhasError('_relativeTimeValueControl', 'required')">
                     This field is required
                 </mat-error>
 
@@ -133,7 +113,8 @@
                     <div id="start-date-selector">
                         <mat-form-field>
                             <mat-label>Start date</mat-label>
-                            <input ngDefaultControl matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" formControlName="_absoluteDateStartControl" placeholder="MM/DD/YYYY">
+                            <input  matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1"
+                                formControlName="_absoluteDateStartControl" placeholder="MM/DD/YYYY">
                             <mat-hint>Max: 1 month ago</mat-hint>
                             <mat-datepicker-toggle matSuffix [for]="picker1" class="date-icon"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
@@ -142,7 +123,8 @@
 
                     <div id="start-time-selector">
                         <!-- https://github.com/Agranom/ngx-material-timepicker#ngxtimepickerfieldcomponent -->
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" ngDefaultControl formControlName="_absoluteTimeStartControl" [defaultTime]="this.initialStartTime">
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24" 
+                            formControlName="_absoluteTimeStartControl" [defaultTime]="this.initialStartTime">
                         </ngx-timepicker-field>
                         <p class="utc">Local</p>
                     </div>
@@ -152,7 +134,7 @@
                     <div id="end-date-selector">
                         <mat-form-field>
                             <mat-label>End date</mat-label>
-                            <input ngDefaultControl matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker2"
+                            <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker2"
                                 formControlName="_absoluteDateEndControl" placeholder="MM/DD/YYYY">
                             <mat-hint>Max: 1 month ago</mat-hint>
                             <mat-datepicker-toggle matSuffix [for]="picker2" class="date-icon"></mat-datepicker-toggle>
@@ -162,7 +144,7 @@
 
                     <div id="end-time-selector">
                         <!-- https://github.com/Agranom/ngx-material-timepicker#ngxtimepickerfieldcomponent -->
-                        <ngx-timepicker-field [controlOnly]="true" [format]="24" ngDefaultControl
+                        <ngx-timepicker-field [controlOnly]="true" [format]="24"
                             formControlName="_absoluteTimeEndControl" [defaultTime]="this.initialEndTime">
                         </ngx-timepicker-field>
                         <p class="utc">Local</p>
