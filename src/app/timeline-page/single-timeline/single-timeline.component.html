@@ -85,10 +85,12 @@
                                     </mat-icon>
                                 </div>
                             </button>
-                        </div> 
+                        </div>
                         <!-- TODO: idea: add some separator when whe change of minute to have a nice view  -->
-                        <!-- TODO: when the hour of the current element is different to the previous, show the hour -->
-                        <mat-card-title>{{ stringDateToDateObject(element[0]['Value']).toISOString().slice(11, -1) }}</mat-card-title>
+                        <!-- TODO: when the hour of the current element is different to the previous, show the hour of the first one with 
+                        the new hour -->
+                        <mat-card-title>{{ stringDateToDateObject(element[0]['Value']).toISOString().slice(11, -1) }}
+                        </mat-card-title>
                         <mat-card-subtitle>#{{i}}</mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>

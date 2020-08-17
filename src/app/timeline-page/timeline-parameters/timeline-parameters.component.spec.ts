@@ -1,9 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimelineService } from '../../timeline.service';
-import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormArray } from '@angular/forms';
 import { TimelineParametersComponent } from './timeline-parameters.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('TimelineParametersComponent', () => {
   let component: TimelineParametersComponent;
@@ -18,13 +17,56 @@ describe('TimelineParametersComponent', () => {
       .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(async() => {
     fixture = TestBed.createComponent(TimelineParametersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  //TODO: create test that checks formIsValid is true at the beggining. Create some tests when interacting
+  //whit the DOM
+  it('should have formIsValid to false on creation', () => {
+    let expected = false;
+    expect(component.formIsValid).toBe(expected, 'formIsValid should be ' + expected);
+  });
+
+
+
+  /* it('should have formIsValid to true when giving correct values to forms', async (() => {
+    //TODO: can't make this work...
+    const form = component.myForm;
+
+    const pn = form.controls._PnControl;
+    pn.setValue('any');
+
+    const sn = form.controls._SnControl;
+    sn.setValue('any');
+
+    const files = <FormArray>form.controls._filesControl;
+    files.controls['0'].value = true;
+
+    fixture.detectChanges();
+    
+    const relativeTimeValue = form.controls._relativeTimeValueControl;
+    relativeTimeValue.setValue('3');
+    
+    const relativeTimeUnits = form.controls._relativeTimeUnitsControl;
+    relativeTimeUnits.setValue('minutes');
+    
+    fixture.detectChanges();
+    
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      
+      console.log(form);
+      let expected = true;  
+      expect(component.formIsValid).toBe(expected, 'formIsValid should be ' + expected);
+    });
+  }));*/
+
 });

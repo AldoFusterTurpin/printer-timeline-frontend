@@ -47,7 +47,7 @@ export class TimelineDataComponent implements AfterViewInit {
 
         this.loadingSpinner = false;
 
-        console.log(this.httpOpenXmlError);
+        //console.log(this.httpOpenXmlError);
       });
   }
 
@@ -56,7 +56,7 @@ export class TimelineDataComponent implements AfterViewInit {
       (data: any) => {
         this.details = data;
         this.rightSidenav.open();
-        console.log(this.details);
+        //console.log(this.details);
       });
   }
 
@@ -77,7 +77,7 @@ export class TimelineDataComponent implements AfterViewInit {
       }, 
       (err) => { 
         this.httpS3Error = err;
-
+        this.leftSidenav.open();
         this.loadingS3Object = false;
 
         console.log(this.httpS3Error);

@@ -278,7 +278,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
-      console.log(this.myForm.value);
+      //console.log(this.myForm.value);
     });
   }
 

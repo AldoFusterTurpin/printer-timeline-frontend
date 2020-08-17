@@ -67,7 +67,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    /* three lines above moved to ngOnChanges function
+    /* TODO: check this three lines above moved to ngOnChanges function
     let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
     this.tableLength = tableData.length;
     this.tableDataSource = new MatTableDataSource(tableData);
