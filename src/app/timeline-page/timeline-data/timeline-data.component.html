@@ -16,18 +16,24 @@
                 <hr class="solid">
 
                 <div *ngIf="details !== undefined && details !== null">
-                    <p><b>Timestamp</b> {{ stringDateToDateObject(details[0]['Value']).toISOString().slice(0, -1).replace('T', ' ') }}</p>
+                    <p><b>Timestamp</b>
+                        {{ stringDateToDateObject(details[0]['Value']).toISOString().slice(0, -1).replace('T', ' ') }}
+                    </p>
                     <p><b>PN</b> {{details[1]['Value']}}</p>
                     <p><b>SN</b> {{details[2]['Value']}}</p>
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
 
-                    <button mat-icon-button color="primary" aria-label="Preview icon" matTooltip="Preview"
-                        (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value'])">
-                        <mat-icon class="icon-display">preview</mat-icon>
-                    </button>
+                    <div [ngSwitch]="elementTypeOfDetails">
+                        <button *ngSwitchCase="elementType.CloudJson" mat-icon-button color="primary"
+                            matTooltip="Show OpenXML that generated this JSON"
+                            (click)="getOpenXmlThatGeneratedTheCloudJson(details[8]['Value']); setTypeOfS3ElementToShow(elementType.OpenXml)">
+                            Related OpenXML
+                        </button>
+                    </div>
 
-                    <button mat-icon-button color="primary" aria-label="Download icon" matTooltip="Download">
-                        <mat-icon class="icon-display">cloud_download</mat-icon>
+                    <button mat-icon-button color="primary" matTooltip="Show"
+                        (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value']); setTypeOfS3ElementToShow(elementTypeOfDetails)">
+                        <mat-icon class="icon-display">preview</mat-icon>
                     </button>
                 </div>
 
@@ -39,16 +45,16 @@
                     (click)="leftSidenav.close()">Close preview
                 </button>
 
-                <div *ngIf="httpS3Error !== undefined;">
+                <div *ngIf="httpS3Error !== undefined && httpS3Error !== null">
                     <p>Response status code: {{httpS3Error?.status}}</p>
                     <p>Response status text: {{httpS3Error?.statusText}}</p>
                     <p>Response error: {{httpS3Error?.error}}</p>
                 </div>
 
-                <div *ngIf="S3Object !== undefined && S3Object !== null">
-                    <div [ngSwitch]="elementTypeOfS3Element">
+                <div *ngIf="S3Object !== undefined && S3Object !== null && httpS3Error === undefined || httpS3Error === null">
+                    <div id="element-preview" [ngSwitch]="typeOfS3ElementToShow">
                         <pre *ngSwitchCase="elementType.OpenXml" lang="xml">{{S3Object}}</pre>
-                        <div *ngSwitchCase="elementType.CloudJson">{{S3Object}}</div>
+                        <pre *ngSwitchCase="elementType.CloudJson"> {{stringToJsonObject(S3Object) | json}}</pre>
                     </div>
                 </div>
             </mat-sidenav>
@@ -56,7 +62,7 @@
             <mat-sidenav-content>
                 <div id="timeline-page-wrapper">
                     <div id="timelines-wrapper">
-                        <div id="openxml-section">
+                        <div id="openxml-section" class="timeline-section">
                             <p> <strong>OpenXML</strong> section</p>
                             <div *ngIf="httpOpenXmlError !== undefined;">
                                 <p>Response status code: {{httpOpenXmlError?.status}}</p>
@@ -65,13 +71,14 @@
                             </div>
 
                             <div *ngIf="(uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null)">
-                                <app-single-timeline [timelineData]="uploadedXmlTimelineData">
+                                <app-single-timeline [timelineData]="uploadedXmlTimelineData"
+                                    (changeDataType)="timelineDetailsTypeChangedFromChildComponent($event)">
                                 </app-single-timeline>
                             </div>
                             <hr class="solid">
                         </div>
 
-                        <div id="cloudjson-section">
+                        <div id="cloudjson-section" class="timeline-section">
                             <p> <strong>CloudJSON</strong> section</p>
                             <div *ngIf="httpCloudJsonError !== undefined;">
                                 <p>Response status code: {{httpCloudJsonError?.status}}</p>
@@ -80,7 +87,8 @@
                             </div>
 
                             <div *ngIf="(cloudJsonTimelineData !== undefined) && (cloudJsonTimelineData !== null)">
-                                <app-single-timeline [timelineData]="cloudJsonTimelineData">
+                                <app-single-timeline [timelineData]="cloudJsonTimelineData"
+                                    (changeDataType)="timelineDetailsTypeChangedFromChildComponent($event)">
                                 </app-single-timeline>
                             </div>
                             <hr class="solid">

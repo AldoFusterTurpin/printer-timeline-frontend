@@ -79,7 +79,7 @@
                     <mat-card-header>
                         <div mat-card-avatar>
                             <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details"
-                                (click)="this.showDetails(element)">
+                                (click)="emitDataType(timelineData?.elementName); this.showDetails(element)">
                                 <div [ngSwitch]="timelineData?.elementName">
                                     <mat-icon *ngSwitchCase="elementType.OpenXml" svgIcon="xml" class="icon-display"></mat-icon>
                                     <mat-icon *ngSwitchCase="elementType.CloudJson" svgIcon="json" class="icon-display"></mat-icon>

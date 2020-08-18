@@ -12,6 +12,23 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class TimelineDataComponent implements AfterViewInit {
   elementType = ElementType;
+  
+  public timelineDetailsTypeChangedFromChildComponent(event) {
+    this.setDetailsElementType(event);
+  }
+  
+  public elementTypeOfDetails;
+  
+  public setDetailsElementType(type: ElementType) {
+    //this.timelineService.emitElementType(elementType).subscribe();
+    this.elementTypeOfDetails = type;
+  }
+  
+  public typeOfS3ElementToShow;
+
+  public setTypeOfS3ElementToShow(type: ElementType) {
+    this.typeOfS3ElementToShow = type;
+  }
 
   public loadingSpinner = true;
   public loadingS3Object = false;
@@ -23,8 +40,6 @@ export class TimelineDataComponent implements AfterViewInit {
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
   @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
 
-  public elementTypeSubscription: Subscription;
-  public elementTypeOfS3Element;
 
   public S3ObjectSubscription: Subscription;
   public S3Object;
@@ -86,32 +101,32 @@ export class TimelineDataComponent implements AfterViewInit {
     this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
   }
 
-  public setElementTypeSubscription() {
+  //Unused
+  /* public setElementTypeSubscription() {
     this.elementTypeSubscription = this.timelineService.elementType.subscribe(
       (data: any) => {
-        this.elementTypeOfS3Element = data;
+        this.elementTypeOfDetails = data;
         
-        console.log(this.elementTypeOfS3Element);
+        //console.log(this.elementTypeOfDetails);
       }, 
       (err) => { 
         console.log(err);
       });
-  }
+  } */
 
   public setS3ObjectSubscription() {
     this.S3ObjectSubscription = this.timelineService.S3Data.subscribe(
       (data: any) => {
+        this.loadingS3Object = false;
         this.S3Object = data;
+        this.httpS3Error = null;
         this.leftSidenav.open();
         
-        console.log(this.S3Object);
-
-        this.loadingS3Object = false;
       }, 
       (err) => { 
+        this.loadingS3Object = false;
         this.httpS3Error = err;
         this.leftSidenav.open();
-        this.loadingS3Object = false;
 
         console.log(this.httpS3Error);
       });
@@ -122,7 +137,9 @@ export class TimelineDataComponent implements AfterViewInit {
     this.setCloudJsonSubscription();
     this.setDetailsSubscription();
     this.setS3ObjectSubscription();
-    this.setElementTypeSubscription();
+    
+    //Unused.
+    //this.setElementTypeSubscription();
   }
 
 
@@ -131,7 +148,7 @@ export class TimelineDataComponent implements AfterViewInit {
     this.cloudJsonSubscription.unsubscribe();
     this.detailsSubscription.unsubscribe();
     this.S3ObjectSubscription.unsubscribe();
-    this.elementTypeSubscription.unsubscribe();
+    //this.elementTypeSubscription.unsubscribe();
   }
 
   //TODO: move this function to a common file because is duplicated in single-timeline.component.ts
@@ -139,5 +156,34 @@ export class TimelineDataComponent implements AfterViewInit {
     let ISO8601DateString = inputDate.replace(' ', 'T') + 'Z';
     const date = new Date(ISO8601DateString);
     return date;
+  }
+
+  public stringToJsonObject(inputString: string) {
+    // The catch is mandatory because sometimes it receives the XML inestead of the JSON
+    // because the observable of the data type (emited by another component) finishes before 
+    //  the update of the S3 element.
+    // This occurs because we have a global state in the component and can NOT ensure the order of
+    // the asynchronus operations.
+    // This can happen when the user selects an XML to see the preview and then selects a JSON
+    // and the app trigers the element type change but the data (the JSON itself) hasn't been updatet yet.
+    try {
+      let json: JSON = JSON.parse(inputString);
+      return json;
+    } catch {
+      //console.log(inputString);
+      console.log('In catch of stringToJsonObject');
+      return inputString;
+    }
+  }
+
+  // Function used when we are retrieving the OpenXml that generated a specific Json after the Cloud 
+  // Connector received the Xml.
+  //(We have the region and bucket from that Json but not the region and bucket from the OpenXml that generated
+  // the Json, we just have the key of the associated xml, the input of our function. 
+  //Byy the configuration of AWS we know the specific region and bucket).
+  public getOpenXmlThatGeneratedTheCloudJson(keyOfTheOpenXmlThatGeneratedTheJson) {
+    let awsRegion = 'US_EAST_1';
+    let cloudConnectorBucket = 'cloudconnector-core-production';
+    this.getStoredObject(awsRegion, cloudConnectorBucket, keyOfTheOpenXmlThatGeneratedTheJson);
   }
 }

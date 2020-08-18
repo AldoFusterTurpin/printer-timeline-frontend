@@ -19,16 +19,22 @@ export class TimelineService {
   private S3Source = new Subject<JSON>();
   S3Data = this.S3Source.asObservable();
 
-  private elementTypeSource = new Subject<JSON>();
-  elementType = this.elementTypeSource.asObservable();
-
+  
   private uploadedXmlSource = new ReplaySubject<JSON>(1);
   uploadedXmlData = this.uploadedXmlSource.asObservable();
-
+  
   private cloudJsonSource = new ReplaySubject<JSON>(1);
   cloudJsonData = this.cloudJsonSource.asObservable();
 
-  public emitElementType(details): Observable<any> {
+  //Unused
+  /* 
+  private elementTypeSource = new Subject<JSON>();
+  elementType = this.elementTypeSource.asObservable(); 
+  */
+
+  //Unused because single-timeline.component is emiting an Output event and 
+  //the parent (timeline-data.component) is listening to it.
+  /* public emitElementType(details): Observable<any> {
     return of(details)
       .pipe(
         tap(res => this.elementTypeSource.next(res)),
@@ -37,7 +43,7 @@ export class TimelineService {
           return this.handleError(err);
         })
       );
-  }
+  } */
 
   public setTimeRange(start: Date, end: Date): Observable<any> {
     let timeRange = { 'start': start, 'end': end };

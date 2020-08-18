@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -17,6 +17,13 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   elementType = ElementType;
 
   @Input() timelineData: TimelineData;
+
+  @Output()
+  changeDataType: EventEmitter<ElementType> = new EventEmitter<ElementType>();
+
+  emitDataType(valueToEmit) {
+    this.changeDataType.emit(valueToEmit);
+  }
 
   public showProgressBar: boolean = false;
 
@@ -67,12 +74,6 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    /* TODO: check this three lines above moved to ngOnChanges function
-    let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
-    this.tableLength = tableData.length;
-    this.tableDataSource = new MatTableDataSource(tableData);
-    */
-
     //uncomment line below to check all the checkboxes of table on init 
     //this.masterToggle();
   }
@@ -195,11 +196,6 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
   public showDetails(element) {
     this.timelineService.emitDetails(element).subscribe();
-    this.emitTimelineElement(this.timelineData.elementName);
-  }
-
-  public emitTimelineElement(elementType: ElementType) {
-    this.timelineService.emitElementType(elementType).subscribe();
   }
 
   public stringDateToDateObject(inputDate: string): Date {

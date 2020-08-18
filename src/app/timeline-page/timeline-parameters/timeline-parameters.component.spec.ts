@@ -28,8 +28,6 @@ describe('TimelineParametersComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  //TODO: create test that checks formIsValid is true at the beggining. Create some tests when interacting
-  //whit the DOM
   it('should have formIsValid to false on creation', () => {
     let expected = false;
     expect(component.formIsValid).toBe(expected, 'formIsValid should be ' + expected);
