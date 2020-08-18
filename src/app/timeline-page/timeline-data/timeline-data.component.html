@@ -15,7 +15,7 @@
                 <h4>Details</h4>
                 <hr class="solid">
 
-                <div *ngIf="details !== undefined && details !== null">
+                <div id="details-section" *ngIf="details !== undefined && details !== null">
                     <p><b>Timestamp</b>
                         {{ stringDateToDateObject(details[0]['Value']).toISOString().slice(0, -1).replace('T', ' ') }}
                     </p>
@@ -24,14 +24,14 @@
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
 
                     <div [ngSwitch]="elementTypeOfDetails">
-                        <button *ngSwitchCase="elementType.CloudJson" mat-icon-button color="primary"
+                        <button mat-raised-button *ngSwitchCase="elementType.CloudJson" color="primary"
                             matTooltip="Show OpenXML that generated this JSON"
                             (click)="getOpenXmlThatGeneratedTheCloudJson(details[8]['Value']); setTypeOfS3ElementToShow(elementType.OpenXml)">
                             Related OpenXML
                         </button>
                     </div>
 
-                    <button mat-icon-button color="primary" matTooltip="Show"
+                    <button mat-icon-button color="primary" matTooltip="Show element"
                         (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value']); setTypeOfS3ElementToShow(elementTypeOfDetails)">
                         <mat-icon class="icon-display">preview</mat-icon>
                     </button>
@@ -51,7 +51,8 @@
                     <p>Response error: {{httpS3Error?.error}}</p>
                 </div>
 
-                <div *ngIf="S3Object !== undefined && S3Object !== null && httpS3Error === undefined || httpS3Error === null">
+                <div
+                    *ngIf="S3Object !== undefined && S3Object !== null && httpS3Error === undefined || httpS3Error === null">
                     <div id="element-preview" [ngSwitch]="typeOfS3ElementToShow">
                         <pre *ngSwitchCase="elementType.OpenXml" lang="xml">{{S3Object}}</pre>
                         <pre *ngSwitchCase="elementType.CloudJson"> {{stringToJsonObject(S3Object) | json}}</pre>
