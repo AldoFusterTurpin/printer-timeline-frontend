@@ -195,6 +195,11 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
   public showDetails(element) {
     this.timelineService.emitDetails(element).subscribe();
+    this.emitTimelineElement(this.timelineData.elementName);
+  }
+
+  public emitTimelineElement(elementType: ElementType) {
+    this.timelineService.emitElementType(elementType).subscribe();
   }
 
   public stringDateToDateObject(inputDate: string): Date {

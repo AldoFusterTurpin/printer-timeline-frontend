@@ -17,10 +17,14 @@ export class TimelineDataComponent implements AfterViewInit {
   public loadingS3Object = false;
 
   public httpOpenXmlError;
+  public httpCloudJsonError;
   public httpS3Error;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
   @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
+
+  public elementTypeSubscription: Subscription;
+  public elementTypeOfS3Element;
 
   public S3ObjectSubscription: Subscription;
   public S3Object;
@@ -30,6 +34,9 @@ export class TimelineDataComponent implements AfterViewInit {
 
   private uploadedXmlSubscription: Subscription;
   public uploadedXmlTimelineData: TimelineData;
+
+  private cloudJsonSubscription: Subscription;
+  public cloudJsonTimelineData: TimelineData;
 
   constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
 
@@ -46,8 +53,22 @@ export class TimelineDataComponent implements AfterViewInit {
         this.httpOpenXmlError = err;
 
         this.loadingSpinner = false;
+      });
+  }
 
-        //console.log(this.httpOpenXmlError);
+  private setCloudJsonSubscription() {
+    this.cloudJsonSubscription = this.timelineService.cloudJsonData.subscribe(
+      (data: any) => {
+        let type = ElementType.CloudJson;
+        let tableDescription = 'Unique printers that generated' + type + 's';
+        this.cloudJsonTimelineData = new TimelineData(data, type, tableDescription);
+
+        this.loadingSpinner = false;
+      }, 
+      (err) => { 
+        this.httpCloudJsonError = err;
+
+        this.loadingSpinner = false;
       });
   }
 
@@ -63,6 +84,18 @@ export class TimelineDataComponent implements AfterViewInit {
   public getStoredObject(bucket_region: string, bucket_name: string, object_key: string) {
     this.loadingS3Object = true; 
     this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
+  }
+
+  public setElementTypeSubscription() {
+    this.elementTypeSubscription = this.timelineService.elementType.subscribe(
+      (data: any) => {
+        this.elementTypeOfS3Element = data;
+        
+        console.log(this.elementTypeOfS3Element);
+      }, 
+      (err) => { 
+        console.log(err);
+      });
   }
 
   public setS3ObjectSubscription() {
@@ -86,13 +119,19 @@ export class TimelineDataComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.setUploadedXmlSubscription();
+    this.setCloudJsonSubscription();
     this.setDetailsSubscription();
     this.setS3ObjectSubscription();
+    this.setElementTypeSubscription();
   }
 
 
   ngOnDestroy(): void {
     this.uploadedXmlSubscription.unsubscribe();
+    this.cloudJsonSubscription.unsubscribe();
+    this.detailsSubscription.unsubscribe();
+    this.S3ObjectSubscription.unsubscribe();
+    this.elementTypeSubscription.unsubscribe();
   }
 
   //TODO: move this function to a common file because is duplicated in single-timeline.component.ts

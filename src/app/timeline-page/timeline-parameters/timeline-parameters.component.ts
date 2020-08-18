@@ -336,6 +336,27 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     this.timelineService.getUploadedXmls(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
   }
 
+  public getCloudJsons(): void {
+    const timeRange = this.getTimeRange();
+    const startDate = timeRange.start;
+    const endDate = timeRange.end;
+
+    const startEpoch = Math.round(startDate.getTime() / 1000);
+    const endEpoch = Math.round(endDate.getTime() / 1000);
+
+    let pn = this.pnControl.value;
+    if (pn === 'any' || pn === 'ANY') {
+      pn = '';
+    }
+
+    let sn = this.snControl.value;
+    if (sn === 'any' || sn === 'ANY') {
+      sn = '';
+    }
+
+    this.timelineService.getCloudJsons(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
+  }
+
   public submitForm(): void {
     //console.log(this.myForm.value);
 
@@ -346,6 +367,10 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
     if (this.filesControl.value[0]) {
       this.getUploadedXmls();
+    }
+
+    if (this.filesControl.value[1]) {
+      this.getCloudJsons();
     }
   }
 }

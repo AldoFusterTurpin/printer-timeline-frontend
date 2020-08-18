@@ -46,8 +46,9 @@
                 </div>
 
                 <div *ngIf="S3Object !== undefined && S3Object !== null">
-                    <div [ngSwitch]="uploadedXmlTimelineData?.elementName">
+                    <div [ngSwitch]="elementTypeOfS3Element">
                         <pre *ngSwitchCase="elementType.OpenXml" lang="xml">{{S3Object}}</pre>
+                        <div *ngSwitchCase="elementType.CloudJson">{{S3Object}}</div>
                     </div>
                 </div>
             </mat-sidenav>
@@ -65,6 +66,21 @@
 
                             <div *ngIf="(uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null)">
                                 <app-single-timeline [timelineData]="uploadedXmlTimelineData">
+                                </app-single-timeline>
+                            </div>
+                            <hr class="solid">
+                        </div>
+
+                        <div id="cloudjson-section">
+                            <p> <strong>CloudJSON</strong> section</p>
+                            <div *ngIf="httpCloudJsonError !== undefined;">
+                                <p>Response status code: {{httpCloudJsonError?.status}}</p>
+                                <p>Response status text: {{httpCloudJsonError?.statusText}}</p>
+                                <p>Response error: {{httpCloudJsonError?.error}}</p>
+                            </div>
+
+                            <div *ngIf="(cloudJsonTimelineData !== undefined) && (cloudJsonTimelineData !== null)">
+                                <app-single-timeline [timelineData]="cloudJsonTimelineData">
                                 </app-single-timeline>
                             </div>
                             <hr class="solid">

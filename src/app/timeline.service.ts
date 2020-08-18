@@ -19,8 +19,25 @@ export class TimelineService {
   private S3Source = new Subject<JSON>();
   S3Data = this.S3Source.asObservable();
 
+  private elementTypeSource = new Subject<JSON>();
+  elementType = this.elementTypeSource.asObservable();
+
   private uploadedXmlSource = new ReplaySubject<JSON>(1);
   uploadedXmlData = this.uploadedXmlSource.asObservable();
+
+  private cloudJsonSource = new ReplaySubject<JSON>(1);
+  cloudJsonData = this.cloudJsonSource.asObservable();
+
+  public emitElementType(details): Observable<any> {
+    return of(details)
+      .pipe(
+        tap(res => this.elementTypeSource.next(res)),
+        catchError((err) => {
+          this.elementTypeSource.error(err);
+          return this.handleError(err);
+        })
+      );
+  }
 
   public setTimeRange(start: Date, end: Date): Observable<any> {
     let timeRange = { 'start': start, 'end': end };
@@ -53,6 +70,18 @@ export class TimelineService {
         tap(res => this.uploadedXmlSource.next(res)),
         catchError((err) => {
           this.uploadedXmlSource.error(err);
+          return this.handleError(err);
+        })
+      );
+  }
+
+  public getCloudJsons(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+    const url = `${this.apiUrl}/cloud_json?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    return this.http.get<any>(url)
+      .pipe(
+        tap(res => this.cloudJsonSource.next(res)),
+        catchError((err) => {
+          this.cloudJsonSource.error(err);
           return this.handleError(err);
         })
       );
