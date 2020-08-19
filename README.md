@@ -3,6 +3,7 @@
 ### What is this repository for? ###
 
 * It is the front-end of the Printer-timeline.
+Imoprtant note: you can put 'any' in Pn and Sn input form in order to obtain the elements of all printers.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
 
