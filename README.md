@@ -1,5 +1,9 @@
 # PrinterTimeline
 
+### What is this repository for? ###
+
+* It is the front-end of the Printer-timeline.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
 
 ## Development server
