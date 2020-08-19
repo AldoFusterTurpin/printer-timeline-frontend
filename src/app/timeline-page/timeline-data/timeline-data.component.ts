@@ -171,7 +171,7 @@ export class TimelineDataComponent implements AfterViewInit {
       return json;
     } catch {
       //console.log(inputString);
-      console.log('In catch of stringToJsonObject');
+      //console.log('In catch of stringToJsonObject');
       return inputString;
     }
   }
