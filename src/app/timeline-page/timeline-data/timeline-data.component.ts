@@ -1,9 +1,10 @@
 import { Component, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
-import { TimelineService } from '../../timeline.service';
+import { TimelineService } from '../../shared/timeline.service';
 import { Subscription } from 'rxjs';
-import { TimelineData } from 'timelineData';
-import { ElementType } from 'ElementType';
+import { TimelineData } from 'src/app/shared/timelineData';
+import { ElementType } from 'src/app/shared/ElementType';
 import { MatSidenav } from '@angular/material/sidenav';
+import Utils from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-timeline-data',
@@ -12,17 +13,17 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class TimelineDataComponent implements AfterViewInit {
   elementType = ElementType;
-  
+
   public timelineDetailsTypeChangedFromChildComponent(event) {
-    this.setDetailsElementType(event);
+    this.setTypeOfElementDetails(event);
   }
-  
-  public elementTypeOfDetails;
-  public setDetailsElementType(type: ElementType) {
+
+  public typeOfElementDetails;
+  public setTypeOfElementDetails(type: ElementType) {
     //this.timelineService.emitElementType(elementType).subscribe();
-    this.elementTypeOfDetails = type;
+    this.typeOfElementDetails = type;
   }
-  
+
   public typeOfS3ElementToShow;
   public setTypeOfS3ElementToShow(type: ElementType) {
     this.typeOfS3ElementToShow = type;
@@ -54,7 +55,7 @@ export class TimelineDataComponent implements AfterViewInit {
   private heartBeatSubscription: Subscription;
   public heartBeatTimelineData: TimelineData;
 
-  constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
+  constructor(private timelineService: TimelineService) { }
 
   private setUploadedXmlSubscription() {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
@@ -64,8 +65,8 @@ export class TimelineDataComponent implements AfterViewInit {
         this.uploadedXmlTimelineData = new TimelineData(data, type, tableDescription);
 
         this.loadingSpinner = false;
-      }, 
-      (err) => { 
+      },
+      (err) => {
         this.httpOpenXmlError = err;
 
         this.loadingSpinner = false;
@@ -76,12 +77,12 @@ export class TimelineDataComponent implements AfterViewInit {
     this.cloudJsonSubscription = this.timelineService.cloudJsonData.subscribe(
       (data: any) => {
         let type = ElementType.CloudJson;
-        let tableDescription = 'Unique printers that generated' + type + 's';
+        let tableDescription = 'Printers that generated' + type + 's';
         this.cloudJsonTimelineData = new TimelineData(data, type, tableDescription);
 
         this.loadingSpinner = false;
-      }, 
-      (err) => { 
+      },
+      (err) => {
         this.httpCloudJsonError = err;
 
         this.loadingSpinner = false;
@@ -92,12 +93,12 @@ export class TimelineDataComponent implements AfterViewInit {
     this.heartBeatSubscription = this.timelineService.heartBeatData.subscribe(
       (data: any) => {
         let type = ElementType.Hb;
-        let tableDescription = 'Printers sent ' + type + ' in the selected time range';
+        let tableDescription = 'Printers sent ' + type + 's in the selected time range';
         this.heartBeatTimelineData = new TimelineData(data, type, tableDescription);
 
         this.loadingSpinner = false;
-      }, 
-      (err) => { 
+      },
+      (err) => {
         this.httpHeartBeatError = err;
 
         this.loadingSpinner = false;
@@ -114,7 +115,7 @@ export class TimelineDataComponent implements AfterViewInit {
   }
 
   public getStoredObject(bucket_region: string, bucket_name: string, object_key: string) {
-    this.loadingS3Object = true; 
+    this.loadingS3Object = true;
     this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
   }
 
@@ -122,9 +123,9 @@ export class TimelineDataComponent implements AfterViewInit {
   /* public setElementTypeSubscription() {
     this.elementTypeSubscription = this.timelineService.elementType.subscribe(
       (data: any) => {
-        this.elementTypeOfDetails = data;
+        this.typeOfElementDetails = data;
         
-        //console.log(this.elementTypeOfDetails);
+        //console.log(this.typeOfElementDetails);
       }, 
       (err) => { 
         console.log(err);
@@ -138,9 +139,9 @@ export class TimelineDataComponent implements AfterViewInit {
         this.S3Object = data;
         this.httpS3Error = null;
         this.leftSidenav.open();
-        
-      }, 
-      (err) => { 
+
+      },
+      (err) => {
         this.loadingS3Object = false;
         this.httpS3Error = err;
         this.leftSidenav.open();
@@ -172,29 +173,8 @@ export class TimelineDataComponent implements AfterViewInit {
     //this.elementTypeSubscription.unsubscribe();
   }
 
-  //TODO: move this function to a common file because is duplicated in single-timeline.component.ts
-  public stringDateToDateObject(inputDate: string): Date {
-    let ISO8601DateString = inputDate.replace(' ', 'T') + 'Z';
-    const date = new Date(ISO8601DateString);
-    return date;
-  }
-
-  public stringToJsonObject(inputString: string) {
-    // The catch is mandatory because sometimes it receives the XML inestead of the JSON
-    // because the observable of the data type (emited by another component) finishes before 
-    //  the update of the S3 element.
-    // This occurs because we have a global state in the component and can NOT ensure the order of
-    // the asynchronus operations.
-    // This can happen when the user selects an XML to see the preview and then selects a JSON
-    // and the app trigers the element type change but the data (the JSON itself) hasn't been updatet yet.
-    try {
-      let json: JSON = JSON.parse(inputString);
-      return json;
-    } catch {
-      //console.log(inputString);
-      //console.log('In catch of stringToJsonObject');
-      return inputString;
-    }
+  public stringToJsonObject(inputString: string): JSON | string {
+    return Utils.stringToJsonObject(inputString);
   }
 
   // Function used when we are retrieving the OpenXml that generated a specific Json after the Cloud 
@@ -206,5 +186,9 @@ export class TimelineDataComponent implements AfterViewInit {
     let awsRegion = 'US_EAST_1';
     let cloudConnectorBucket = 'cloudconnector-core-production';
     this.getStoredObject(awsRegion, cloudConnectorBucket, keyOfTheOpenXmlThatGeneratedTheJson);
+  }
+
+  public stringDateToDateObject(inputDate: string): Date {
+    return Utils.stringDateToDateObject(inputDate);
   }
 }

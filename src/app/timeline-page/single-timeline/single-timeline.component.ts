@@ -1,12 +1,16 @@
+//TODO: something is wrong when going back and selecting new options in the form. !!!!
+// The mat paginator is wrong.
+
 import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatSnackBar, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
-import { TimelineData } from '../../../../timelineData';
-import { ElementType } from 'ElementType';
-import { TimelineService } from '../../timeline.service';
+import { TimelineData } from '../../shared/timelineData';
+import { ElementType } from 'src/app/shared/ElementType';
+import { TimelineService } from '../../shared/timeline.service';
+import Utils from '../../shared/utils';
 
 @Component({
   selector: 'app-single-timeline',
@@ -21,7 +25,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   @Output()
   changeDataType: EventEmitter<ElementType> = new EventEmitter<ElementType>();
 
-  emitDataType(valueToEmit) {
+  public emitDataType(valueToEmit: ElementType) {
     this.changeDataType.emit(valueToEmit);
   }
 
@@ -85,18 +89,17 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
     let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply checkboxes filter' to see the changes";
     let action = 'Got it!';
-    let durationMs =  20000;
     let verticalPosition: MatSnackBarVerticalPosition = 'top';
     this._snackBar.open(message, action, {
-      duration: durationMs,
+      duration: 20000,
       verticalPosition: verticalPosition,
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['timelineData']) {
-      
-      let tableData = this.createUploadedXmlTableData(this.timelineData.apiResponse['Results']);
+
+      let tableData = this.createTableData(this.timelineData.apiResponse['Results']);
       this.tableLength = tableData.length;
       this.tableDataSource = new MatTableDataSource(tableData);
 
@@ -108,88 +111,26 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   ngOnDestroy(): void {
   }
 
-
-  private createTableDataArrayFromMap(myMap: Map<string, number>) {
-    let tableData = [];
-
-    for (let [key, value] of myMap) {
-      let row = {
-        'pn!sn': key,
-        'count': value,
-        '%': ((value / this.timelineData.apiResponse['Results'].length) * 100).toFixed(2)
-      };
-      tableData.push(row);
-    }
-    return tableData;
-  }
-
-  private createCountMapFromArray(data: any[]) {
-    //key: pn!sn
-    //value: how many times appears printer in data
-    //i.e: number of data ('howm many' xmls, jsons, etc) sent by that printer in the selected time range
-    let printerCountMap = new Map();
-    for (const element of data) {
-      let pn = element[1]['Value'];
-      let sn = element[2]['Value'];
-      let key = pn + '!' + sn;
-
-      if (printerCountMap.has(key)) {
-        printerCountMap.set(key, printerCountMap.get(key) + 1);
-      } else {
-        printerCountMap.set(key, 1);
-      }
-    }
-
-    //sort the map by value
-    printerCountMap[Symbol.iterator] = function* () {
-      yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
-    }
-    return printerCountMap;
-  }
-
-  private createUploadedXmlTableData(data: any[]) {
-    let printerCountMap = this.createCountMapFromArray(data);
-    return this.createTableDataArrayFromMap(printerCountMap);
-  }
-
-  private createSetOfPrintersFromArrayOfSelectedElements(data: any[]): Set<string> {
-    let set = new Set<string>();
-
-    for (const element of data) {
-      let key = element['pn!sn'];
-      set.add(key);
-    }
-    return set;
-  }
-
-  private createSelectedDataFromSet(set: Set<string>) {
-    let selectedData = [];
-
-    for (const element of this.timelineData.apiResponse['Results']) {
-      let pn = element[1]['Value'];
-      let sn = element[2]['Value'];
-      let key = pn + '!' + sn;
-
-      if (set.has(key)) {
-        selectedData.push(element);
-      }
-    }
-    return selectedData;
+  private createTableData(data: any[]) {
+    let printerCountMap = Utils.createCountMapFromArray(data);
+    return Utils.createArrayOfObjectsFromMap(printerCountMap, this.timelineData.apiResponse['Results'].length);
   }
 
   public filterSelectedItems() {
     this.showProgressBar = true;
-    let selectedValues = this.selection.selected;
+    let selectedValuesInTable = this.selection.selected;
 
     setTimeout(() => {
-      let set = this.createSetOfPrintersFromArrayOfSelectedElements(selectedValues);
-      this.selectedData = this.createSelectedDataFromSet(set);
+      let set = Utils.createSetOfPn_SnFromArray(selectedValuesInTable);
+      this.selectedData = Utils.createArrayOfObjectsFromSet(set, this.timelineData.apiResponse['Results']);
       this.showProgressBar = false;
 
       let message = 'Data ready below ⬇';
       let action = 'Got it!';
+      let verticalPosition: MatSnackBarVerticalPosition = 'top';
       this._snackBar.open(message, action, {
-        duration: 5000
+        duration: 5000,
+        verticalPosition: verticalPosition,
       });
     }, 1500);
   }
@@ -199,8 +140,6 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   }
 
   public stringDateToDateObject(inputDate: string): Date {
-    let ISO8601DateString = inputDate.replace(' ', 'T') + 'Z';
-    const date = new Date(ISO8601DateString);
-    return date;
+    return Utils.stringDateToDateObject(inputDate);
   }
 }

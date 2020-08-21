@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimelineDataComponent } from './timeline-data.component';
-import { TimelineService } from 'src/app/timeline.service';
+import { TimelineService } from 'src/app/shared/timeline.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('TimelineDataComponent', () => {

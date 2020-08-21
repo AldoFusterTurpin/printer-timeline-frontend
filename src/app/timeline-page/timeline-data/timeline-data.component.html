@@ -24,11 +24,11 @@
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
 
                     <button mat-icon-button color="primary" matTooltip="Show element"
-                        (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value']); setTypeOfS3ElementToShow(elementTypeOfDetails)">
+                        (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value']); setTypeOfS3ElementToShow(typeOfElementDetails)">
                         <mat-icon class="icon-display">preview</mat-icon>
                     </button>
                     
-                    <div [ngSwitch]="elementTypeOfDetails">
+                    <div [ngSwitch]="typeOfElementDetails">
                         <button mat-raised-button *ngSwitchCase="elementType.CloudJson" color="primary"
                             matTooltip="Show OpenXML that generated this JSON"
                             (click)="getOpenXmlThatGeneratedTheCloudJson(details[8]['Value']); setTypeOfS3ElementToShow(elementType.OpenXml)">

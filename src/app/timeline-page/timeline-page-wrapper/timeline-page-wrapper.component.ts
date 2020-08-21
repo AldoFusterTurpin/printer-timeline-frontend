@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { TimelineService } from 'src/app/timeline.service';
+import { TimelineService } from 'src/app/shared/timeline.service';
 import { Subscription } from 'rxjs';
 
 @Component({

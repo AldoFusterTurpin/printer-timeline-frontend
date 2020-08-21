@@ -1,5 +1,5 @@
-import { ApiResponse } from 'apiResponse';
-import { ElementType } from 'ElementType';
+import { ApiResponse } from 'src/app/shared/apiResponse';
+import { ElementType } from 'src/app/shared/ElementType';
 
 export class TimelineData {
     public apiResponse: ApiResponse;

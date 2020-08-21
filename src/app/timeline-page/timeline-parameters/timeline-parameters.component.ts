@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
-import { TimelineService } from '../../timeline.service';
-
+import { TimelineService } from '../../shared/timeline.service';
+import Utils from '../../shared/utils';
+import { utils } from 'protractor';
 
 @Component({
   selector: 'app-timeline-parameters',
@@ -88,8 +89,8 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
   private controlMaxValueOfRelativeTime(formValueString: string) {
     if (this.allCharsAreNumbers(formValueString)) {
-      let formUnits = this.relativeTimeUnitsControl.value.realValue;
-      let formValue = parseInt(formValueString);
+      const formUnits = this.relativeTimeUnitsControl.value.realValue;
+      const formValue = parseInt(formValueString);
 
       if (formUnits === 'minutes') {
         if (formValue > 60) {
@@ -109,23 +110,12 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     }
   }
 
-  private secondsDiff(start: Date, end: Date): number {
-    let secondsDiff = (end.getTime() - start.getTime()) / 1000;
-    return Math.abs(Math.round(secondsDiff));
-  }
-
   private datesDifferenceIsOkay(start: Date, end: Date) {
-    return this.secondsDiff(start, end) <= 3600;
+    return Utils.getSecondsDiff(start, end) <= 3600;
   }
 
   private controlFormIsValid() {
     this.formIsValid = this.printerInfoIsValid() && this.dataTypesAreValid() && this.timeIsValid();
-  }
-
-  private createMinDate() {
-    let date = new Date();
-    date.setMonth(date.getMonth() - 1)
-    return date;
   }
 
   private printerInfoIsValid(): boolean {
@@ -133,52 +123,45 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   private dataTypesAreValid(): boolean {
-    return this.filesControl.value.indexOf(true) != -1 || this.requestsControl.value.indexOf(true) != -1
-      || this.othersControl.value.indexOf(true) != -1;
+    return this.filesControl.value.indexOf(true) != -1 || this.requestsControl.value.indexOf(true) != -1 
+           || this.othersControl.value.indexOf(true) != -1;
   }
 
   private controlAbsoluteDate() {
     if (this.absoluteDateStartControl.value === null || this.absoluteDateEndControl.value === null) {
       return;
     }
-    let startTime = this.absoluteTimeStartControl.value;
-    this.absoluteDateStartControl.value.setHours(parseInt(startTime.slice(0, 2)),
-      parseInt(startTime.slice(3, 5), 0));
+    const startTime = this.absoluteTimeStartControl.value;
+    this.absoluteDateStartControl.value.setHours(parseInt(startTime.slice(0, 2)), parseInt(startTime.slice(3, 5), 0));
 
-    let endTime = this.absoluteTimeEndControl.value;
-    this.absoluteDateEndControl.value.setHours(parseInt(endTime.slice(0, 2)),
-      parseInt(endTime.slice(3, 5), 0));
+    const endTime = this.absoluteTimeEndControl.value;
+    this.absoluteDateEndControl.value.setHours(parseInt(endTime.slice(0, 2)), parseInt(endTime.slice(3, 5), 0));
 
     this.startTimePreviousThanEnd = this.absoluteDateStartControl.value < this.absoluteDateEndControl.value;
-    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStartControl.value,
-      this.absoluteDateEndControl.value);
+    this.absoluteDatesDifferenceTooBig = !this.datesDifferenceIsOkay(this.absoluteDateStartControl.value, this.absoluteDateEndControl.value);
   }
 
   private timeIsValid(): boolean {
     if (this.typeOfDateControl.value === 'relative') {
-      return !this.relativeValueTooBig
-        && !this.formControlhasError('_relativeTimeUnitsControl', 'required')
-        && !this.formControlhasError('_relativeTimeValueControl', 'required')
-        && this.allCharsAreNumbers(this.relativeTimeValueControl.value);
+      return !this.relativeValueTooBig && !this.formControlhasError('_relativeTimeUnitsControl', 'required') 
+              && !this.formControlhasError('_relativeTimeValueControl', 'required') 
+              && this.allCharsAreNumbers(this.relativeTimeValueControl.value);
     }
 
     if (this.typeOfDateControl.value === 'absolute') {
-      let startOk = !this.formControlhasError('_absoluteDateStartControl', 'required')
-        && this.absoluteDateStartControl.value != null
-        && !this.formControlhasError('_absoluteTimeStartControl', 'required')
-        && this.absoluteTimeStartControl.value != '';
+      const startOk = !this.formControlhasError('_absoluteDateStartControl', 'required') 
+                      && this.absoluteDateStartControl.value != null && !this.formControlhasError('_absoluteTimeStartControl', 'required')
+                      && this.absoluteTimeStartControl.value != '';
       if (!startOk) {
         return false;
       }
 
-      let endOk = !this.formControlhasError('_absoluteDateEndControl', 'required')
-        && this.absoluteDateEndControl.value != null
-        && !this.formControlhasError('_absoluteTimeEndControl', 'required')
-        && this.absoluteTimeEndControl.value != '';
+      const endOk = !this.formControlhasError('_absoluteDateEndControl', 'required')
+                    && this.absoluteDateEndControl.value != null && !this.formControlhasError('_absoluteTimeEndControl', 'required')
+                    && this.absoluteTimeEndControl.value != '';
       if (!endOk) {
         return false;
       }
-
       this.controlAbsoluteDate();
 
       return !this.absoluteDatesDifferenceTooBig && this.startTimePreviousThanEnd;
@@ -209,10 +192,10 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   public startTimePreviousThanEnd = true;
   public formIsValid = false;
 
-  public minDate: Date = this.createMinDate();
+  public minDate: Date = Utils.createTimelineMinDate();
   public maxDate: Date = new Date();
 
-  //must be last thing to do. If not, can exist some variables with values not initialized.
+  //must be last thing to do. If not, some variables can exist with values not initialized.
   public myForm: FormGroup = this.createForm();
 
   public getSelectedFiles() {
@@ -247,8 +230,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   public allCharsAreNumbers(text): boolean {
-    let numbers = /^[0-9]+$/;
-    return text.match(numbers);
+    return Utils.allCharsAreNumbers(text);
   }
 
   constructor(public fb: FormBuilder, private timelineService: TimelineService) {
@@ -295,10 +277,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
   private getTimeRange() {
     if (this.typeOfDateControl.value === 'absolute') {
-      return {
-        'start': this.absoluteDateStartControl.value,
-        'end': this.absoluteDateEndControl.value
-      }
+      return { 'start': this.absoluteDateStartControl.value, 'end': this.absoluteDateEndControl.value }
     }
 
     let start = new Date();
@@ -308,73 +287,43 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
       start.setSeconds(start.getSeconds() - this.relativeTimeValueControl.value);
     }
 
-    return {
-      'start': start,
-      'end': new Date()
-    }
+    return { 'start': start, 'end': new Date() }
   }
 
+  private getEpochTimesFromTimeRange(timeRange: { start: Date, end: Date }): { startEpoch: Number, endEpoch: Number } {
+    const startEpoch = Math.round(timeRange.start.getTime() / 1000);
+    const endEpoch = Math.round(timeRange.end.getTime() / 1000);
+    return { startEpoch: startEpoch, endEpoch: endEpoch };
+  }
+
+  private printerIdentificationHandler(originalElement: string): string {
+    if (originalElement.toLowerCase() === 'any') {
+      //returning empty string because the back-end API returns the files of ALL the printers (no matter pn or sn)
+      // when pn and sn are empty in the query parameters request.
+      //i.e: if pn and sn are 'any', get all the printers.
+      return '';
+    }
+    return originalElement;
+  }
 
   public getUploadedXmls(): void {
-    const timeRange = this.getTimeRange();
-    const startDate = timeRange.start;
-    const endDate = timeRange.end;
-
-    const startEpoch = Math.round(startDate.getTime() / 1000);
-    const endEpoch = Math.round(endDate.getTime() / 1000);
-
-    let pn = this.pnControl.value;
-    if (pn === 'any' || pn === 'ANY') {
-      pn = '';
-    }
-
-    let sn = this.snControl.value;
-    if (sn === 'any' || sn === 'ANY') {
-      sn = '';
-    }
-
+    const { startEpoch, endEpoch } = this.getEpochTimesFromTimeRange(this.getTimeRange())
+    const pn = this.printerIdentificationHandler(this.pnControl.value);
+    const sn = this.printerIdentificationHandler(this.snControl.value);
     this.timelineService.getUploadedXmls(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
   }
 
   public getCloudJsons(): void {
-    const timeRange = this.getTimeRange();
-    const startDate = timeRange.start;
-    const endDate = timeRange.end;
-
-    const startEpoch = Math.round(startDate.getTime() / 1000);
-    const endEpoch = Math.round(endDate.getTime() / 1000);
-
-    let pn = this.pnControl.value;
-    if (pn === 'any' || pn === 'ANY') {
-      pn = '';
-    }
-
-    let sn = this.snControl.value;
-    if (sn === 'any' || sn === 'ANY') {
-      sn = '';
-    }
-
+    const { startEpoch, endEpoch } = this.getEpochTimesFromTimeRange(this.getTimeRange())
+    const pn = this.printerIdentificationHandler(this.pnControl.value);
+    const sn = this.printerIdentificationHandler(this.snControl.value);
     this.timelineService.getCloudJsons(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
   }
 
   public getHeartBeats(): void {
-    const timeRange = this.getTimeRange();
-    const startDate = timeRange.start;
-    const endDate = timeRange.end;
-
-    const startEpoch = Math.round(startDate.getTime() / 1000);
-    const endEpoch = Math.round(endDate.getTime() / 1000);
-
-    let pn = this.pnControl.value;
-    if (pn === 'any' || pn === 'ANY') {
-      pn = '';
-    }
-
-    let sn = this.snControl.value;
-    if (sn === 'any' || sn === 'ANY') {
-      sn = '';
-    }
-
+    const { startEpoch, endEpoch } = this.getEpochTimesFromTimeRange(this.getTimeRange())
+    const pn = this.printerIdentificationHandler(this.pnControl.value);
+    const sn = this.printerIdentificationHandler(this.snControl.value);
     this.timelineService.getHeartBeats(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
   }
 
@@ -383,7 +332,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
     this.formSubmited.emit(true);
 
-    let timeRange = this.getTimeRange();
+    const timeRange = this.getTimeRange();
     this.timelineService.setTimeRange(timeRange.start, timeRange.end).subscribe();
 
     //OpenXml checkbox control

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SingleTimelineComponent } from './single-timeline.component';
-import { TimelineService } from 'src/app/timeline.service';
+import { TimelineService } from 'src/app/shared/timeline.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Overlay } from '@angular/cdk/overlay';

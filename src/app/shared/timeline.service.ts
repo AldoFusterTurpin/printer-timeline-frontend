@@ -50,7 +50,6 @@ export class TimelineService {
 
   public setTimeRange(start: Date, end: Date): Observable<any> {
     let timeRange = { 'start': start, 'end': end };
-
     return of(timeRange)
       .pipe(
         tap(res => this.timeRangeSource.next(res)),
