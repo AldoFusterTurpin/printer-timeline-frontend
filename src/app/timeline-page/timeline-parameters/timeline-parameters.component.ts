@@ -357,6 +357,27 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     this.timelineService.getCloudJsons(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
   }
 
+  public getHeartBeats(): void {
+    const timeRange = this.getTimeRange();
+    const startDate = timeRange.start;
+    const endDate = timeRange.end;
+
+    const startEpoch = Math.round(startDate.getTime() / 1000);
+    const endEpoch = Math.round(endDate.getTime() / 1000);
+
+    let pn = this.pnControl.value;
+    if (pn === 'any' || pn === 'ANY') {
+      pn = '';
+    }
+
+    let sn = this.snControl.value;
+    if (sn === 'any' || sn === 'ANY') {
+      sn = '';
+    }
+
+    this.timelineService.getHeartBeats(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
+  }
+
   public submitForm(): void {
     //console.log(this.myForm.value);
 
@@ -365,12 +386,19 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     let timeRange = this.getTimeRange();
     this.timelineService.setTimeRange(timeRange.start, timeRange.end).subscribe();
 
+    //OpenXml checkbox control
     if (this.filesControl.value[0]) {
       this.getUploadedXmls();
     }
 
+    //Json checkbox control
     if (this.filesControl.value[1]) {
       this.getCloudJsons();
+    }
+
+    //Heartbeat checkbox control
+    if (this.filesControl.value[3]) {
+      this.getHeartBeats();
     }
   }
 }

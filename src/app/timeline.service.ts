@@ -26,6 +26,9 @@ export class TimelineService {
   private cloudJsonSource = new ReplaySubject<JSON>(1);
   cloudJsonData = this.cloudJsonSource.asObservable();
 
+  private heartBeatSource = new ReplaySubject<JSON>(1);
+  heartBeatData = this.heartBeatSource.asObservable();
+
   //Unused
   /* 
   private elementTypeSource = new Subject<JSON>();
@@ -88,6 +91,18 @@ export class TimelineService {
         tap(res => this.cloudJsonSource.next(res)),
         catchError((err) => {
           this.cloudJsonSource.error(err);
+          return this.handleError(err);
+        })
+      );
+  }
+
+  public getHeartBeats(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+    const url = `${this.apiUrl}/heart_beat?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    return this.http.get<any>(url)
+      .pipe(
+        tap(res => this.heartBeatSource.next(res)),
+        catchError((err) => {
+          this.heartBeatSource.error(err);
           return this.handleError(err);
         })
       );

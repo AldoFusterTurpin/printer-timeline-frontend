@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 enum Icons {
   Xml = 'xml',
   Json = 'json',
+  HeartBeat = 'heartbeat'
 }
 
 @Injectable({

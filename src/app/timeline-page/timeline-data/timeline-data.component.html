@@ -23,6 +23,11 @@
                     <p><b>SN</b> {{details[2]['Value']}}</p>
                     <p><b>Topic</b> {{details[6]['Value']}}</p>
 
+                    <button mat-icon-button color="primary" matTooltip="Show element"
+                        (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value']); setTypeOfS3ElementToShow(elementTypeOfDetails)">
+                        <mat-icon class="icon-display">preview</mat-icon>
+                    </button>
+                    
                     <div [ngSwitch]="elementTypeOfDetails">
                         <button mat-raised-button *ngSwitchCase="elementType.CloudJson" color="primary"
                             matTooltip="Show OpenXML that generated this JSON"
@@ -31,10 +36,6 @@
                         </button>
                     </div>
 
-                    <button mat-icon-button color="primary" matTooltip="Show element"
-                        (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value']); setTypeOfS3ElementToShow(elementTypeOfDetails)">
-                        <mat-icon class="icon-display">preview</mat-icon>
-                    </button>
                 </div>
 
                 <mat-progress-bar *ngIf="loadingS3Object" mode="indeterminate" color="primary"> </mat-progress-bar>
@@ -56,6 +57,7 @@
                     <div id="element-preview" [ngSwitch]="typeOfS3ElementToShow">
                         <pre *ngSwitchCase="elementType.OpenXml" lang="xml">{{S3Object}}</pre>
                         <pre *ngSwitchCase="elementType.CloudJson"> {{stringToJsonObject(S3Object) | json}}</pre>
+                        <pre *ngSwitchCase="elementType.Hb" lang="xml">{{S3Object}}</pre>
                     </div>
                 </div>
             </mat-sidenav>
@@ -89,6 +91,22 @@
 
                             <div *ngIf="(cloudJsonTimelineData !== undefined) && (cloudJsonTimelineData !== null)">
                                 <app-single-timeline [timelineData]="cloudJsonTimelineData"
+                                    (changeDataType)="timelineDetailsTypeChangedFromChildComponent($event)">
+                                </app-single-timeline>
+                            </div>
+                            <hr class="solid">
+                        </div>
+
+                        <div id="heartbeat-section" class="timeline-section">
+                            <p> <strong>HeartBeat</strong> section</p>
+                            <div *ngIf="httpHeartBeatError !== undefined;">
+                                <p>Response status code: {{httpHeartBeatError?.status}}</p>
+                                <p>Response status text: {{httpHeartBeatError?.statusText}}</p>
+                                <p>Response error: {{httpHeartBeatError?.error}}</p>
+                            </div>
+
+                            <div *ngIf="(heartBeatTimelineData !== undefined) && (heartBeatTimelineData !== null)">
+                                <app-single-timeline [timelineData]="heartBeatTimelineData"
                                     (changeDataType)="timelineDetailsTypeChangedFromChildComponent($event)">
                                 </app-single-timeline>
                             </div>

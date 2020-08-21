@@ -18,14 +18,12 @@ export class TimelineDataComponent implements AfterViewInit {
   }
   
   public elementTypeOfDetails;
-  
   public setDetailsElementType(type: ElementType) {
     //this.timelineService.emitElementType(elementType).subscribe();
     this.elementTypeOfDetails = type;
   }
   
   public typeOfS3ElementToShow;
-
   public setTypeOfS3ElementToShow(type: ElementType) {
     this.typeOfS3ElementToShow = type;
   }
@@ -35,11 +33,11 @@ export class TimelineDataComponent implements AfterViewInit {
 
   public httpOpenXmlError;
   public httpCloudJsonError;
+  public httpHeartBeatError;
   public httpS3Error;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
   @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
-
 
   public S3ObjectSubscription: Subscription;
   public S3Object;
@@ -52,6 +50,9 @@ export class TimelineDataComponent implements AfterViewInit {
 
   private cloudJsonSubscription: Subscription;
   public cloudJsonTimelineData: TimelineData;
+
+  private heartBeatSubscription: Subscription;
+  public heartBeatTimelineData: TimelineData;
 
   constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
 
@@ -87,6 +88,22 @@ export class TimelineDataComponent implements AfterViewInit {
       });
   }
 
+  private setHeartBeatSubscription() {
+    this.heartBeatSubscription = this.timelineService.heartBeatData.subscribe(
+      (data: any) => {
+        let type = ElementType.Hb;
+        let tableDescription = 'Printers sent ' + type + ' in the selected time range';
+        this.heartBeatTimelineData = new TimelineData(data, type, tableDescription);
+
+        this.loadingSpinner = false;
+      }, 
+      (err) => { 
+        this.httpHeartBeatError = err;
+
+        this.loadingSpinner = false;
+      });
+  }
+
   private setDetailsSubscription() {
     this.detailsSubscription = this.timelineService.detailsData.subscribe(
       (data: any) => {
@@ -101,7 +118,7 @@ export class TimelineDataComponent implements AfterViewInit {
     this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
   }
 
-  //Unused
+  //Unused:
   /* public setElementTypeSubscription() {
     this.elementTypeSubscription = this.timelineService.elementType.subscribe(
       (data: any) => {
@@ -137,8 +154,9 @@ export class TimelineDataComponent implements AfterViewInit {
     this.setCloudJsonSubscription();
     this.setDetailsSubscription();
     this.setS3ObjectSubscription();
-    
-    //Unused.
+    this.setHeartBeatSubscription();
+
+    //Unused:
     //this.setElementTypeSubscription();
   }
 
@@ -148,6 +166,9 @@ export class TimelineDataComponent implements AfterViewInit {
     this.cloudJsonSubscription.unsubscribe();
     this.detailsSubscription.unsubscribe();
     this.S3ObjectSubscription.unsubscribe();
+    this.heartBeatSubscription.unsubscribe();
+
+    //Unused:
     //this.elementTypeSubscription.unsubscribe();
   }
 
