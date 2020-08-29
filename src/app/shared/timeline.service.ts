@@ -29,6 +29,9 @@ export class TimelineService {
   private heartBeatSource = new ReplaySubject<JSON>(1);
   heartBeatData = this.heartBeatSource.asObservable();
 
+  private rtaSource = new ReplaySubject<JSON>(1);
+  rtaData = this.rtaSource.asObservable();
+
   //Unused
   /* 
   private elementTypeSource = new Subject<JSON>();
@@ -102,6 +105,18 @@ export class TimelineService {
         tap(res => this.heartBeatSource.next(res)),
         catchError((err) => {
           this.heartBeatSource.error(err);
+          return this.handleError(err);
+        })
+      );
+  }
+
+  public getRTAs(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+    const url = `${this.apiUrl}/rta?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    return this.http.get<any>(url)
+      .pipe(
+        tap(res => this.rtaSource.next(res)),
+        catchError((err) => {
+          this.rtaSource.error(err);
           return this.handleError(err);
         })
       );

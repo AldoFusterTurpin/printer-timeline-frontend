@@ -36,6 +36,7 @@ export class TimelineDataComponent implements AfterViewInit {
   public httpCloudJsonError;
   public httpHeartBeatError;
   public httpS3Error;
+  public httpRtaError;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
   @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
@@ -54,6 +55,9 @@ export class TimelineDataComponent implements AfterViewInit {
 
   private heartBeatSubscription: Subscription;
   public heartBeatTimelineData: TimelineData;
+
+  private rtaSubscription: Subscription;
+  public rtaTimelineData: TimelineData;
 
   constructor(private timelineService: TimelineService) { }
 
@@ -100,6 +104,22 @@ export class TimelineDataComponent implements AfterViewInit {
       },
       (err) => {
         this.httpHeartBeatError = err;
+
+        this.loadingSpinner = false;
+      });
+  }
+
+  private setRtaSubscription() {
+    this.rtaSubscription = this.timelineService.rtaData.subscribe(
+      (data: any) => {
+        let type = ElementType.Rta;
+        let tableDescription = 'Printers sent ' + type + 's in the selected time range';
+        this.rtaTimelineData = new TimelineData(data, type, tableDescription);
+
+        this.loadingSpinner = false;
+      },
+      (err) => {
+        this.httpRtaError = err;
 
         this.loadingSpinner = false;
       });
@@ -156,6 +176,7 @@ export class TimelineDataComponent implements AfterViewInit {
     this.setDetailsSubscription();
     this.setS3ObjectSubscription();
     this.setHeartBeatSubscription();
+    this.setRtaSubscription();
 
     //Unused:
     //this.setElementTypeSubscription();
@@ -168,6 +189,7 @@ export class TimelineDataComponent implements AfterViewInit {
     this.detailsSubscription.unsubscribe();
     this.S3ObjectSubscription.unsubscribe();
     this.heartBeatSubscription.unsubscribe();
+    this.rtaSubscription.unsubscribe();
 
     //Unused:
     //this.elementTypeSubscription.unsubscribe();

@@ -322,6 +322,13 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     this.timelineService.getCloudJsons(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
   }
 
+  public getRtas(): void {
+    const { startEpoch, endEpoch } = this.getEpochTimesFromTimeRange(this.getTimeRange())
+    const pn = this.printerIdentificationHandler(this.pnControl.value);
+    const sn = this.printerIdentificationHandler(this.snControl.value);
+    this.timelineService.getRTAs(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
+  }
+
   public getHeartBeats(): void {
     const { startEpoch, endEpoch } = this.getEpochTimesFromTimeRange(this.getTimeRange())
     const pn = this.printerIdentificationHandler(this.pnControl.value);
@@ -345,6 +352,11 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     //Json checkbox control
     if (this.filesControl.value[1]) {
       this.getCloudJsons();
+    }
+
+    //Rta checkbox control
+    if (this.filesControl.value[2]) {
+      this.getRtas();
     }
 
     //Heartbeat checkbox control
