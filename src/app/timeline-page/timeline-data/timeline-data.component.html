@@ -16,20 +16,21 @@
                 <hr class="solid">
 
                 <div id="details-section" *ngIf="details !== undefined && details !== null">
-                    <p><b>Timestamp</b>
-                        {{ stringDateToDateObject(details[0]['Value']).toISOString().slice(0, -1).replace('T', ' ') }}
+                    <p>
+                        <b>Timestamp: </b>{{ longRepresentationOf(stringDateToDateObject(details[0]['Value'])) }}
                     </p>
-                    <p><b>PN</b> {{details[1]['Value']}}</p>
-                    <p><b>SN</b> {{details[2]['Value']}}</p>
-                    <p><b>Topic</b> {{details[6]['Value']}}</p>
+                    <p><b>Product Number: </b> {{details[1]['Value']}}</p>
+                    <p><b>Serial Number: </b> {{details[2]['Value']}}</p>
+                    <p><b>Topic: </b> {{details[6]['Value']}}</p>
 
                     <button mat-icon-button color="primary" matTooltip="Show element"
                         (click)="getStoredObject(details[4]['Value'], details[3]['Value'], details[5]['Value']); setTypeOfS3ElementToShow(typeOfElementDetails)">
                         <mat-icon class="icon-display">preview</mat-icon>
                     </button>
-                    
+
                     <div [ngSwitch]="typeOfElementDetails">
-                        <button mat-raised-button *ngSwitchCase="elementType.CloudJson" color="primary"
+                        <button id="download-related-element-button" mat-raised-button
+                            *ngSwitchCase="elementType.CloudJson" color="primary"
                             matTooltip="Show OpenXML that generated this JSON"
                             (click)="getOpenXmlThatGeneratedTheCloudJson(details[8]['Value']); setTypeOfS3ElementToShow(elementType.OpenXml)">
                             Related OpenXML
@@ -66,7 +67,7 @@
                 <div id="timeline-page-wrapper">
                     <div id="timelines-wrapper">
                         <div id="openxml-section" class="timeline-section">
-                            <p> <strong>OpenXML</strong> section</p>
+                            <p class="section-title"> <strong>OpenXML</strong> section</p>
                             <div *ngIf="httpOpenXmlError !== undefined;">
                                 <p>Response status code: {{httpOpenXmlError?.status}}</p>
                                 <p>Response status text: {{httpOpenXmlError?.statusText}}</p>
@@ -82,7 +83,7 @@
                         </div>
 
                         <div id="cloudjson-section" class="timeline-section">
-                            <p> <strong>CloudJSON</strong> section</p>
+                            <p class="section-title"> <strong>CloudJSON</strong> section</p>
                             <div *ngIf="httpCloudJsonError !== undefined;">
                                 <p>Response status code: {{httpCloudJsonError?.status}}</p>
                                 <p>Response status text: {{httpCloudJsonError?.statusText}}</p>
@@ -98,7 +99,7 @@
                         </div>
 
                         <div id="heartbeat-section" class="timeline-section">
-                            <p> <strong>HeartBeat</strong> section</p>
+                            <p class="section-title"> <strong>HeartBeat</strong> section</p>
                             <div *ngIf="httpHeartBeatError !== undefined;">
                                 <p>Response status code: {{httpHeartBeatError?.status}}</p>
                                 <p>Response status text: {{httpHeartBeatError?.statusText}}</p>

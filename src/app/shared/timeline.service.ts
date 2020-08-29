@@ -96,7 +96,7 @@ export class TimelineService {
   }
 
   public getHeartBeats(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${this.apiUrl}/heart_beat?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${this.apiUrl}/heartbeat?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.heartBeatSource.next(res)),

@@ -191,4 +191,8 @@ export class TimelineDataComponent implements AfterViewInit {
   public stringDateToDateObject(inputDate: string): Date {
     return Utils.stringDateToDateObject(inputDate);
   }
+
+  public longRepresentationOf(d: Date) {
+    return d.toLocaleString('en-GB') + ':' + d.getMilliseconds();
+  }
 }

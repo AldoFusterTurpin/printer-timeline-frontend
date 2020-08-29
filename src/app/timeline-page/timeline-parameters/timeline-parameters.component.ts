@@ -291,7 +291,9 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   private getEpochTimesFromTimeRange(timeRange: { start: Date, end: Date }): { startEpoch: Number, endEpoch: Number } {
-    const startEpoch = Math.round(timeRange.start.getTime() / 1000);
+    // divide by 1000 because API expects Unix Time (seconds) but 
+    // Javascript getTime() returns milliseconds since the Epoch (not seoonds).
+    const startEpoch = Math.round(timeRange.start.getTime() / 1000); 
     const endEpoch = Math.round(timeRange.end.getTime() / 1000);
     return { startEpoch: startEpoch, endEpoch: endEpoch };
   }

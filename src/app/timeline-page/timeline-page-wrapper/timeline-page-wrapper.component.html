@@ -4,7 +4,7 @@
 
 <ng-template #timelineBlock>
     <div id="back-button-and-time-range">
-        <button id="back-button" mat-raised-button color="primary" (click)="this.hideTimeline()">
+        <button id="back-button" mat-raised-button color="primary" (click)="this.hideTimeline()" [routerLink]="['/timeline-page-wrapper']">
             <mat-icon>arrow_left</mat-icon> Back to main page
         </button>
 

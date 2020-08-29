@@ -1,5 +1,5 @@
-//TODO: something is wrong when going back and selecting new options in the form. !!!!
-// The mat paginator is wrong.
+//TODO: something is wrong when going back and selecting new options in the form. and clicking "Next >" !!!!
+// The mat paginator is wrong.  
 
 import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -37,7 +37,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   public tableDataSource = null;
   public tableLength = 0;
 
-  public selectedData = [];
+  public selectedData: Array<any> = [];
 
   private tablePaginator: MatPaginator;
 
@@ -89,19 +89,21 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
     let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply checkboxes filter' to see the changes";
     let action = 'Got it!';
-    let verticalPosition: MatSnackBarVerticalPosition = 'top';
     this._snackBar.open(message, action, {
       duration: 20000,
-      verticalPosition: verticalPosition,
+      verticalPosition: 'top',
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['timelineData']) {
-
       let tableData = this.createTableData(this.timelineData.apiResponse['Results']);
       this.tableLength = tableData.length;
       this.tableDataSource = new MatTableDataSource(tableData);
+
+      console.log(this.tablePaginator);
+      console.log(tableData);
+      console.log(this.tableLength);
 
       /* uncomment line below if want to show all the timeline elements on init  */
       //this.selectedData = this.timelineData.apiResponse['Results'];
@@ -109,6 +111,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    console.log("on ngOnDestroy() of single-timeline");
   }
 
   private createTableData(data: any[]) {
@@ -127,10 +130,9 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
       let message = 'Data ready below ⬇';
       let action = 'Got it!';
-      let verticalPosition: MatSnackBarVerticalPosition = 'top';
       this._snackBar.open(message, action, {
         duration: 5000,
-        verticalPosition: verticalPosition,
+        verticalPosition: 'top',
       });
     }, 1500);
   }
@@ -141,5 +143,9 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
   public stringDateToDateObject(inputDate: string): Date {
     return Utils.stringDateToDateObject(inputDate);
+  }
+
+  public shortRepresentationOf(d: Date) {
+    return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ':' + d.getMilliseconds();
   }
 }
