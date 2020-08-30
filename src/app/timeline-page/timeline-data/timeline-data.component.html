@@ -2,10 +2,6 @@
 
 <ng-template #dataReady>
     <div>
-        <!-- 
-            if 'height: 100vh' is set in CSS, the tex "Close" of the close button of the left sidenav 
-            is sometimes empty (an unexpected thing). That's why the style is here inline. 
-        -->
         <mat-sidenav-container style="height:'100vh'">
             <mat-sidenav #rightSidenav mode="side" opened="false" position="end">
                 <button class="close-sidenav-button" mat-raised-button color="accent"
@@ -35,8 +31,8 @@
                             Related OpenXML
                         </button>
 
-                        <button *ngSwitchCase="elementType.Rta" id="download-related-element-button"
-                            mat-raised-button color="primary" matTooltip="Show OpenXML that generated this RTA"
+                        <button *ngSwitchCase="elementType.Rta" id="download-related-element-button" mat-raised-button
+                            color="primary" matTooltip="Show OpenXML that generated this RTA"
                             (click)="getOpenXmlThatGeneratedTheCloudJson(details[7]['Value']); setTypeOfS3ElementToShow(elementType.OpenXml)">
                             Related OpenXML
                         </button>
@@ -72,7 +68,8 @@
             <mat-sidenav-content>
                 <div id="timeline-page-wrapper">
                     <div id="timelines-wrapper">
-                        <div id="openxml-section" class="timeline-section">
+                        <div id="openxml-section" class="timeline-section"
+                            *ngIf="httpOpenXmlError !== undefined || ((uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null))">
                             <p class="section-title"> <strong>OpenXML</strong> section</p>
                             <div *ngIf="httpOpenXmlError !== undefined;">
                                 <p>Response status code: {{httpOpenXmlError?.status}}</p>
@@ -88,7 +85,8 @@
                             <hr class="solid">
                         </div>
 
-                        <div id="cloudjson-section" class="timeline-section">
+                        <div id="cloudjson-section" class="timeline-section"
+                            *ngIf="httpCloudJsonError !== undefined || ((cloudJsonTimelineData !== undefined) && (cloudJsonTimelineData !== null))">
                             <p class="section-title"> <strong>CloudJSON</strong> section</p>
                             <div *ngIf="httpCloudJsonError !== undefined;">
                                 <p>Response status code: {{httpCloudJsonError?.status}}</p>
@@ -104,7 +102,8 @@
                             <hr class="solid">
                         </div>
 
-                        <div id="heartbeat-section" class="timeline-section">
+                        <div id="heartbeat-section" class="timeline-section"
+                            *ngIf="httpHeartBeatError !== undefined || ((heartBeatTimelineData !== undefined) && (heartBeatTimelineData !== null))">
                             <p class="section-title"> <strong>Heartbeat</strong> section</p>
                             <div *ngIf="httpHeartBeatError !== undefined;">
                                 <p>Response status code: {{httpHeartBeatError?.status}}</p>
@@ -120,7 +119,8 @@
                             <hr class="solid">
                         </div>
 
-                        <div id="rta-section" class="timeline-section">
+                        <div id="rta-section" class="timeline-section"
+                            *ngIf="httpRtaError !== undefined || ((rtaTimelineData !== undefined) && (rtaTimelineData !== null))">
                             <p class="section-title"> <strong>RTA (Real Time Alerts)</strong> section</p>
                             <div *ngIf="httpRtaError !== undefined;">
                                 <p>Response status code: {{httpRtaError?.status}}</p>
