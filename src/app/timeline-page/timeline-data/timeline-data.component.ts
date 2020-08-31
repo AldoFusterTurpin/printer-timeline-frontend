@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { TimelineService } from '../../shared/timeline.service';
 import { Subscription } from 'rxjs';
 import { TimelineData } from 'src/app/shared/timelineData';
@@ -14,6 +14,8 @@ import Utils from 'src/app/shared/utils';
 export class TimelineDataComponent implements AfterViewInit {
   elementType = ElementType;
 
+  @Input()
+  public initialSelectedValues;
 
   public showOpenxmls = true;
   public showCloudJsons = true;
@@ -21,17 +23,17 @@ export class TimelineDataComponent implements AfterViewInit {
   public showRtas = true;
   public showPrinterSubscriptions = true;
 
-  countChange(event) {
-    console.log(event);
-    this.showOpenxmls = event.includes(ElementType.OpenXml);
-    this.showCloudJsons = event.includes(ElementType.CloudJson);
-    this.showHeartBeats = event.includes(ElementType.Hb);
-    this.showRtas = event.includes(ElementType.Rta);
-    this.showPrinterSubscriptions = event.includes(ElementType.PrinterSubscriptions);
+  selectedValuesChanged(selectedValues: ElementType[]) {
+    console.log(selectedValues);
+    this.showOpenxmls = selectedValues.includes(ElementType.OpenXml);
+    this.showCloudJsons = selectedValues.includes(ElementType.CloudJson);
+    this.showHeartBeats = selectedValues.includes(ElementType.Hb);
+    this.showRtas = selectedValues.includes(ElementType.Rta);
+    this.showPrinterSubscriptions = selectedValues.includes(ElementType.PrinterSubscriptions);
   }
 
-  public timelineDetailsTypeChangedFromChildComponent(event) {
-    this.setTypeOfElementDetails(event);
+  public timelineDetailsTypeChangedFromChildComponent(elementDetailsType: ElementType) {
+    this.setTypeOfElementDetails(elementDetailsType);
   }
 
   public typeOfElementDetails;

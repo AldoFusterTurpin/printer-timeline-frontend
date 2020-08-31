@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { TimelineService } from 'src/app/shared/timeline.service';
 import { Subscription } from 'rxjs';
+import { ElementType } from 'src/app/shared/ElementType';
 
 @Component({
   selector: 'app-timeline-page-wrapper',
@@ -13,9 +14,11 @@ export class TimelinePageWrapperComponent implements OnInit {
   public end: Date;
 
   public showTimeline: boolean;
+  public valuesSelected: ElementType[];
 
-  public onFormSubmited(formSubmited: boolean) {
-    this.showTimeline = formSubmited;
+  public onValuesSelected(valuesSelected: ElementType[]) {
+    this.valuesSelected = valuesSelected;
+    this.showTimeline = true;
   }
 
   public hideTimeline() {

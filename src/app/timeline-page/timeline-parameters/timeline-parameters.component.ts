@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { TimelineService } from '../../shared/timeline.service';
 import Utils from '../../shared/utils';
 import { utils } from 'protractor';
+import { ElementType } from 'src/app/shared/ElementType';
 
 @Component({
   selector: 'app-timeline-parameters',
@@ -13,7 +14,7 @@ import { utils } from 'protractor';
 export class TimelineParametersComponent implements OnInit, OnDestroy {
 
   @Output()
-  formSubmited: EventEmitter<boolean> = new EventEmitter<boolean>();
+  valuesSelected: EventEmitter<ElementType[]> = new EventEmitter<ElementType[]>();
 
   private timeUnitsTouchedBefore = false;
   private selectedFiles: String[] = [];
@@ -335,12 +336,33 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     this.timelineService.getHeartBeats(pn, sn, startEpoch.toString(), endEpoch.toString()).subscribe();
   }
 
-  public submitForm(): void {
-    this.formSubmited.emit(true);
+  public getValuesSelected(): ElementType[] {
+    let valuesSelected = [];
 
-    const timeRange = this.getTimeRange();
-    this.timelineService.setTimeRange(timeRange.start, timeRange.end).subscribe();
+    //OpenXml checkbox control
+    if (this.filesControl.value[0]) {
+      valuesSelected.push(ElementType.OpenXml);
+    }
 
+    //Json checkbox control
+    if (this.filesControl.value[1]) {
+      valuesSelected.push(ElementType.CloudJson);
+    }
+
+    //Rta checkbox control
+    if (this.filesControl.value[2]) {
+      valuesSelected.push(ElementType.Rta);
+    }
+
+    //Heartbeat checkbox control
+    if (this.filesControl.value[3]) {
+      valuesSelected.push(ElementType.Hb);
+    }
+
+    return valuesSelected;
+  }
+
+  public fetchData() {
     //OpenXml checkbox control
     if (this.filesControl.value[0]) {
       this.getUploadedXmls();
@@ -360,5 +382,15 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
     if (this.filesControl.value[3]) {
       this.getHeartBeats();
     }
+  }
+
+  public submitForm(): void {
+    console.log(this.getValuesSelected());
+    this.valuesSelected.emit(this.getValuesSelected());
+
+    const timeRange = this.getTimeRange();
+    this.timelineService.setTimeRange(timeRange.start, timeRange.end).subscribe();
+
+    this.fetchData();
   }
 }

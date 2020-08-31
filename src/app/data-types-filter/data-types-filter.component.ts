@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl } from "@angular/forms";
 import { ElementType } from '../shared/ElementType';
 
@@ -10,19 +10,23 @@ import { ElementType } from '../shared/ElementType';
 })
 export class DataTypesFilterComponent {
 
+  @Input()
+  initialSelectedValues: ElementType[];
 
   @Output()
-  change = new EventEmitter<ElementType[]>();
+  changedSelectedValues = new EventEmitter<ElementType[]>();
 
   elementsControl = new FormControl();
-  elementsList: string[] = [ElementType.OpenXml, ElementType.CloudJson, ElementType.Rta, ElementType.Hb, ElementType.PrinterSubscriptions];
-
+  
+  //elementsList: string[] = [ElementType.OpenXml, ElementType.CloudJson, ElementType.Rta, ElementType.Hb, ElementType.PrinterSubscriptions];
+  
   constructor(public fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.elementsControl.setValue(this.initialSelectedValues);
   }
 
   public applyFilter(event) {
-    this.change.emit(this.elementsControl.value);
+    this.changedSelectedValues.emit(this.elementsControl.value);
   }
 }

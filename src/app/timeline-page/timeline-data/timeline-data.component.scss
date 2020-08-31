@@ -15,6 +15,7 @@ h4 {
     display: flex;
     flex: auto;
     flex-direction: column;
+    justify-content: start;
 }
 
 #close-left-sidenav-button {
@@ -25,9 +26,9 @@ h4 {
     margin-bottom: 20px;
 }
 
-.element-preview{
+.element-preview {
     overflow-y: scroll;
-} 
+}
 
 #download-related-element-button {
     margin-bottom: 20px;
@@ -44,4 +45,8 @@ h4 {
 
 .section-title {
     text-align: center;
+}
+
+[hidden] {
+    display: none !important;
 }

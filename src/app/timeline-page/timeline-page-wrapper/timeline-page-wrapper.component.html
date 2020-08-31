@@ -1,5 +1,5 @@
 <div *ngIf="!this.showTimeline; else timelineBlock">
-    <app-timeline-parameters (formSubmited)="onFormSubmited($event)"></app-timeline-parameters>
+    <app-timeline-parameters (valuesSelected)="onValuesSelected($event)"></app-timeline-parameters>
 </div>
 
 <ng-template #timelineBlock>
@@ -13,5 +13,5 @@
         </div>
     </div>
 
-    <app-timeline-data></app-timeline-data>
+    <app-timeline-data [initialSelectedValues]="this.valuesSelected" ></app-timeline-data>
 </ng-template>
