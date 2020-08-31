@@ -32,6 +32,25 @@ export class TimelineService {
   private rtaSource = new ReplaySubject<JSON>(1);
   rtaData = this.rtaSource.asObservable();
 
+  public cleanSources () {
+    return of(null)
+      .pipe(
+        tap((res) => {
+          this.uploadedXmlSource.next(res);
+          this.cloudJsonSource.next(res);
+          this.heartBeatSource.next(res);
+          this.rtaSource.next(res);
+        }),
+        catchError((err) => {
+          this.uploadedXmlSource.error(err);
+          this.cloudJsonSource.error(err);
+          this.heartBeatSource.error(err);
+          this.rtaSource.error(err);
+          return this.handleError(err);
+        })
+      );
+  }
+
   //Unused
   /* 
   private elementTypeSource = new Subject<JSON>();

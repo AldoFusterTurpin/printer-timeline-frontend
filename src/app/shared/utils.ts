@@ -94,8 +94,6 @@ export default class Utils {
             let json: JSON = JSON.parse(inputString);
             return json;
         } catch {
-            //console.log(inputString);
-            //console.log('In catch of stringToJsonObject');
             return inputString;
         }
     }

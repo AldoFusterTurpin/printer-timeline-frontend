@@ -34,7 +34,6 @@ describe('TimelineParametersComponent', () => {
   });
 
 
-
   /* it('should have formIsValid to true when giving correct values to forms', async (() => {
     //TODO: can't make this work...
     const form = component.myForm;

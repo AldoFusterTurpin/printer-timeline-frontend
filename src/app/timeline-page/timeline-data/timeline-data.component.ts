@@ -64,15 +64,17 @@ export class TimelineDataComponent implements AfterViewInit {
   private setUploadedXmlSubscription() {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
       (data: any) => {
-        let type = ElementType.OpenXml;
-        let tableDescription = 'Printers sent ' + type + 'files in the selected time range';
-        this.uploadedXmlTimelineData = new TimelineData(data, type, tableDescription);
-
+        if (data) {
+          let type = ElementType.OpenXml;
+          let tableDescription = 'Printers sent ' + type + 'files in the selected time range';
+          this.uploadedXmlTimelineData = new TimelineData(data, type, tableDescription);
+        } else {
+          this.uploadedXmlTimelineData = null;
+        }
         this.loadingSpinner = false;
       },
       (err) => {
         this.httpOpenXmlError = err;
-
         this.loadingSpinner = false;
       });
   }
@@ -80,15 +82,17 @@ export class TimelineDataComponent implements AfterViewInit {
   private setCloudJsonSubscription() {
     this.cloudJsonSubscription = this.timelineService.cloudJsonData.subscribe(
       (data: any) => {
-        let type = ElementType.CloudJson;
-        let tableDescription = 'Printers that generated' + type + 's';
-        this.cloudJsonTimelineData = new TimelineData(data, type, tableDescription);
-
+        if (data) {
+          let type = ElementType.CloudJson;
+          let tableDescription = 'Printers that generated' + type + 's';
+          this.cloudJsonTimelineData = new TimelineData(data, type, tableDescription);
+        } else {
+          this.cloudJsonTimelineData = null;
+        }
         this.loadingSpinner = false;
       },
       (err) => {
         this.httpCloudJsonError = err;
-
         this.loadingSpinner = false;
       });
   }
@@ -96,15 +100,17 @@ export class TimelineDataComponent implements AfterViewInit {
   private setHeartBeatSubscription() {
     this.heartBeatSubscription = this.timelineService.heartBeatData.subscribe(
       (data: any) => {
-        let type = ElementType.Hb;
-        let tableDescription = 'Printers sent ' + type + 's in the selected time range';
-        this.heartBeatTimelineData = new TimelineData(data, type, tableDescription);
-
+        if (data) {
+          let type = ElementType.Hb;
+          let tableDescription = 'Printers sent ' + type + 's in the selected time range';
+          this.heartBeatTimelineData = new TimelineData(data, type, tableDescription);
+        } else {
+          this.heartBeatTimelineData = null;
+        }
         this.loadingSpinner = false;
       },
       (err) => {
         this.httpHeartBeatError = err;
-
         this.loadingSpinner = false;
       });
   }
@@ -112,15 +118,17 @@ export class TimelineDataComponent implements AfterViewInit {
   private setRtaSubscription() {
     this.rtaSubscription = this.timelineService.rtaData.subscribe(
       (data: any) => {
-        let type = ElementType.Rta;
-        let tableDescription = 'Printers sent ' + type + 's in the selected time range';
-        this.rtaTimelineData = new TimelineData(data, type, tableDescription);
-
+        if (data) {
+          let type = ElementType.Rta;
+          let tableDescription = 'Printers sent ' + type + 's in the selected time range';
+          this.rtaTimelineData = new TimelineData(data, type, tableDescription);
+        } else {
+          this.rtaTimelineData = null;
+        }
         this.loadingSpinner = false;
       },
       (err) => {
         this.httpRtaError = err;
-
         this.loadingSpinner = false;
       });
   }
@@ -130,7 +138,6 @@ export class TimelineDataComponent implements AfterViewInit {
       (data: any) => {
         this.details = data;
         this.rightSidenav.open();
-        //console.log(this.details);
       });
   }
 
@@ -165,8 +172,6 @@ export class TimelineDataComponent implements AfterViewInit {
         this.loadingS3Object = false;
         this.httpS3Error = err;
         this.leftSidenav.open();
-
-        console.log(this.httpS3Error);
       });
   }
 

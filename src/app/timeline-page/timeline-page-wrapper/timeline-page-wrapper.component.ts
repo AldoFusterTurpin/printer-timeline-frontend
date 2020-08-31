@@ -19,6 +19,7 @@ export class TimelinePageWrapperComponent implements OnInit {
   }
 
   public hideTimeline() {
+    this.timelineService.cleanSources().subscribe(); 
     this.showTimeline = false;
   }
 

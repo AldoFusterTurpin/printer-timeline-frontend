@@ -1,4 +1,5 @@
-<div id="single-timeline">
+<div *ngIf="(timelineData) && (timelineData.apiResponse['Results']) && (timelineData.elementName) && (selectedData) && (timelineData.tableDescription)" 
+    id="single-timeline">
     <mat-accordion>
         <mat-expansion-panel #detailsPanel expanded="true" class="mat-elevation-z0">
             <mat-expansion-panel-header>
@@ -67,10 +68,12 @@
         </mat-expansion-panel>
     </mat-accordion>
 
-    <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate" color="primary"> </mat-progress-bar>
+    <mat-progress-bar *ngIf="showProgressBarBottom" mode="indeterminate" color="primary"> </mat-progress-bar>
 
-    <p>Found {{timelineData?.apiResponse['Results'].length}} {{timelineData?.elementName}}s in total (showing
-        {{selectedData.length}} elements):</p>
+    <p id="table-summary">
+        Found {{timelineData?.apiResponse['Results']?.length}} {{timelineData?.elementName}}s in total (showing
+        {{selectedData?.length}} elements):
+    </p>
 
     <div id="single-timeline-list">
         <div class="cards-wrapper">

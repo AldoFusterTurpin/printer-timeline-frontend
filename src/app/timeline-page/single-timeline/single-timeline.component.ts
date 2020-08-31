@@ -29,7 +29,8 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
     this.changeDataType.emit(valueToEmit);
   }
 
-  public showProgressBar: boolean = false;
+  public showProgressBarTop: boolean = true;
+  public showProgressBarBottom: boolean = false;
 
   public tableData = [];
   public selection = new SelectionModel<any>(true, []);
@@ -52,50 +53,56 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    //uncomment line below to check all the checkboxes of table on init 
-    //this.masterToggle();
   }
 
   ngAfterViewInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['timelineData']) {
-      console.log("changes['timelineData']");
+  private updateComponent(input: TimelineData) {
+    if (input) {
+      this.timelineData = input;
 
-      let tableData = this.createTableData(this.timelineData.apiResponse['Results']);
-      this.tableLength = tableData.length;
-      this.tableDataSource = new MatTableDataSource(tableData);
+      let results = this.timelineData.apiResponse['Results'];
+      if (results) {
+        let tableData = this.createTableData(results);
+        this.tableLength = tableData.length;
+        this.tableDataSource = new MatTableDataSource(tableData);
 
-      console.log("Below this.tablePaginator");
-      console.log(this.tablePaginator);
-
-      console.log("Below tableData");
-      console.log(tableData);
-
-      console.log("Below this.tableLength");
-      console.log(this.tableLength);
-
-      //////////// this was in ngAfterViewInit
-      if (this.tableDataSource) {
-        this.tableDataSource.paginator = this.tablePaginator;
-      }
+        if (this.tableDataSource) {
+          this.tableDataSource.paginator = this.tablePaginator;
+        }
   
-      let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply checkboxes filter' to see the changes";
-      let action = 'Got it!';
-      this._snackBar.open(message, action, {
-        duration: 20000,
-        verticalPosition: 'top',
-      });
-      ////////////////////////////////////////////////////
+        let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply checkboxes filter' to see the changes";
+        let action = 'Got it!';
+        this._snackBar.open(message, action, {
+          duration: 20000,
+          verticalPosition: 'top',
+        });
 
-      /* uncomment line below if want to show all the timeline elements on init  */
-      //this.selectedData = this.timelineData.apiResponse['Results'];
+      } else {
+        this.tableLength = 0;
+        this.tableDataSource = new MatTableDataSource([]);
+      }
+
+      this.showProgressBarTop = false;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // best practice: https://dev.to/nickraphael/ngonchanges-best-practice-always-use-simplechanges-always-1feg
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        let change = changes[propName];
+        switch (propName) {
+          case 'timelineData': {
+            this.updateComponent(change.currentValue);
+          }
+        }
+      }
     }
   }
 
   ngOnDestroy(): void {
-    console.log("on ngOnDestroy() of single-timeline");
   }
 
   private createTableData(data: any[]) {
@@ -104,13 +111,13 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   }
 
   public filterSelectedItems() {
-    this.showProgressBar = true;
+    this.showProgressBarBottom = true;
     let selectedValuesInTable = this.selection.selected;
 
     setTimeout(() => {
       let set = Utils.createSetOfPn_SnFromArray(selectedValuesInTable);
       this.selectedData = Utils.createArrayOfObjectsFromSet(set, this.timelineData.apiResponse['Results']);
-      this.showProgressBar = false;
+      this.showProgressBarBottom = false;
 
       let message = 'Data ready below ⬇';
       let action = 'Got it!';
@@ -118,7 +125,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
         duration: 5000,
         verticalPosition: 'top',
       });
-    }, 1500);
+    }, 1000);
   }
 
   public showDetails(element) {

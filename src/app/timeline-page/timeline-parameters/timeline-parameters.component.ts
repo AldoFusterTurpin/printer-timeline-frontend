@@ -260,7 +260,6 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
 
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
-      //console.log(this.myForm.value);
     });
   }
 
@@ -337,8 +336,6 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   public submitForm(): void {
-    //console.log(this.myForm.value);
-
     this.formSubmited.emit(true);
 
     const timeRange = this.getTimeRange();

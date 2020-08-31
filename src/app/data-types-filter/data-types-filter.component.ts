@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormControl } from "@angular/forms";
+import { ElementType } from '../shared/ElementType';
 
 
 @Component({
@@ -9,54 +10,20 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 export class DataTypesFilterComponent {
 
-  myForm: FormGroup;
-  dataGroups;
 
-  constructor(public formBuilder: FormBuilder) { }
+  @Output()
+  change = new EventEmitter<ElementType[]>();
+
+  elementsControl = new FormControl();
+  elementsList: string[] = [ElementType.OpenXml, ElementType.CloudJson, ElementType.Rta, ElementType.Hb, ElementType.PrinterSubscriptions];
+
+  constructor(public fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.myForm = this.createForm()
-    this.dataGroups = this.createDataGroups()
   }
 
-  private createForm() {
-    return this.formBuilder.group({
-      dataTypes: [, [Validators.required]],
-    })
-  }
-
-  private createDataGroups() {
-    return [
-      {
-        name: 'Files',
-        data: [
-          {value: 'openXml', viewValue: 'OpenXML'},
-          {value: 'json', viewValue: 'Cloud JSON'},
-          {value: 'rta', viewValue: 'RTA (Real Time Alerts)'},
-          {value: 'heartBeats', viewValue: 'HB (Heart Beats)'}
-        ]
-      },
-      {
-        name: 'Requests',
-        data: [
-          {value: 'gcp', viewValue: 'Get Configuration Profile'},
-          {value: 'getSqsCredentials', viewValue: 'Get SQS Credentials'}
-        ]
-      },
-      {
-        name: 'Others',
-        data: [
-          {value: 'printerSubscriptions', viewValue: 'Printer Subscriptions'}
-        ]
-      },
-    ]
-  }
-
-  public errorHandling = (control: string, error: string) => {
-    return this.myForm.controls[control].hasError(error);
-  }
-
-  public submitForm() {
-    //console.log(this.myForm.value)
+  public applyFilter(event) {
+    this.change.emit(this.elementsControl.value);
+    console.log(this.elementsControl.value);
   }
 }
