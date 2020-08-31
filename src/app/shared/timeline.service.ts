@@ -32,7 +32,7 @@ export class TimelineService {
   private rtaSource = new ReplaySubject<JSON>(1);
   rtaData = this.rtaSource.asObservable();
 
-  public cleanSources () {
+  public cleanSources() {
     return of(null)
       .pipe(
         tap((res) => {

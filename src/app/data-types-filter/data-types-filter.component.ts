@@ -24,6 +24,5 @@ export class DataTypesFilterComponent {
 
   public applyFilter(event) {
     this.change.emit(this.elementsControl.value);
-    console.log(this.elementsControl.value);
   }
 }

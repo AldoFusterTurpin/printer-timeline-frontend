@@ -14,6 +14,22 @@ import Utils from 'src/app/shared/utils';
 export class TimelineDataComponent implements AfterViewInit {
   elementType = ElementType;
 
+
+  public showOpenxmls = true;
+  public showCloudJsons = true;
+  public showHeartBeats = true;
+  public showRtas = true;
+  public showPrinterSubscriptions = true;
+
+  countChange(event) {
+    console.log(event);
+    this.showOpenxmls = event.includes(ElementType.OpenXml);
+    this.showCloudJsons = event.includes(ElementType.CloudJson);
+    this.showHeartBeats = event.includes(ElementType.Hb);
+    this.showRtas = event.includes(ElementType.Rta);
+    this.showPrinterSubscriptions = event.includes(ElementType.PrinterSubscriptions);
+  }
+
   public timelineDetailsTypeChangedFromChildComponent(event) {
     this.setTypeOfElementDetails(event);
   }
