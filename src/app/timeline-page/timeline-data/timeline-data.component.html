@@ -29,13 +29,13 @@
                             <button *ngSwitchCase="elementType.CloudJson" id="download-related-element-button"
                                 mat-raised-button color="primary" matTooltip="Show OpenXML that generated this JSON"
                                 (click)="getOpenXmlThatGeneratedTheCloudJson(details[8]['Value']); setTypeOfS3ElementToShow(elementType.OpenXml)">
-                                Related OpenXML
+                                Source OpenXML
                             </button>
 
                             <button *ngSwitchCase="elementType.Rta" id="download-related-element-button"
                                 mat-raised-button color="primary" matTooltip="Show OpenXML that generated this RTA"
                                 (click)="getOpenXmlThatGeneratedTheCloudJson(details[7]['Value']); setTypeOfS3ElementToShow(elementType.OpenXml)">
-                                Related OpenXML
+                                Source OpenXML
                             </button>
                         </div>
 
@@ -69,6 +69,7 @@
                 <mat-sidenav-content>
                     <div id="timeline-page-wrapper">
                         <div id="data-types-filter">
+                            <h4>Hide/show data types</h4>
                             <app-data-types-filter [initialSelectedValues]="this.initialSelectedValues"
                                 (changedSelectedValues)="selectedValuesChanged($event)">
                             </app-data-types-filter>

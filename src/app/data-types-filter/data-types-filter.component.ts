@@ -17,16 +17,14 @@ export class DataTypesFilterComponent {
   changedSelectedValues = new EventEmitter<ElementType[]>();
 
   elementsControl = new FormControl();
-  
-  //elementsList: string[] = [ElementType.OpenXml, ElementType.CloudJson, ElementType.Rta, ElementType.Hb, ElementType.PrinterSubscriptions];
-  
+    
   constructor(public fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.elementsControl.setValue(this.initialSelectedValues);
   }
 
-  public applyFilter(event) {
+  public onElementChange(event) {
     this.changedSelectedValues.emit(this.elementsControl.value);
   }
 }

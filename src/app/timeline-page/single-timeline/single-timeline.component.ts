@@ -1,6 +1,4 @@
-//TODO: something is wrong when going back and selecting new options in the form. and clicking "Next >" !!!!
-// The mat paginator is wrong.  
-
+//TODO: check RTA logs because maybe is not storing correctly the RTA in XML  that generated the RTA in Json.
 import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
