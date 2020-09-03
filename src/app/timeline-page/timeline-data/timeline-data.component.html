@@ -80,8 +80,12 @@
                         <div id="timelines-wrapper">
                             <div [hidden]="!showOpenxmls" id="openxml-section" class="timeline-section"
                                 *ngIf="httpOpenXmlError !== undefined || ((uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null))">
+                                
+                                <div class="section-header">
+                                    <p class="section-title"> <strong>OpenXML </strong> </p> 
+                                    <mat-icon svgIcon="xml" class="icon-display"></mat-icon>
+                                </div>
 
-                                <p class="section-title"> <strong>OpenXML</strong></p>
                                 <div *ngIf="httpOpenXmlError !== undefined;">
                                     <p>Response status code: {{httpOpenXmlError?.status}}</p>
                                     <p>Response status text: {{httpOpenXmlError?.statusText}}</p>
@@ -99,7 +103,12 @@
 
                             <div [hidden]="!showCloudJsons" id="cloudjson-section" class="timeline-section"
                                 *ngIf="httpCloudJsonError !== undefined || ((cloudJsonTimelineData !== undefined) && (cloudJsonTimelineData !== null))">
-                                <p class="section-title"> <strong>CloudJSON</strong></p>
+                                
+                                <div class="section-header">
+                                    <p class="section-title"> <strong>CloudJSON</strong></p> 
+                                    <mat-icon svgIcon="json" class="icon-display"></mat-icon>
+                                </div>
+                                
                                 <div *ngIf="httpCloudJsonError !== undefined;">
                                     <p>Response status code: {{httpCloudJsonError?.status}}</p>
                                     <p>Response status text: {{httpCloudJsonError?.statusText}}</p>
@@ -116,7 +125,11 @@
 
                             <div [hidden]="!showRtas" id="rta-section" class="timeline-section"
                                 *ngIf="httpRtaError !== undefined || ((rtaTimelineData !== undefined) && (rtaTimelineData !== null))">
-                                <p class="section-title"> <strong>RTA (Real Time Alerts)</strong></p>
+                                
+                                <div class="section-header">
+                                    <p class="section-title"> <strong>RTA (Real Time Alerts)</strong> </p> <mat-icon svgIcon="rta" class="icon-display"></mat-icon>
+                                </div>
+
                                 <div *ngIf="httpRtaError !== undefined;">
                                     <p>Response status code: {{httpRtaError?.status}}</p>
                                     <p>Response status text: {{httpRtaError?.statusText}}</p>
@@ -133,7 +146,12 @@
 
                             <div [hidden]="!showHeartBeats" id="heartbeat-section" class="timeline-section"
                                 *ngIf="httpHeartBeatError !== undefined || ((heartBeatTimelineData !== undefined) && (heartBeatTimelineData !== null))">
-                                <p class="section-title"> <strong>Heartbeat</strong></p>
+                                
+                                <div class="section-header">
+                                    <p class="section-title"> <strong>Heartbeat</strong></p> 
+                                    <mat-icon svgIcon="heartbeat" class="icon-display"></mat-icon>
+                                </div>
+
                                 <div *ngIf="httpHeartBeatError !== undefined;">
                                     <p>Response status code: {{httpHeartBeatError?.status}}</p>
                                     <p>Response status text: {{httpHeartBeatError?.statusText}}</p>

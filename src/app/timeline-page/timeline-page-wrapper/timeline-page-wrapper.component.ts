@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { TimelineService } from 'src/app/shared/timeline.service';
 import { Subscription } from 'rxjs';
 import { ElementType } from 'src/app/shared/ElementType';
+import Utils from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-timeline-page-wrapper',
@@ -24,6 +25,10 @@ export class TimelinePageWrapperComponent implements OnInit {
   public hideTimeline() {
     this.timelineService.cleanSources().subscribe(); 
     this.showTimeline = false;
+  }
+
+  public longRepresentationOf(d: Date) {
+    return d.toLocaleString('en-GB');
   }
 
   constructor(private timelineService: TimelineService, private changeDetector: ChangeDetectorRef) { }
