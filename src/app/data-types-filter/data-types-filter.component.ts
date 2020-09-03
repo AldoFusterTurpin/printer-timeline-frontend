@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { FormBuilder, FormControl } from "@angular/forms";
-import { ElementType } from '../shared/ElementType';
 
 
 @Component({
@@ -11,10 +10,10 @@ import { ElementType } from '../shared/ElementType';
 export class DataTypesFilterComponent {
 
   @Input()
-  initialSelectedValues: ElementType[];
+  initialSelectedValues: [];
 
   @Output()
-  changedSelectedValues = new EventEmitter<ElementType[]>();
+  changedSelectedValues = new EventEmitter<any[]>();
 
   elementsControl = new FormControl();
     

@@ -1,4 +1,4 @@
-<div *ngIf="(timelineData) && (timelineData.apiResponse['Results']) && (timelineData.elementName) && (selectedData) && (timelineData.tableDescription)" 
+<div *ngIf="(timelineData) && (timelineData.apiResponse['Results']) && (timelineData.elementName) && (dataToShow) && (timelineData.tableDescription)"
     id="single-timeline">
     <mat-accordion>
         <mat-expansion-panel #detailsPanel expanded="true" class="mat-elevation-z0">
@@ -61,7 +61,7 @@
             </div>
 
             <mat-action-row>
-                <button mat-raised-button color="primary" (click)="filterSelectedItems()">Apply checkboxes
+                <button mat-raised-button color="primary" (click)="filterData()">Apply
                     filter</button>
                 <button mat-raised-button color="accent" (click)="detailsPanel.close()">Hide table</button>
             </mat-action-row>
@@ -70,24 +70,38 @@
 
     <mat-progress-bar *ngIf="showProgressBarBottom" mode="indeterminate" color="primary"> </mat-progress-bar>
 
-    <p id="table-summary">
-        Found {{timelineData?.apiResponse['Results']?.length}} {{timelineData?.elementName}}s in total (showing
-        {{selectedData?.length}} elements):
+    <div *ngIf="this.allOpenXmlTopics">
+        <h4>Filter by OpenXML topic</h4>
+        <app-data-types-filter [initialSelectedValues]="this.allOpenXmlTopics"
+            (changedSelectedValues)="openXmlTopicsFilterChanged($event)">
+        </app-data-types-filter>
+    </div>
+
+    <p class="table-summary">
+        Found {{timelineData?.apiResponse['Results']?.length}} {{timelineData?.elementName}}s
+    </p>
+
+    <p class="table-summary">
+        Showing {{dataToShow?.length}} elements after applying the filters
     </p>
 
     <div id="single-timeline-list">
         <div class="cards-wrapper">
-            <div *ngFor="let element of selectedData; let i = index">
+            <div *ngFor="let element of dataToShow; let i = index">
                 <mat-card class="example-card">
                     <mat-card-header>
                         <div mat-card-avatar>
                             <button mat-icon-button color="primary" aria-label="Show details" matTooltip="Show details"
                                 (click)="emitDataType(timelineData?.elementName); this.showDetails(element)">
                                 <div [ngSwitch]="timelineData?.elementName">
-                                    <mat-icon *ngSwitchCase="elementType.OpenXml" svgIcon="xml" class="icon-display"></mat-icon>
-                                    <mat-icon *ngSwitchCase="elementType.CloudJson" svgIcon="json" class="icon-display"></mat-icon>
-                                    <mat-icon *ngSwitchCase="elementType.Hb" svgIcon="heartbeat" class="icon-display"></mat-icon>
-                                    <mat-icon *ngSwitchCase="elementType.Rta" svgIcon="rta" class="icon-display"></mat-icon>
+                                    <mat-icon *ngSwitchCase="elementType.OpenXml" svgIcon="xml" class="icon-display">
+                                    </mat-icon>
+                                    <mat-icon *ngSwitchCase="elementType.CloudJson" svgIcon="json" class="icon-display">
+                                    </mat-icon>
+                                    <mat-icon *ngSwitchCase="elementType.Hb" svgIcon="heartbeat" class="icon-display">
+                                    </mat-icon>
+                                    <mat-icon *ngSwitchCase="elementType.Rta" svgIcon="rta" class="icon-display">
+                                    </mat-icon>
                                 </div>
                             </button>
                         </div>

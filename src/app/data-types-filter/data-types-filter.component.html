@@ -1,7 +1,7 @@
 <div class="box">
   <div>
-    <mat-form-field appearance="fill">
-      <mat-label>Data types</mat-label>
+    <mat-form-field appearance="outline">
+      <mat-label>Select elements</mat-label>
       <mat-select (selectionChange)="onElementChange($event)" [formControl]="elementsControl" multiple>
         <mat-select-trigger>
           {{elementsControl.value ? elementsControl.value[0] : ''}}
@@ -13,8 +13,4 @@
       </mat-select>
     </mat-form-field>
   </div>
-
-  <!--  <div>
-      <button (click)="applyFilter($event)" mat-raised-button color="primary"> Apply</button>
-    </div> -->
 </div>

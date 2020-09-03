@@ -17,7 +17,7 @@ describe('TimelineParametersComponent', () => {
       .compileComponents();
   }));
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(TimelineParametersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -35,7 +35,8 @@ export default class Utils {
         return dataToReturn;
     }
 
-    static createArrayOfObjectsFromSet(set: Set<string>, elementsToIterate: Array<any>): Array<any> {
+    //TODO: use .apply() and .includes()
+    static filterArrayByPnSn(set: Set<string>, elementsToIterate: Array<any>): Array<any> {
         let dataToReturn = [];
         for (const element of elementsToIterate) {
             let pn = element[1]['Value'];
@@ -56,6 +57,22 @@ export default class Utils {
             set.add(key);
         }
         return set;
+    }
+
+    static createSetOfTopicsFromArray(data: any[]): Set<string> {
+        let set = new Set<string>();
+        for (const element of data) {
+            let topic = element[6]['Value'];
+            set.add(topic);
+        }
+        return set;
+    }
+
+    static filterArrayByTopic(data: any[], topicsToInclude: string[]): any[] {
+        return data.filter((element) => {
+            let topicOfElement = element[6]['Value'];
+            return topicsToInclude.includes(topicOfElement);
+        });
     }
 
     static createCountMapFromArray(data: any[]) {
@@ -88,13 +105,21 @@ export default class Utils {
         //  the update of the S3 element.
         // This occurs because we have a global state in the component and can NOT ensure the order of
         // the asynchronus operations.
-        // This can happen when the user selects an XML to see the preview and then selects a JSON
-        // and the app trigers the element type change but the data (the JSON itself) hasn't been updatet yet.
+        // This can happen when the user selects an XML tand then selects a JSON,
+        // the app trigers the element type change but the data (the JSON itself) hasn't been updatet yet.
         try {
             let json: JSON = JSON.parse(inputString);
             return json;
         } catch {
             return inputString;
         }
+    }
+
+    static shortRepresentationOf(d: Date) {
+        return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ':' + d.getMilliseconds();
+    }
+
+    static longRepresentationOf(d: Date) {
+        return d.toLocaleString('en-GB') + ':' + d.getMilliseconds();
     }
 }

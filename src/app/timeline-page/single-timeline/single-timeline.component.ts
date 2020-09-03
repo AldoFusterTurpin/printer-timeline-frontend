@@ -1,4 +1,3 @@
-//TODO: check RTA logs because maybe is not storing correctly the RTA in XML  that generated the RTA in Json.
 import { Component, ViewChild, AfterViewInit, Input, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,18 +15,17 @@ import Utils from '../../shared/utils';
   styleUrls: ['./single-timeline.component.scss']
 })
 export class SingleTimelineComponent implements OnInit, AfterViewInit {
-  elementType = ElementType;
+  public elementType = ElementType;
 
-  @Input() timelineData: TimelineData;
+  @Input()
+  public timelineData: TimelineData;
 
   @Output()
-  changeDataType: EventEmitter<ElementType> = new EventEmitter<ElementType>();
+  public changeDataType: EventEmitter<ElementType> = new EventEmitter<ElementType>();
 
-  public emitDataType(valueToEmit: ElementType) {
-    this.changeDataType.emit(valueToEmit);
-  }
+  public allOpenXmlTopics: string[] = null;
+  public topicsSelected: string[] = null;
 
-  public showProgressBarTop: boolean = true;
   public showProgressBarBottom: boolean = false;
 
   public tableData = [];
@@ -36,7 +34,8 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   public tableDataSource = null;
   public tableLength = 0;
 
-  public selectedData: Array<any> = [];
+  public dataToShow: Array<any> = [];
+  public dataFilteredByPnSnTopic: Array<any> = [];
 
   private tablePaginator: MatPaginator;
 
@@ -48,6 +47,18 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public openXmlTopicsFilterChanged(topicsSelected: string[]) {
+    if (this.timelineData.elementName == ElementType.OpenXml) {
+      this.topicsSelected = topicsSelected;
+
+      this.filterData();
+    }
+  }
+
+  public emitDataType(valueToEmit: ElementType) {
+    this.changeDataType.emit(valueToEmit);
+  }
+
   constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -56,12 +67,17 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
   }
 
-  private updateComponent(input: TimelineData) {
+  private initComponent(input: TimelineData) {
     if (input) {
-      this.timelineData = input;
+      this.timelineData = input; //TODO: unnecesary this line?
 
       let results = this.timelineData.apiResponse['Results'];
       if (results) {
+        if (input.elementName == ElementType.OpenXml) {
+          this.allOpenXmlTopics = Array.from(Utils.createSetOfTopicsFromArray(results));
+          this.topicsSelected = this.allOpenXmlTopics;
+        }
+
         let tableData = this.createTableData(results);
         this.tableLength = tableData.length;
         this.tableDataSource = new MatTableDataSource(tableData);
@@ -69,20 +85,11 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
         if (this.tableDataSource) {
           this.tableDataSource.paginator = this.tablePaginator;
         }
-  
-        let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply checkboxes filter' to see the changes";
-        let action = 'Got it!';
-        this._snackBar.open(message, action, {
-          duration: 20000,
-          verticalPosition: 'top',
-        });
 
       } else {
         this.tableLength = 0;
         this.tableDataSource = new MatTableDataSource([]);
       }
-
-      this.showProgressBarTop = false;
     }
   }
 
@@ -93,7 +100,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
         let change = changes[propName];
         switch (propName) {
           case 'timelineData': {
-            this.updateComponent(change.currentValue);
+            this.initComponent(change.currentValue);
           }
         }
       }
@@ -108,13 +115,18 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
     return Utils.createArrayOfObjectsFromMap(printerCountMap, this.timelineData.apiResponse['Results'].length);
   }
 
-  public filterSelectedItems() {
+  public filterData() {
     this.showProgressBarBottom = true;
-    let selectedValuesInTable = this.selection.selected;
 
     setTimeout(() => {
+      let selectedValuesInTable = this.selection.selected;
       let set = Utils.createSetOfPn_SnFromArray(selectedValuesInTable);
-      this.selectedData = Utils.createArrayOfObjectsFromSet(set, this.timelineData.apiResponse['Results']);
+      this.dataToShow = Utils.filterArrayByPnSn(set, this.timelineData.apiResponse['Results']);
+
+      if (this.timelineData.elementName == ElementType.OpenXml) {
+        this.dataToShow = Utils.filterArrayByTopic(this.dataToShow, this.topicsSelected);
+      }
+
       this.showProgressBarBottom = false;
 
       let message = 'Data ready below ⬇';
@@ -135,7 +147,7 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
   }
 
   public shortRepresentationOf(d: Date) {
-    return d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds() + ':' + d.getMilliseconds();
+    return Utils.shortRepresentationOf(d);
   }
 
   applyFilter(event: Event) {

@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { TimelineData } from 'src/app/shared/timelineData';
 import { ElementType } from 'src/app/shared/ElementType';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import Utils from 'src/app/shared/utils';
 
 @Component({
@@ -23,8 +25,18 @@ export class TimelineDataComponent implements AfterViewInit {
   public showRtas = true;
   public showPrinterSubscriptions = true;
 
-  selectedValuesChanged(selectedValues: ElementType[]) {
-    console.log(selectedValues);
+  public mustShowTip = true;
+
+  public showTip() {
+    let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply filter' to see the changes";
+    let action = 'Got it!';
+    this._snackBar.open(message, action, {
+      duration: 20000,
+      verticalPosition: 'top',
+    });
+  }
+
+  dataTypesFilterChanged(selectedValues: ElementType[]) {
     this.showOpenxmls = selectedValues.includes(ElementType.OpenXml);
     this.showCloudJsons = selectedValues.includes(ElementType.CloudJson);
     this.showHeartBeats = selectedValues.includes(ElementType.Hb);
@@ -53,8 +65,9 @@ export class TimelineDataComponent implements AfterViewInit {
   public httpOpenXmlError;
   public httpCloudJsonError;
   public httpHeartBeatError;
-  public httpS3Error;
   public httpRtaError;
+
+  public httpS3Error;
 
   @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
   @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
@@ -77,15 +90,21 @@ export class TimelineDataComponent implements AfterViewInit {
   private rtaSubscription: Subscription;
   public rtaTimelineData: TimelineData;
 
-  constructor(private timelineService: TimelineService) { }
+  constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   private setUploadedXmlSubscription() {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
       (data: any) => {
         if (data) {
           let type = ElementType.OpenXml;
-          let tableDescription = 'Printers sent ' + type + 'files in the selected time range';
+          let tableDescription = 'Printers sent ' + type + ' files in the selected time range';
           this.uploadedXmlTimelineData = new TimelineData(data, type, tableDescription);
+
+          if (this.mustShowTip) {
+            this.showTip();
+            this.mustShowTip = false;
+          }
+
         } else {
           this.uploadedXmlTimelineData = null;
         }
@@ -104,6 +123,12 @@ export class TimelineDataComponent implements AfterViewInit {
           let type = ElementType.CloudJson;
           let tableDescription = 'Printers that generated' + type + 's';
           this.cloudJsonTimelineData = new TimelineData(data, type, tableDescription);
+
+          if (this.mustShowTip) {
+            this.showTip();
+            this.mustShowTip = false;
+          }
+
         } else {
           this.cloudJsonTimelineData = null;
         }
@@ -122,6 +147,12 @@ export class TimelineDataComponent implements AfterViewInit {
           let type = ElementType.Hb;
           let tableDescription = 'Printers sent ' + type + 's in the selected time range';
           this.heartBeatTimelineData = new TimelineData(data, type, tableDescription);
+
+          if (this.mustShowTip) {
+            this.showTip();
+            this.mustShowTip = false;
+          }
+
         } else {
           this.heartBeatTimelineData = null;
         }
@@ -140,6 +171,12 @@ export class TimelineDataComponent implements AfterViewInit {
           let type = ElementType.Rta;
           let tableDescription = 'Printers sent ' + type + 's in the selected time range';
           this.rtaTimelineData = new TimelineData(data, type, tableDescription);
+
+          if (this.mustShowTip) {
+            this.showTip();
+            this.mustShowTip = false;
+          }
+
         } else {
           this.rtaTimelineData = null;
         }
@@ -238,6 +275,6 @@ export class TimelineDataComponent implements AfterViewInit {
   }
 
   public longRepresentationOf(d: Date) {
-    return d.toLocaleString('en-GB') + ':' + d.getMilliseconds();
+    return Utils.longRepresentationOf(d);
   }
 }
