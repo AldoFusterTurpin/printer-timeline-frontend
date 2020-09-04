@@ -34,8 +34,8 @@
                 </div>
             </div>
         </div>
-
-        <div id="requests-block" class="checkboxes">
+        
+        <!-- <div id="requests-block" class="checkboxes">
             <h4 id="requests-headers">Requests</h4>
             <div>
                 <div *ngFor="let control of requestsControl.controls; let i = index">
@@ -46,7 +46,7 @@
                     <label class="" for="inlineCheckbox{{i}}">{{requests[i]}}</label>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div id="others-block" class="checkboxes">
             <h4 id="others-header">Others</h4>
@@ -75,7 +75,7 @@
             <mat-form-field id="relative-time-value">
                 <mat-label>Time value </mat-label>
                 <input matInput formControlName="_relativeTimeValueControl" pattern="[0-9]*"
-                    placeholder="Ex. 15">
+                    placeholder="Ex. 5">
 
                 <mat-error *ngIf="relativeValueTooBig">
                     Value is too big

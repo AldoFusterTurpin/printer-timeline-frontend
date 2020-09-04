@@ -196,6 +196,7 @@ export class TimelineDataComponent implements AfterViewInit {
       });
   }
 
+  //TODO: work on that beacause when there is an error. it never quites the progress bar
   public getStoredObject(bucket_region: string, bucket_name: string, object_key: string) {
     this.loadingS3Object = true;
     this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
@@ -221,12 +222,15 @@ export class TimelineDataComponent implements AfterViewInit {
         this.S3Object = data;
         this.httpS3Error = null;
         this.leftSidenav.open();
-
+        console.log('(data) this.S3Object' + this.S3Object);;
       },
       (err) => {
         this.loadingS3Object = false;
         this.httpS3Error = err;
         this.leftSidenav.open();
+
+        console.log('(error) this.loadingS3Object: ' + this.loadingS3Object);
+        console.log('(error) this.httpS3Error: ' + this.httpS3Error);
       });
   }
 

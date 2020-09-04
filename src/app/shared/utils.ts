@@ -35,19 +35,14 @@ export default class Utils {
         return dataToReturn;
     }
 
-    //TODO: use .apply() and .includes()
     static filterArrayByPnSn(set: Set<string>, elementsToIterate: Array<any>): Array<any> {
-        let dataToReturn = [];
-        for (const element of elementsToIterate) {
+        return elementsToIterate.filter((element) => {
             let pn = element[1]['Value'];
             let sn = element[2]['Value'];
             let key = pn + '!' + sn;
 
-            if (set.has(key)) {
-                dataToReturn.push(element);
-            }
-        }
-        return dataToReturn;
+            return set.has(key);
+        });
     }
 
     static createSetOfPn_SnFromArray(data: any[]): Set<string> {

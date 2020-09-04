@@ -2,11 +2,6 @@ h4 {
     text-align: center;
 }
 
-.timeline-element-image {
-    background-image: url("../../../assets/svg/icons/xml.svg");
-    background-size: cover;
-}
-
 .example-card {
     width: 200px;
     max-width: 200px;
@@ -20,7 +15,7 @@ h4 {
     flex-direction: row;
     justify-content: left;
     align-content: left;
-    overflow: scroll;
+    overflow-x: scroll;
     height: 100%;
 }
 
@@ -38,15 +33,6 @@ h4 {
     transform: scale(1.5);
 }
 
-#timelines-wrapper {
-    display: flex;
-    flex: auto;
-    flex-direction: column;
-    justify-content: left;
-    align-content: left;
-    overflow: scroll;
-}
-
 table {
     width: 100%;
 }
@@ -61,4 +47,9 @@ table {
 
 .table-summary {
     text-align: center;
+}
+
+#single-timeline-list {
+    overflow-x: scroll;
+    height: 100%;
 }

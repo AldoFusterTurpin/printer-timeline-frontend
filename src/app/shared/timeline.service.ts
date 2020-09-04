@@ -13,10 +13,10 @@ export class TimelineService {
   private timeRangeSource = new ReplaySubject<Object>(1);
   timeRangeData = this.timeRangeSource.asObservable();
 
-  private detailsSource = new Subject<JSON>();
+  private detailsSource = new ReplaySubject<JSON>(1); //changed from Subject to replaySubject
   detailsData = this.detailsSource.asObservable();
 
-  private S3Source = new Subject<JSON>();
+  private S3Source = new ReplaySubject<any>(1); //changed from Subject to replaySubject
   S3Data = this.S3Source.asObservable();
 
   

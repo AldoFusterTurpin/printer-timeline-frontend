@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { TimelineService } from '../../shared/timeline.service';
 import Utils from '../../shared/utils';
 import { ElementType } from 'src/app/shared/ElementType';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-timeline-parameters',
@@ -11,6 +12,7 @@ import { ElementType } from 'src/app/shared/ElementType';
   styleUrls: ['./timeline-parameters.component.scss'],
 })
 export class TimelineParametersComponent implements OnInit, OnDestroy {
+  private maxTimeDiffInMinutes = environment.maxTimeDiffInMinutes ? environment.maxTimeDiffInMinutes : 60;
 
   @Output()
   valuesSelected: EventEmitter<ElementType[]> = new EventEmitter<ElementType[]>();
@@ -93,7 +95,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
       const formValue = parseInt(formValueString);
 
       if (formUnits === 'minutes') {
-        if (formValue > 60) {
+        if (formValue > this.maxTimeDiffInMinutes) { 
           this.setRelativeTimeValueIsTooBig(true);
         } else {
           this.setRelativeTimeValueIsTooBig(false);
@@ -111,7 +113,7 @@ export class TimelineParametersComponent implements OnInit, OnDestroy {
   }
 
   private datesDifferenceIsOkay(start: Date, end: Date) {
-    return Utils.getSecondsDiff(start, end) <= 3600;
+    return Utils.getSecondsDiff(start, end) <= (this.maxTimeDiffInMinutes * 60);
   }
 
   private controlFormIsValid() {
