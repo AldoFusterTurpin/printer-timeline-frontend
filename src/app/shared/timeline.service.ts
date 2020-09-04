@@ -1,24 +1,29 @@
+//Important: onError finishes the stream of data! Don't use it to propagate http errors.
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, of, ReplaySubject, Subject, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { ApiError, ErrorType } from './ApiError';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimelineService {
-  private apiUrl = 'http://0.0.0.0:8080/api';
+
+  private apiErrorsSource = new ReplaySubject<ApiError>(1);
+  apiErrors = this.apiErrorsSource.asObservable();
 
   private timeRangeSource = new ReplaySubject<Object>(1);
   timeRangeData = this.timeRangeSource.asObservable();
 
-  private detailsSource = new ReplaySubject<JSON>(1); //changed from Subject to replaySubject
+  private detailsSource = new ReplaySubject<JSON>(1);
   detailsData = this.detailsSource.asObservable();
 
-  private S3Source = new ReplaySubject<any>(1); //changed from Subject to replaySubject
+  private S3Source = new ReplaySubject<any>(1);
   S3Data = this.S3Source.asObservable();
-
   
   private uploadedXmlSource = new ReplaySubject<JSON>(1);
   uploadedXmlData = this.uploadedXmlSource.asObservable();
@@ -40,12 +45,13 @@ export class TimelineService {
           this.cloudJsonSource.next(res);
           this.heartBeatSource.next(res);
           this.rtaSource.next(res);
+          //this.apiErrorsSource.next(res); //maybe use this
         }),
         catchError((err) => {
-          this.uploadedXmlSource.error(err);
+          /* this.uploadedXmlSource.error(err);
           this.cloudJsonSource.error(err);
           this.heartBeatSource.error(err);
-          this.rtaSource.error(err);
+          this.rtaSource.error(err); */
           return this.handleError(err);
         })
       );
@@ -76,7 +82,6 @@ export class TimelineService {
       .pipe(
         tap(res => this.timeRangeSource.next(res)),
         catchError((err) => {
-          this.timeRangeSource.error(err);
           return this.handleError(err);
         })
       );
@@ -87,67 +92,68 @@ export class TimelineService {
       .pipe(
         tap(res => this.detailsSource.next(res)),
         catchError((err) => {
-          this.detailsSource.error(err);
           return this.handleError(err);
         })
       );
   }
 
   public getUploadedXmls(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${this.apiUrl}/open_xml?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.domainUrl}/api/open_xml?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.uploadedXmlSource.next(res)),
         catchError((err) => {
-          this.uploadedXmlSource.error(err);
+          this.apiErrorsSource.next(new ApiError(ErrorType.OpenXmlError, err));
           return this.handleError(err);
         })
       );
   }
 
   public getCloudJsons(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${this.apiUrl}/cloud_json?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.domainUrl}/api/cloud_json?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.cloudJsonSource.next(res)),
         catchError((err) => {
-          this.cloudJsonSource.error(err);
+          this.apiErrorsSource.next(new ApiError(ErrorType.CloudJsonError, err));
           return this.handleError(err);
         })
       );
   }
 
   public getHeartBeats(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${this.apiUrl}/heartbeat?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.domainUrl}/api/heartbeat?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.heartBeatSource.next(res)),
         catchError((err) => {
-          this.heartBeatSource.error(err);
+          this.apiErrorsSource.next(new ApiError(ErrorType.HbError, err));
           return this.handleError(err);
         })
       );
   }
 
   public getRTAs(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${this.apiUrl}/rta?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.domainUrl}/api/rta?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.rtaSource.next(res)),
         catchError((err) => {
-          this.rtaSource.error(err);
+          this.apiErrorsSource.next(new ApiError(ErrorType.RtaError, err));
           return this.handleError(err);
         })
       );
   }
 
   public getS3Object(bucket_region: string, bucket_name: string, object_key: string): Observable<any> {
-    const url = `${this.apiUrl}/object?bucket_region=${bucket_region}&bucket_name=${bucket_name}&object_key=${object_key}`;
+    const url = `${environment.domainUrl}/api/object?bucket_region=${bucket_region}&bucket_name=${bucket_name}&object_key=${object_key}`;
     return this.http.get<any>(url)
       .pipe(
-        tap(res => this.S3Source.next(res)),
+        tap((res) => {
+          this.S3Source.next(res);
+        }),
         catchError((err) => {
-          this.S3Source.error(err);
+          this.apiErrorsSource.next(new ApiError(ErrorType.S3Error, err));
           return this.handleError(err);
         })
       );

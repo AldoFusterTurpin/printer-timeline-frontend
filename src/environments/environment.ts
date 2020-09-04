@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  maxTimeDiffInMinutes: 20160
+  maxTimeDiffInMinutes: 20160,
+  domainUrl: "http://0.0.0.0:8080",
+  awsEnvironment: 'staging' //staging or production
 };
 
 /*

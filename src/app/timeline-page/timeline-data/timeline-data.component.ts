@@ -7,6 +7,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import Utils from 'src/app/shared/utils';
+import { ApiError, ErrorType } from 'src/app/shared/ApiError';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-timeline-data',
@@ -15,9 +17,13 @@ import Utils from 'src/app/shared/utils';
 })
 export class TimelineDataComponent implements AfterViewInit {
   elementType = ElementType;
+  errorType = ErrorType
 
   @Input()
   public initialSelectedValues;
+
+  @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
+  @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
 
   public showOpenxmls = true;
   public showCloudJsons = true;
@@ -27,6 +33,59 @@ export class TimelineDataComponent implements AfterViewInit {
 
   public mustShowTip = true;
 
+  public loadingSpinner = true;
+  public loadingS3Object = false;
+
+  public typeOfElementDetails;
+  public typeOfS3ElementToShow;
+
+  public S3Error: ApiError;
+  public openXmlError: ApiError;
+  public cloudJsonError: ApiError;
+  public heartBeatError: ApiError;
+  public rtaError: ApiError;
+
+
+  public errorsSubscription: Subscription;
+
+  public S3ObjectSubscription: Subscription;
+  public S3Object;
+
+  public details = null;
+  public detailsSubscription: Subscription;
+
+  public uploadedXmlTimelineData: TimelineData;
+  public cloudJsonTimelineData: TimelineData;
+  public heartBeatTimelineData: TimelineData;
+  public rtaTimelineData: TimelineData;
+
+  private uploadedXmlSubscription: Subscription;
+  private cloudJsonSubscription: Subscription;
+  private heartBeatSubscription: Subscription;
+  private rtaSubscription: Subscription;
+
+  constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
+
+  public setTypeOfS3ElementToShow(type: ElementType) {
+    this.typeOfS3ElementToShow = type;
+  }
+
+  public setTypeOfElementDetails(type: ElementType) {
+    this.typeOfElementDetails = type;
+  }
+
+  public timelineDetailsTypeChangedFromChildComponent(elementDetailsType: ElementType) {
+    this.setTypeOfElementDetails(elementDetailsType);
+  }
+
+  public dataTypesFilterChanged(selectedValues: ElementType[]) {
+    this.showOpenxmls = selectedValues.includes(ElementType.OpenXml);
+    this.showCloudJsons = selectedValues.includes(ElementType.CloudJson);
+    this.showHeartBeats = selectedValues.includes(ElementType.Hb);
+    this.showRtas = selectedValues.includes(ElementType.Rta);
+    this.showPrinterSubscriptions = selectedValues.includes(ElementType.PrinterSubscriptions);
+  }
+
   public showTip() {
     let message = "🧐Quicktip: select some rows of the table below and press the button 'Apply filter' to see the changes";
     let action = 'Got it!';
@@ -35,62 +94,6 @@ export class TimelineDataComponent implements AfterViewInit {
       verticalPosition: 'top',
     });
   }
-
-  dataTypesFilterChanged(selectedValues: ElementType[]) {
-    this.showOpenxmls = selectedValues.includes(ElementType.OpenXml);
-    this.showCloudJsons = selectedValues.includes(ElementType.CloudJson);
-    this.showHeartBeats = selectedValues.includes(ElementType.Hb);
-    this.showRtas = selectedValues.includes(ElementType.Rta);
-    this.showPrinterSubscriptions = selectedValues.includes(ElementType.PrinterSubscriptions);
-  }
-
-  public timelineDetailsTypeChangedFromChildComponent(elementDetailsType: ElementType) {
-    this.setTypeOfElementDetails(elementDetailsType);
-  }
-
-  public typeOfElementDetails;
-  public setTypeOfElementDetails(type: ElementType) {
-    //this.timelineService.emitElementType(elementType).subscribe();
-    this.typeOfElementDetails = type;
-  }
-
-  public typeOfS3ElementToShow;
-  public setTypeOfS3ElementToShow(type: ElementType) {
-    this.typeOfS3ElementToShow = type;
-  }
-
-  public loadingSpinner = true;
-  public loadingS3Object = false;
-
-  public httpOpenXmlError;
-  public httpCloudJsonError;
-  public httpHeartBeatError;
-  public httpRtaError;
-
-  public httpS3Error;
-
-  @ViewChild('rightSidenav') public rightSidenav: MatSidenav;
-  @ViewChild('leftSidenav') public leftSidenav: MatSidenav;
-
-  public S3ObjectSubscription: Subscription;
-  public S3Object;
-
-  public detailsSubscription: Subscription;
-  public details = null;
-
-  private uploadedXmlSubscription: Subscription;
-  public uploadedXmlTimelineData: TimelineData;
-
-  private cloudJsonSubscription: Subscription;
-  public cloudJsonTimelineData: TimelineData;
-
-  private heartBeatSubscription: Subscription;
-  public heartBeatTimelineData: TimelineData;
-
-  private rtaSubscription: Subscription;
-  public rtaTimelineData: TimelineData;
-
-  constructor(private timelineService: TimelineService, private _snackBar: MatSnackBar) { }
 
   private setUploadedXmlSubscription() {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
@@ -111,8 +114,8 @@ export class TimelineDataComponent implements AfterViewInit {
         this.loadingSpinner = false;
       },
       (err) => {
-        this.httpOpenXmlError = err;
-        this.loadingSpinner = false;
+        /* this.openXmlError = err;
+        this.loadingSpinner = false; */
       });
   }
 
@@ -135,8 +138,8 @@ export class TimelineDataComponent implements AfterViewInit {
         this.loadingSpinner = false;
       },
       (err) => {
-        this.httpCloudJsonError = err;
-        this.loadingSpinner = false;
+        /* this.cloudJsonError = err;
+        this.loadingSpinner = false; */
       });
   }
 
@@ -159,8 +162,8 @@ export class TimelineDataComponent implements AfterViewInit {
         this.loadingSpinner = false;
       },
       (err) => {
-        this.httpHeartBeatError = err;
-        this.loadingSpinner = false;
+        /* this.heartBeatError = err;
+        this.loadingSpinner = false; */
       });
   }
 
@@ -183,8 +186,8 @@ export class TimelineDataComponent implements AfterViewInit {
         this.loadingSpinner = false;
       },
       (err) => {
-        this.httpRtaError = err;
-        this.loadingSpinner = false;
+        /* this.rtaError = err;
+        this.loadingSpinner = false; */
       });
   }
 
@@ -196,67 +199,85 @@ export class TimelineDataComponent implements AfterViewInit {
       });
   }
 
-  //TODO: work on that beacause when there is an error. it never quites the progress bar
   public getStoredObject(bucket_region: string, bucket_name: string, object_key: string) {
     this.loadingS3Object = true;
     this.timelineService.getS3Object(bucket_region, bucket_name, object_key).subscribe();
   }
-
-  //Unused:
-  /* public setElementTypeSubscription() {
-    this.elementTypeSubscription = this.timelineService.elementType.subscribe(
-      (data: any) => {
-        this.typeOfElementDetails = data;
-        
-        //console.log(this.typeOfElementDetails);
-      }, 
-      (err) => { 
-        console.log(err);
-      });
-  } */
 
   public setS3ObjectSubscription() {
     this.S3ObjectSubscription = this.timelineService.S3Data.subscribe(
       (data: any) => {
         this.loadingS3Object = false;
         this.S3Object = data;
-        this.httpS3Error = null;
+        this.S3Error = null;
         this.leftSidenav.open();
-        console.log('(data) this.S3Object' + this.S3Object);;
       },
       (err) => {
-        this.loadingS3Object = false;
-        this.httpS3Error = err;
-        this.leftSidenav.open();
-
-        console.log('(error) this.loadingS3Object: ' + this.loadingS3Object);
-        console.log('(error) this.httpS3Error: ' + this.httpS3Error);
+        /* this.loadingS3Object = false;
+        this.S3Error = err;
+        this.leftSidenav.open(); */
       });
   }
 
-  ngAfterViewInit(): void {
+  public setErrorsSubscription() {
+    this.errorsSubscription = this.timelineService.apiErrors.subscribe(
+      (dataError: ApiError) => {
+        this.setAppropiateErrors(dataError)
+      });
+  }
+
+  public setAppropiateErrors(dataError: ApiError) {
+    switch (dataError.errorType) {
+      case this.errorType.S3Error: {
+        this.loadingS3Object = false;
+        this.S3Error = dataError;
+        this.leftSidenav.open();
+        break;
+      }
+      case this.errorType.OpenXmlError: {
+        this.openXmlError = dataError;
+        this.loadingSpinner = false;
+        break;
+      }
+      case this.errorType.CloudJsonError: {
+        this.cloudJsonError = dataError;
+        this.loadingSpinner = false;
+        break;
+      }
+      case this.errorType.RtaError: {
+        this.rtaError = dataError;
+        this.loadingSpinner = false;
+        break;
+      }
+      case this.errorType.HbError: {
+        this.heartBeatError = dataError;
+        this.loadingSpinner = false;
+        break;
+      }
+    }
+  }
+
+  public ngAfterViewInit(): void {
     this.setUploadedXmlSubscription();
     this.setCloudJsonSubscription();
     this.setDetailsSubscription();
     this.setS3ObjectSubscription();
     this.setHeartBeatSubscription();
     this.setRtaSubscription();
-
+    this.setErrorsSubscription();
     //Unused:
     //this.setElementTypeSubscription();
   }
 
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.uploadedXmlSubscription.unsubscribe();
     this.cloudJsonSubscription.unsubscribe();
     this.detailsSubscription.unsubscribe();
     this.S3ObjectSubscription.unsubscribe();
     this.heartBeatSubscription.unsubscribe();
     this.rtaSubscription.unsubscribe();
-
-    //Unused:
-    //this.elementTypeSubscription.unsubscribe();
+    this.errorsSubscription.unsubscribe();
   }
 
   public stringToJsonObject(inputString: string): JSON | string {
@@ -270,6 +291,7 @@ export class TimelineDataComponent implements AfterViewInit {
   //Byy the configuration of AWS we know the specific region and bucket).
   public getOpenXmlThatGeneratedTheCloudJson(keyOfTheOpenXmlThatGeneratedTheJson) {
     let awsRegion = 'US_EAST_1';
+    //let cloudConnectorBucket = (environment.awsEnvironment === 'staging') ? 'drp-cloudconnector-core-production': 'cloudconnector-core-production';
     let cloudConnectorBucket = 'cloudconnector-core-production';
     this.getStoredObject(awsRegion, cloudConnectorBucket, keyOfTheOpenXmlThatGeneratedTheJson);
   }

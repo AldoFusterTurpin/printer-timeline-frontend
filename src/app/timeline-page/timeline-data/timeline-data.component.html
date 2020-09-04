@@ -49,16 +49,16 @@
                         (click)="leftSidenav.close()">Close preview
                     </button>
 
-                    <div *ngIf="httpS3Error">
-                        <p>Response status code: {{httpS3Error?.status}}</p>
-                        <p>Response status text: {{httpS3Error?.statusText}}</p>
-                        <p>Response error: {{httpS3Error?.error}}</p>
+                    <div *ngIf="S3Error">
+                        <p>Response status code: {{S3Error.error.status}}</p>
+                        <p>Response status text: {{S3Error.error.statusText}}</p>
+                        <p>Response error: {{S3Error.error.error}}</p>
                     </div>
 
                     <div
-                        *ngIf="S3Object && !httpS3Error">
-                        <div id="element-preview" [ngSwitch]="typeOfS3ElementToShow">
-                            <pre *ngSwitchCase="elementType.OpenXml" lang="xml">{{S3Object}}</pre>
+                        *ngIf="S3Object && !S3Error">
+                        <div class="element-preview" [ngSwitch]="typeOfS3ElementToShow">
+                            <pre class="element-preview" *ngSwitchCase="elementType.OpenXml" lang="xml">{{S3Object}}</pre>
                             <pre *ngSwitchCase="elementType.CloudJson"> {{stringToJsonObject(S3Object) | json}}</pre>
                             <pre *ngSwitchCase="elementType.Hb" lang="xml">{{S3Object}}</pre>
                             <pre *ngSwitchCase="elementType.Rta"> {{stringToJsonObject(S3Object) | json}}</pre>
@@ -77,17 +77,17 @@
 
                         <div id="timelines-wrapper">
                             <div [hidden]="!showOpenxmls" id="openxml-section" class="timeline-section"
-                                *ngIf="httpOpenXmlError !== undefined || ((uploadedXmlTimelineData !== undefined) && (uploadedXmlTimelineData !== null))">
+                                *ngIf="openXmlError || uploadedXmlTimelineData">
                                 
                                 <div class="section-header">
                                     <p class="section-title"> <strong>OpenXML </strong> </p> 
                                     <mat-icon svgIcon="xml" class="icon-display"></mat-icon>
                                 </div>
 
-                                <div *ngIf="httpOpenXmlError !== undefined;">
-                                    <p>Response status code: {{httpOpenXmlError?.status}}</p>
-                                    <p>Response status text: {{httpOpenXmlError?.statusText}}</p>
-                                    <p>Response error: {{httpOpenXmlError?.error}}</p>
+                                <div *ngIf="openXmlError">
+                                    <p>Response status code: {{openXmlError.error.status}}</p>
+                                    <p>Response status text: {{openXmlError.error.statusText}}</p>
+                                    <p>Response error: {{openXmlError.error.error}}</p>
                                 </div>
 
                                 <div
@@ -100,17 +100,17 @@
                             </div>
 
                             <div [hidden]="!showCloudJsons" id="cloudjson-section" class="timeline-section"
-                                *ngIf="httpCloudJsonError !== undefined || ((cloudJsonTimelineData !== undefined) && (cloudJsonTimelineData !== null))">
+                                *ngIf="cloudJsonError || cloudJsonTimelineData">
                                 
                                 <div class="section-header">
                                     <p class="section-title"> <strong>CloudJSON</strong></p> 
                                     <mat-icon svgIcon="json" class="icon-display"></mat-icon>
                                 </div>
                                 
-                                <div *ngIf="httpCloudJsonError !== undefined;">
-                                    <p>Response status code: {{httpCloudJsonError?.status}}</p>
-                                    <p>Response status text: {{httpCloudJsonError?.statusText}}</p>
-                                    <p>Response error: {{httpCloudJsonError?.error}}</p>
+                                <div *ngIf="cloudJsonError">
+                                    <p>Response status code: {{cloudJsonError.error.status}}</p>
+                                    <p>Response status text: {{cloudJsonError.error.statusText}}</p>
+                                    <p>Response error: {{cloudJsonError.error.error}}</p>
                                 </div>
 
                                 <div *ngIf="(cloudJsonTimelineData !== undefined) && (cloudJsonTimelineData !== null)">
@@ -122,16 +122,16 @@
                             </div>
 
                             <div [hidden]="!showRtas" id="rta-section" class="timeline-section"
-                                *ngIf="httpRtaError !== undefined || ((rtaTimelineData !== undefined) && (rtaTimelineData !== null))">
+                                *ngIf="rtaError || rtaTimelineData">
                                 
                                 <div class="section-header">
                                     <p class="section-title"> <strong>RTA (Real Time Alerts)</strong> </p> <mat-icon svgIcon="rta" class="icon-display"></mat-icon>
                                 </div>
 
-                                <div *ngIf="httpRtaError !== undefined;">
-                                    <p>Response status code: {{httpRtaError?.status}}</p>
-                                    <p>Response status text: {{httpRtaError?.statusText}}</p>
-                                    <p>Response error: {{httpRtaError?.error}}</p>
+                                <div *ngIf="rtaError">
+                                    <p>Response status code: {{rtaError.error.status}}</p>
+                                    <p>Response status text: {{rtaError.error.statusText}}</p>
+                                    <p>Response error: {{rtaError.error.error}}</p>
                                 </div>
 
                                 <div *ngIf="(rtaTimelineData !== undefined) && (rtaTimelineData !== null)">
@@ -143,17 +143,17 @@
                             </div>
 
                             <div [hidden]="!showHeartBeats" id="heartbeat-section" class="timeline-section"
-                                *ngIf="httpHeartBeatError !== undefined || ((heartBeatTimelineData !== undefined) && (heartBeatTimelineData !== null))">
+                                *ngIf="heartBeatError || heartBeatTimelineData">
                                 
                                 <div class="section-header">
                                     <p class="section-title"> <strong>Heartbeat</strong></p> 
                                     <mat-icon svgIcon="heartbeat" class="icon-display"></mat-icon>
                                 </div>
 
-                                <div *ngIf="httpHeartBeatError !== undefined;">
-                                    <p>Response status code: {{httpHeartBeatError?.status}}</p>
-                                    <p>Response status text: {{httpHeartBeatError?.statusText}}</p>
-                                    <p>Response error: {{httpHeartBeatError?.error}}</p>
+                                <div *ngIf="heartBeatError">
+                                    <p>Response status code: {{heartBeatError.error.status}}</p>
+                                    <p>Response status text: {{heartBeatError.error.statusText}}</p>
+                                    <p>Response error: {{heartBeatError.error.error}}</p>
                                 </div>
 
                                 <div *ngIf="(heartBeatTimelineData !== undefined) && (heartBeatTimelineData !== null)">
