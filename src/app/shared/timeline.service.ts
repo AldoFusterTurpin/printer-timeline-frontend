@@ -1,5 +1,4 @@
-//Important: onError finishes the stream of data! Don't use it to propagate http errors.
-
+//IMPORTANT: onError finishes the stream of data! Don't use it to propagate http errors.
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
@@ -56,25 +55,6 @@ export class TimelineService {
         })
       );
   }
-
-  //Unused
-  /* 
-  private elementTypeSource = new Subject<JSON>();
-  elementType = this.elementTypeSource.asObservable(); 
-  */
-
-  //Unused because single-timeline.component is emiting an Output event and 
-  //the parent (timeline-data.component) is listening to it.
-  /* public emitElementType(details): Observable<any> {
-    return of(details)
-      .pipe(
-        tap(res => this.elementTypeSource.next(res)),
-        catchError((err) => {
-          this.elementTypeSource.error(err);
-          return this.handleError(err);
-        })
-      );
-  } */
 
   public setTimeRange(start: Date, end: Date): Observable<any> {
     let timeRange = { 'start': start, 'end': end };

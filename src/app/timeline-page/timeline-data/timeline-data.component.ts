@@ -291,8 +291,7 @@ export class TimelineDataComponent implements AfterViewInit {
   //Byy the configuration of AWS we know the specific region and bucket).
   public getOpenXmlThatGeneratedTheCloudJson(keyOfTheOpenXmlThatGeneratedTheJson) {
     let awsRegion = 'US_EAST_1';
-    //let cloudConnectorBucket = (environment.awsEnvironment === 'staging') ? 'drp-cloudconnector-core-production': 'cloudconnector-core-production';
-    let cloudConnectorBucket = 'cloudconnector-core-production';
+    let cloudConnectorBucket = (environment.awsEnvironment === 'staging') ? 'drp-cloudconnector-core-production': 'cloudconnector-core-production';
     this.getStoredObject(awsRegion, cloudConnectorBucket, keyOfTheOpenXmlThatGeneratedTheJson);
   }
 
