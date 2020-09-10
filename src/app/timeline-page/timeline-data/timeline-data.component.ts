@@ -194,8 +194,12 @@ export class TimelineDataComponent implements AfterViewInit {
   private setDetailsSubscription() {
     this.detailsSubscription = this.timelineService.detailsData.subscribe(
       (data: any) => {
-        this.details = data;
-        this.rightSidenav.open();
+        if (data) {
+          this.details = data;
+          if (this.rightSidenav) {
+            this.rightSidenav.open();
+          } 
+        }
       });
   }
 
@@ -210,7 +214,9 @@ export class TimelineDataComponent implements AfterViewInit {
         this.loadingS3Object = false;
         this.S3Object = data;
         this.S3Error = null;
-        this.leftSidenav.open();
+        if (this.leftSidenav) {
+          this.leftSidenav.open();
+        }
       },
       (err) => {
         /* this.loadingS3Object = false;
