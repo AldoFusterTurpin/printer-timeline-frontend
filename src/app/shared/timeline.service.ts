@@ -78,7 +78,7 @@ export class TimelineService {
   }
 
   public getUploadedXmls(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${environment.domainUrl}/api/open_xml?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.baseUrl}/open-xml?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.uploadedXmlSource.next(res)),
@@ -90,7 +90,7 @@ export class TimelineService {
   }
 
   public getCloudJsons(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${environment.domainUrl}/api/cloud_json?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.baseUrl}/cloud-json?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.cloudJsonSource.next(res)),
@@ -102,7 +102,7 @@ export class TimelineService {
   }
 
   public getHeartBeats(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${environment.domainUrl}/api/heartbeat?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.baseUrl}/heartbeat?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.heartBeatSource.next(res)),
@@ -114,7 +114,7 @@ export class TimelineService {
   }
 
   public getRTAs(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${environment.domainUrl}/api/rta?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
+    const url = `${environment.baseUrl}/rta?pn=${pn}&sn=${sn}&time_type=absolute&start_time=${start_time}&end_time=${end_time}`;
     return this.http.get<any>(url)
       .pipe(
         tap(res => this.rtaSource.next(res)),
@@ -126,7 +126,7 @@ export class TimelineService {
   }
 
   public getS3Object(bucket_region: string, bucket_name: string, object_key: string): Observable<any> {
-    const url = `${environment.domainUrl}/api/object?bucket_region=${bucket_region}&bucket_name=${bucket_name}&object_key=${object_key}`;
+    const url = `${environment.baseUrl}/object?bucket_region=${bucket_region}&bucket_name=${bucket_name}&object_key=${object_key}`;
     return this.http.get<any>(url)
       .pipe(
         tap((res) => {
