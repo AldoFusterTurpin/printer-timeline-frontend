@@ -4,16 +4,17 @@
         <span id="web-title"> Cloud Connector </span>
 
         <div id="toolbar-buttons-container">
-            <!-- <button mat-button class="toolbar-button">
-                <mat-icon>print</mat-icon> Printers Info
-            </button> -->
-            <button mat-button class="toolbar-button" [routerLink]="['/timeline-page-wrapper']">
+            <button mat-button class="toolbar-button" [routerLink]="['timeline-page-wrapper']">
                 <mat-icon>timeline</mat-icon> Printer Timeline
+            </button>
+
+            <button mat-button class="toolbar-button" [routerLink]="['printer-subscriptions']">
+                <mat-icon>print</mat-icon> Printer Subscriptions
             </button>
         </div>
 
         <span class="example-spacer"></span>
-        
+
         <p> Web UI dates: local time. File contents: UTC.</p>
     </mat-toolbar>
 

@@ -294,7 +294,7 @@ export class TimelineDataComponent implements AfterViewInit {
   // Connector received the Xml.
   //(We have the region and bucket from that Json but not the region and bucket from the OpenXml that generated
   // the Json, we just have the key of the associated xml, the input of our function. 
-  //Byy the configuration of AWS we know the specific region and bucket).
+  //By the configuration of AWS we know the specific region and bucket).
   public getOpenXmlThatGeneratedTheCloudJson(keyOfTheOpenXmlThatGeneratedTheJson) {
     let awsRegion = 'US_EAST_1';
     let cloudConnectorBucket = (environment.awsEnvironment === 'staging') ? 'drp-cloudconnector-core-production': 'cloudconnector-core-production';

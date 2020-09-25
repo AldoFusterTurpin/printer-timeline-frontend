@@ -1,0 +1,32 @@
+<form id="form" [formGroup]="myForm" novalidate (submit)="submitForm()" #myform="ngForm">
+    <section id="printer-info">
+        <h2>Printer information</h2>
+        <div id="printer-info-elements">
+            <mat-form-field id="product-number">
+                <mat-label>Product Number (Pn)</mat-label>
+                <input matInput formControlName="_PnControl">
+                <mat-error *ngIf="formControlhasError('_PnControl', 'required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field id="serial-number">
+                <mat-label>Serial Number (Sn)</mat-label>
+                <input matInput formControlName="_SnControl">
+                <mat-error *ngIf="formControlhasError('_SnControl', 'required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </section>
+    <button mat-flat-button color="primary" [disabled]="!formIsValid">
+        Next<mat-icon>arrow_right</mat-icon>
+    </button>
+</form>
+
+<mat-spinner style="margin:0 auto;" *ngIf="loading; else dataReady"></mat-spinner>
+
+<ng-template #dataReady>
+    <app-printer-subscriptions-data [subscriptions]="printerSubscriptions"></app-printer-subscriptions-data>
+    <!-- {{printerSubscriptions}} -->
+</ng-template>

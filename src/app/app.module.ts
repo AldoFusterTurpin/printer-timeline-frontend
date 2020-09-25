@@ -19,6 +19,8 @@ import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.
 import { TimelinePageWrapperComponent } from './timeline-page/timeline-page-wrapper/timeline-page-wrapper.component';
 import { TimelineDataComponent } from './timeline-page/timeline-data/timeline-data.component';
 import { SingleTimelineComponent } from './timeline-page/single-timeline/single-timeline.component';
+import { PrinterSubscriptionsWrapperComponent } from './printer-subscriptions-wrapper/printer-subscriptions.component';
+import { PrinterSubscriptionsDataComponent } from './printer-subscriptions-data/printer-subscriptions-data.component';
 
 
 @NgModule({
@@ -30,6 +32,8 @@ import { SingleTimelineComponent } from './timeline-page/single-timeline/single-
     TimelinePageWrapperComponent,
     TimelineDataComponent,
     SingleTimelineComponent,
+    PrinterSubscriptionsWrapperComponent,
+    PrinterSubscriptionsDataComponent,
   ],
   imports: [
     BrowserModule,
