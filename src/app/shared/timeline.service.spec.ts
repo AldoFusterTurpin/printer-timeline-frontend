@@ -28,7 +28,7 @@ describe('TimelineService', () => {
   });
 
   it('can test get printer timeline from API', () => {
-    const testUrl = 'http://0.0.0.0:8080/cc/V01/api';
+    const testUrl = 'http://0.0.0.0:8080/cc/V01/api/open-xml';
 
     const testData: any = { "body": "mock response" };
 
@@ -63,6 +63,27 @@ describe('TimelineService', () => {
     const req = httpTestingController.expectOne(testUrl);
   
     const mockError = new ErrorEvent('Network error', {
+      message: emsg,
+    });
+  
+    // Respond with mock error
+    req.error(mockError);
+  });
+
+  it('can test for 404 error', () => {
+    const testUrl = 'http://0.0.0.0:8080/cc/V01/api/open-xml';
+    const emsg = 'Failed to load resource: the server responded with a status of 404 (Not Found)';
+  
+    httpClient.get<any>(testUrl).subscribe(
+      data => fail('should have failed with the 404 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.error.message).toEqual(emsg, 'message');
+      }
+    );
+  
+    const req = httpTestingController.expectOne(testUrl);
+  
+    const mockError = new ErrorEvent('404 error', {
       message: emsg,
     });
   

@@ -86,4 +86,25 @@ describe('PrinterSubscriptionsService', () => {
     // Respond with mock error
     req.error(mockError);
   });
+
+  it('can test for 404 error', () => {
+    const testUrl = 'http://0.0.0.0:8080/cc/V01/api/subscriptions?sn=HPCT000011&pn=Y0U23A';
+    const emsg = 'Failed to load resource: the server responded with a status of 404 (Not Found)';
+  
+    httpClient.get<any>(testUrl).subscribe(
+      data => fail('should have failed with the 404 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.error.message).toEqual(emsg, 'message');
+      }
+    );
+  
+    const req = httpTestingController.expectOne(testUrl);
+  
+    const mockError = new ErrorEvent('404 error', {
+      message: emsg,
+    });
+  
+    // Respond with mock error
+    req.error(mockError);
+  });
 });
