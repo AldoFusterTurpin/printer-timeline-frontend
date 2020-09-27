@@ -6,9 +6,9 @@ import { PrinterSubscriptionsService } from './printer-subscriptions.service';
 
 
 describe('PrinterSubscriptionsService', () => {
-  let service: PrinterSubscriptionsService;
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
+  let service: PrinterSubscriptionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,7 +25,7 @@ describe('PrinterSubscriptionsService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('can test get subscriptions', () => {
+  it('can test get printer subscriptions from API', () => {
     const testUrl = 'http://0.0.0.0:8080/cc/V01/api/subscriptions?sn=HPCT000011&pn=Y0U23A';
 
     const testData: any = [
@@ -66,8 +66,6 @@ describe('PrinterSubscriptionsService', () => {
     httpTestingController.verify();
   });
 
-
-  //TODO: check this
   it('can test for network error', () => {
     const testUrl = 'http://0.0.0.0:8080/cc/V01/api/subscriptions?sn=HPCT000011&pn=Y0U23A';
     const emsg = 'simulated network error';
