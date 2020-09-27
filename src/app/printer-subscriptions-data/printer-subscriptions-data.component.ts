@@ -1,6 +1,9 @@
+// TODO: handle 404 error when no subscription for the specified printe
+// and convert timestamp epoch to human readable date 
+// and add unit testing 
+
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-printer-subscriptions-data',

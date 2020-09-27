@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TimelinePageWrapperComponent } from './timeline-page/timeline-page-wrapper/timeline-page-wrapper.component';
-import { PrinterSubscriptionsWrapperComponent } from './printer-subscriptions-wrapper/printer-subscriptions.component';
+import { PrinterSubscriptionsWrapperComponent } from './printer-subscriptions-wrapper/printer-subscriptions-wrapper.component';
 
 
 const routes: Routes = [

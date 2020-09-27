@@ -2,7 +2,7 @@
   <div>
     <mat-form-field appearance="outline">
       <mat-label>Select elements</mat-label>
-      <mat-select (selectionChange)="onElementChange($event)" [formControl]="elementsControl" multiple>
+      <mat-select ngDefaultControl (selectionChange)="onElementChange($event)" [formControl]="elementsControl" multiple>
         <mat-select-trigger>
           {{elementsControl.value ? elementsControl.value[0] : ''}}
           <span *ngIf="elementsControl.value?.length > 1" class="example-additional-selection">

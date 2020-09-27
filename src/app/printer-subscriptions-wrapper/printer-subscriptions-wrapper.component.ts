@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrinterSubscriptionsService } from '../shared/printer-subscriptions.service';
 
 @Component({
   selector: 'app-printer-subscriptions',
-  templateUrl: './printer-subscriptions.component.html',
-  styleUrls: ['./printer-subscriptions.component.scss']
+  templateUrl: './printer-subscriptions-wrapper.component.html',
+  styleUrls: ['./printer-subscriptions-wrapper.component.scss']
 })
 export class PrinterSubscriptionsWrapperComponent implements OnInit {
   private formSubscription;

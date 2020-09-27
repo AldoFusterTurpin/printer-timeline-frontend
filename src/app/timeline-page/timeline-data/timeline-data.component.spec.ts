@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TimelineDataComponent } from './timeline-data.component';
 import { TimelineService } from 'src/app/shared/timeline.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -11,6 +11,7 @@ describe('TimelineDataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ TimelineDataComponent],
+      imports: [ MatSnackBarModule ],
       providers: [TimelineService, HttpClient, HttpHandler],
     })
     .compileComponents();

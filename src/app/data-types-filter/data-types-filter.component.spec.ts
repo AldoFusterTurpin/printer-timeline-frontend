@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataTypesFilterComponent } from './data-types-filter.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 describe('DataTypesFilterComponent', () => {
   let component: DataTypesFilterComponent;
@@ -10,7 +10,7 @@ describe('DataTypesFilterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DataTypesFilterComponent ],
-      imports: [ReactiveFormsModule], 
+      imports: [ReactiveFormsModule, FormsModule], 
       providers: [FormBuilder]
     })
     .compileComponents();

@@ -14,12 +14,11 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { AngularMaterialModule } from './material.module';
 
 import { TimelineParametersComponent } from './timeline-page/timeline-parameters/timeline-parameters.component';
-
 import { DataTypesFilterComponent } from './data-types-filter/data-types-filter.component';
 import { TimelinePageWrapperComponent } from './timeline-page/timeline-page-wrapper/timeline-page-wrapper.component';
 import { TimelineDataComponent } from './timeline-page/timeline-data/timeline-data.component';
 import { SingleTimelineComponent } from './timeline-page/single-timeline/single-timeline.component';
-import { PrinterSubscriptionsWrapperComponent } from './printer-subscriptions-wrapper/printer-subscriptions.component';
+import { PrinterSubscriptionsWrapperComponent } from './printer-subscriptions-wrapper/printer-subscriptions-wrapper.component';
 import { PrinterSubscriptionsDataComponent } from './printer-subscriptions-data/printer-subscriptions-data.component';
 
 
