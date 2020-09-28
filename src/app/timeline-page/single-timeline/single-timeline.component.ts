@@ -69,8 +69,6 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
   private initComponent(input: TimelineData) {
     if (input) {
-      this.timelineData = input; //TODO: unnecesary this line?
-
       let results = this.timelineData.apiResponse['Results'];
       if (results) {
         if (input.elementName == ElementType.OpenXml) {
