@@ -20,8 +20,8 @@ export class PrinterSubscriptionsDataComponent implements OnInit {
   public tableDataSource = null;
   public tableLength = 0;
 
-  public milliSecondsToDate(epochMilliseconds: number): Date {
-    return Utils.milliSecondsToDate(epochMilliseconds);
+  public milliSecondsToDate(epochMilliseconds: number): string {
+    return Utils.longRepresentationOf(Utils.milliSecondsToDate(epochMilliseconds));
   }
 
   applyFilter(event: Event) {
