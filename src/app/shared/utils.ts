@@ -117,4 +117,8 @@ export default class Utils {
     static longRepresentationOf(d: Date) {
         return d.toLocaleString('en-GB') + ':' + d.getMilliseconds();
     }
+
+    static milliSecondsToDate(epochMilliseconds: number): Date {
+        return new Date(epochMilliseconds);
+      }
 }

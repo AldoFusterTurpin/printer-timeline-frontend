@@ -1,5 +1,5 @@
 <div *ngIf="subscriptions != null">
-    <p style="text-align: center;"><b>{{tableLength}}</b> printer subscriptions found for that printer</p>
+    <p style="text-align: center;"><b>{{tableLength}}</b> printer subscriptions found for the printer specified</p>
     
     <mat-form-field>
         <mat-label>Filter table rows</mat-label>
@@ -24,7 +24,7 @@
 
         <ng-container matColumnDef="RegistrationTimeEpoch">
             <th mat-header-cell *matHeaderCellDef> RegistrationTimeEpoch </th>
-            <td mat-cell *matCellDef="let element"> {{element['RegistrationTimeEpoch']}} </td>
+            <td mat-cell *matCellDef="let element"> {{milliSecondsToDate(element['RegistrationTimeEpoch'])}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

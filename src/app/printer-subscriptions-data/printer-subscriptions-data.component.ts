@@ -4,6 +4,7 @@
 
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import Utils from '../shared/utils';
 
 @Component({
   selector: 'app-printer-subscriptions-data',
@@ -18,6 +19,10 @@ export class PrinterSubscriptionsDataComponent implements OnInit {
   public displayedColumns: string[] = ['PrinterID', 'AccountID', 'ServiceID', 'RegistrationTimeEpoch'];
   public tableDataSource = null;
   public tableLength = 0;
+
+  public milliSecondsToDate(epochMilliseconds: number): Date {
+    return Utils.milliSecondsToDate(epochMilliseconds);
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
