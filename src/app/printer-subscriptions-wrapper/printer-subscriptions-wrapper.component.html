@@ -29,13 +29,15 @@
 <ng-template #dataReady>
     <app-printer-subscriptions-data *ngIf="!printerSubscriptionsError" [subscriptions]="printerSubscriptions">
     </app-printer-subscriptions-data>
+    <div id="error-section">
+        <div *ngIf="printerSubscriptionsError">
+            <p>Response status code: {{printerSubscriptionsError.error.status}}</p>
+            <p>Response status text: {{printerSubscriptionsError.error.statusText}}</p>
+            <p>Response error: {{printerSubscriptionsError.error.error}}</p>
 
-    <div *ngIf="printerSubscriptionsError">
-        <p>Response status code: {{printerSubscriptionsError.error.status}}</p>
-        <p>Response status text: {{printerSubscriptionsError.error.statusText}}</p>
-        <p>Response error: {{printerSubscriptionsError.error.error}}</p>
-
-        <p *ngIf="printerSubscriptionsError.error.status ===404">Reason: no Printer Subscription found for the printer
-            specified</p>
+            <p *ngIf="printerSubscriptionsError.error.status ===404">Reason: no Printer Subscription found for the
+                printer specified
+            </p>
+        </div>
     </div>
 </ng-template>
