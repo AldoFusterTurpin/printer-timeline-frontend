@@ -20,6 +20,7 @@ import { TimelineDataComponent } from './timeline-page/timeline-data/timeline-da
 import { SingleTimelineComponent } from './timeline-page/single-timeline/single-timeline.component';
 import { PrinterSubscriptionsWrapperComponent } from './printer-subscriptions-wrapper/printer-subscriptions-wrapper.component';
 import { PrinterSubscriptionsDataComponent } from './printer-subscriptions-data/printer-subscriptions-data.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { PrinterSubscriptionsDataComponent } from './printer-subscriptions-data/
     SingleTimelineComponent,
     PrinterSubscriptionsWrapperComponent,
     PrinterSubscriptionsDataComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

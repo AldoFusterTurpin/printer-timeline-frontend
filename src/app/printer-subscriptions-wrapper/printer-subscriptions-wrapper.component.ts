@@ -26,26 +26,26 @@ export class PrinterSubscriptionsWrapperComponent implements OnInit {
     })
   }
 
-  get pnControl() { 
-    return this.myForm.get('_PnControl'); 
+  get pnControl() {
+    return this.myForm.get('_PnControl');
   }
 
-  get snControl() { 
-    return this.myForm.get('_SnControl'); 
+  get snControl() {
+    return this.myForm.get('_SnControl');
   }
 
   private getPrinterSubscriptions() {
     this.loading = true;
     this.printerSubscriptionsService.getPrinterSubscriptions(this.pnControl.value, this.snControl.value)
-    .then((result) => {
-      this.printerSubscriptionsError = null;
-      this.printerSubscriptions = result;
-    })
-    .catch((err) => {
-      this.printerSubscriptionsError = new ApiError(ErrorType.PrinterSubscriptionsError, err);
-      console.error(err);
-    })
-    .finally(()=> this.loading = false);
+      .then((result) => {
+        this.printerSubscriptionsError = null;
+        this.printerSubscriptions = result;
+      })
+      .catch((err) => {
+        this.printerSubscriptionsError = new ApiError(ErrorType.PrinterSubscriptionsError, err);
+        console.error(err);
+      })
+      .finally(() => this.loading = false);
   }
 
   private controlFormIsValid() {
@@ -69,10 +69,6 @@ export class PrinterSubscriptionsWrapperComponent implements OnInit {
   constructor(public fb: FormBuilder, private printerSubscriptionsService: PrinterSubscriptionsService) { }
 
   ngOnInit(): void {
-    this.onChanges();
-  }
-
-  onChanges(): void {
     this.formSubscription = this.myForm.valueChanges.subscribe(val => {
       this.controlFormIsValid();
     });

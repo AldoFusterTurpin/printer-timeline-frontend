@@ -1,0 +1,23 @@
+<form id="form" [formGroup]="loginForm" novalidate (submit)="login()" #myform="ngForm">
+    <section id="login">
+        <div id="printer-info-elements">
+            <mat-form-field id="product-number">
+                <mat-label>X-API-Key</mat-label>
+                <input matInput formControlName="_ApiKeyControl" type="password">
+                <mat-error *ngIf="formControlhasError('_ApiKeyControl', 'required')">
+                    This field is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </section>
+    <button mat-flat-button color="primary" [disabled]="!formIsValid">
+        <mat-icon>login</mat-icon>  Login
+    </button>
+</form>
+
+<div>
+    <p> Dates in web UI: local time (DD/MM/YYYY)</p>
+    <p> Dates in file contents: UTC </p>
+</div>
+
+<!-- TODO: add x-api-key header to all the requests -->

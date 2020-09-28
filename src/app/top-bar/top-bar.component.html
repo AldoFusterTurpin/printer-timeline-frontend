@@ -5,17 +5,19 @@
 
         <div id="toolbar-buttons-container">
             <button mat-button class="toolbar-button" [routerLink]="['timeline-page-wrapper']">
-                <mat-icon>timeline</mat-icon> Printer Timeline
+                <mat-icon>timeline</mat-icon> Timeline
             </button>
 
             <button mat-button class="toolbar-button" [routerLink]="['printer-subscriptions']">
-                <mat-icon>print</mat-icon> Printer Subscriptions
+                <mat-icon>print</mat-icon> Subscriptions
             </button>
         </div>
 
         <span class="example-spacer"></span>
 
-        <p> Dates in web UI: local time (DD/MM/YYYY). Dates in file contents: UTC </p>
+        <button mat-button class="toolbar-button" [routerLink]="['login']">
+            <mat-icon>login</mat-icon> Login
+        </button>
     </mat-toolbar>
 
     <hr style="height:1px;border-width:0;color:gray;background-color:gray">
