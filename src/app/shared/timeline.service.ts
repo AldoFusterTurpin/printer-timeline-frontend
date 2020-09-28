@@ -76,6 +76,12 @@ export class TimelineService {
       );
   }
 
+  private openXmlPath = 'open-xml';
+  private cloudJsonPath = 'cloud-json';
+  private heartbeatPath = 'heartbeat';
+  private rtaPath = 'rta';
+  private S3ObjectPath = 'object';
+
   private commonHTTPHeaders = new HttpHeaders({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "access-control-allow-origin, access-control-allow-headers",
@@ -99,7 +105,7 @@ export class TimelineService {
   }
 
   public getUploadedXmls(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
-    const url = `${environment.baseUrl}/open-xml`;
+    const url = `${environment.baseUrl}/${this.openXmlPath}`;
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
 
     return this.http.get<any>(url, httpOptions)
@@ -114,7 +120,7 @@ export class TimelineService {
 
   public getCloudJsons(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
-    const url = `${environment.baseUrl}/cloud-json`;
+    const url = `${environment.baseUrl}/${this.cloudJsonPath}`;
 
     return this.http.get<any>(url, httpOptions)
       .pipe(
@@ -128,7 +134,8 @@ export class TimelineService {
 
   public getHeartBeats(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
-    const url = `${environment.baseUrl}/heartbeat`;
+    const url = `${environment.baseUrl}/${this.heartbeatPath}`;
+
     return this.http.get<any>(url, httpOptions)
       .pipe(
         tap(res => this.heartBeatSource.next(res)),
@@ -141,7 +148,8 @@ export class TimelineService {
 
   public getRTAs(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
-    const url = `${environment.baseUrl}/rta`;
+    const url = `${environment.baseUrl}/${this.rtaPath}`;
+
     return this.http.get<any>(url, httpOptions)
       .pipe(
         tap(res => this.rtaSource.next(res)),
@@ -163,7 +171,8 @@ export class TimelineService {
       params: params
     };
 
-    const url = `${environment.baseUrl}/object`;
+    const url = `${environment.baseUrl}/${this.S3ObjectPath}`;
+    
     return this.http.get<any>(url, httpOptions)
       .pipe(
         tap((res) => {
