@@ -7,6 +7,8 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
+
 //external time picker
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
@@ -42,6 +44,7 @@ import { LoginComponent } from './login/login.component';
     AngularMaterialModule,
     NgxMaterialTimepickerModule,
     HttpClientModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent],

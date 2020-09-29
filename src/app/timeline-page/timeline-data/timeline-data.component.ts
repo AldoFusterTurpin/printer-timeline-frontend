@@ -95,6 +95,15 @@ export class TimelineDataComponent implements AfterViewInit {
     });
   }
 
+  public showCopiedMessage() {
+    let message = "Copied to clipboard 📋";
+    let action = 'Got it!';
+    this._snackBar.open(message, action, {
+      duration: 5000,
+      verticalPosition: 'top',
+    });
+  }
+
   private setUploadedXmlSubscription() {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
       (data: any) => {

@@ -1,4 +1,4 @@
-<!-- Add copy button to left sidenav -->
+<!-- TODO: Add copy button to left sidenav -->
 <mat-spinner style="margin:0 auto;" *ngIf="loadingSpinner; else dataReady"></mat-spinner>
 
 <ng-template #dataReady>
@@ -48,6 +48,10 @@
                 <mat-sidenav class="custom-sidenav-container" #leftSidenav mode="over" opened="false" position="start">
                     <button id="close-left-sidenav-button" class="close-sidenav-button" mat-raised-button color="accent"
                         (click)="leftSidenav.close()">Close
+                    </button>
+
+                    <button mat-button color="primary"  (click)="showCopiedMessage()" cdkCopyToClipboard="{{S3Object}}">
+                        <mat-icon>content_copy</mat-icon>Copy
                     </button>
 
                     <div *ngIf="S3Error">
