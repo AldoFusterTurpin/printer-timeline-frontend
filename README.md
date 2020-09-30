@@ -19,6 +19,10 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+Use lite-server (https://github.com/johnpapa/lite-server) to simulate the execution in a production environment:
+
+You can use `ng build --prod` and then do `lite-server --baseDir="dist/printer-timeline"` to simulate a production environment (check https://angular.io/guide/deployment).
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).

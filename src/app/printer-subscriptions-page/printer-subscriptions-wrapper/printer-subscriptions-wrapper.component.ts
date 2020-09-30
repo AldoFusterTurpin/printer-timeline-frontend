@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PrinterSubscriptionsService } from '../shared/printer-subscriptions.service';
-import { ApiError, ErrorType } from '../shared/ApiError';
+import { PrinterSubscriptionsService } from '../../shared/printer-subscriptions.service';
+import { ApiError, ErrorType } from '../../shared/ApiError';
 
 @Component({
   selector: 'app-printer-subscriptions',
@@ -42,8 +42,10 @@ export class PrinterSubscriptionsWrapperComponent implements OnInit {
         this.printerSubscriptions = result;
       })
       .catch((err) => {
-        this.printerSubscriptionsError = new ApiError(ErrorType.PrinterSubscriptionsError, err);
         console.error(err);
+        console.error('err');
+
+        this.printerSubscriptionsError = new ApiError(ErrorType.PrinterSubscriptionsError, err);
       })
       .finally(() => this.loading = false);
   }

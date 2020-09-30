@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  maxTimeDiffInMinutes: 1440,
+  maxTimeDiffInMinutes: 5000,
   baseUrl: "http://localhost:8080/cc/V01/api",
   awsEnvironment: 'staging' //staging or production
 };

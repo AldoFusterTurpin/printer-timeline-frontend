@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import Utils from '../shared/utils';
+import Utils from '../../shared/utils';
 
 @Component({
   selector: 'app-printer-subscriptions-data',

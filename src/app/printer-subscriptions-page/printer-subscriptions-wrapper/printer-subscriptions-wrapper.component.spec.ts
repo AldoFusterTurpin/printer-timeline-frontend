@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { PrinterSubscriptionsWrapperComponent } from './printer-subscriptions-wrapper.component';
-import { PrinterSubscriptionsService } from '../shared/printer-subscriptions.service';
+import { PrinterSubscriptionsService } from '../../shared/printer-subscriptions.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('PrinterSubscriptionsWrapperComponent', () => {

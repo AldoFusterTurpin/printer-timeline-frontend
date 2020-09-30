@@ -4,5 +4,3 @@ export const environment = {
   baseUrl: "https://cloudapi.ph-pipe.com/cc/V01/api",
   awsEnvironment: 'staging' //staging or production
 };
-
-

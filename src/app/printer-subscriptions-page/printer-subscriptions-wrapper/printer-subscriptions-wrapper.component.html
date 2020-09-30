@@ -35,7 +35,7 @@
             <p>Response status text: {{printerSubscriptionsError.error.statusText}}</p>
             <p>Response error: {{printerSubscriptionsError.error.error}}</p>
 
-            <p *ngIf="printerSubscriptionsError.error.status ===404">Reason: no Printer Subscription found for the
+            <p *ngIf="printerSubscriptionsError.error.status === 404">Reason: no Printer Subscription found for the
                 printer specified
             </p>
         </div>

@@ -1,5 +1,7 @@
 export default class Utils {
 
+    static readonly API_KEY_NAME = 'x-api-key';
+
     static stringDateToDateObject(inputDate: string): Date {
         let ISO8601DateString = inputDate.replace(' ', 'T') + 'Z';
         const date = new Date(ISO8601DateString);
@@ -100,12 +102,12 @@ export default class Utils {
         //  the update of the S3 element.
         // This occurs because we have a global state in the component and can NOT ensure the order of
         // the asynchronus operations.
-        // This can happen when the user selects an XML tand then selects a JSON,
+        // This can happen when the user selects an XML and then selects a JSON,
         // the app trigers the element type change but the data (the JSON itself) hasn't been updatet yet.
         try {
             let json: JSON = JSON.parse(inputString);
             return json;
-        } catch {
+        } catch (e) {
             return inputString;
         }
     }

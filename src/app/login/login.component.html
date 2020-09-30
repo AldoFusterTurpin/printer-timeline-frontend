@@ -10,14 +10,13 @@
             </mat-form-field>
         </div>
     </section>
-    <button mat-flat-button color="primary" [disabled]="!formIsValid">
+    <button mat-flat-button color="primary" (click)="showLoginMessage()" [disabled]="!formIsValid">
         <mat-icon>login</mat-icon>  Login
     </button>
 </form>
 
-<!-- TODO: move below block to other place -->
-<div>
-    <p> Dates in web UI: local time (DD/MM/YYYY)</p>
-    <p> Dates in file contents: UTC </p>
-</div>
 
+<div id="info-section">
+    <p> Dates in the web UI are in local time following the format (DD/MM/YYYY).</p>
+    <p> Dates in file contents are in UTC. </p>
+</div>

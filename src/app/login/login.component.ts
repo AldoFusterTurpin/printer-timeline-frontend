@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import Utils from '../shared/utils';
+
 
 @Component({
   selector: 'app-login',
@@ -34,8 +37,7 @@ export class LoginComponent implements OnInit {
   
   public login(): void {
     if (this.formIsValid) { 
-      localStorage.setItem('x-api-key', this.ApiKeyControl.value);
-      console.log(localStorage.getItem('x-api-key'));
+      localStorage.setItem(Utils.API_KEY_NAME, this.ApiKeyControl.value);
     }
   }
   
@@ -51,6 +53,17 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  constructor(public fb: FormBuilder) { }
+  public showLoginMessage() {
+    let element = "X-API-KEY";
+    let message = `${element} stored in browser 🔑`;
+
+    let action = 'Got it!';
+    this._snackBar.open(message, action, {
+      duration: 3000,
+      verticalPosition: 'top',
+    });
+  }
+
+  constructor(public fb: FormBuilder, private _snackBar: MatSnackBar) { }
 
 }

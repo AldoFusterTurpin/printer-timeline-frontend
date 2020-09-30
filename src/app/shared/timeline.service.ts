@@ -6,6 +6,7 @@ import { Observable, of, ReplaySubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ApiError, ErrorType } from './ApiError';
+import Utils from './utils';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class TimelineService {
           this.cloudJsonSource.next(res);
           this.heartBeatSource.next(res);
           this.rtaSource.next(res);
-          //this.apiErrorsSource.next(res); //maybe use this
+          this.apiErrorsSource.next(res); //maybe use this
         }),
         catchError((err) => {
           /* this.uploadedXmlSource.error(err);
@@ -82,12 +83,13 @@ export class TimelineService {
   private rtaPath = 'rta';
   private S3ObjectPath = 'object';
 
-  private commonHTTPHeaders = new HttpHeaders({
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "access-control-allow-origin, access-control-allow-headers",
-    'x-api-key': localStorage.getItem('x-api-key')
-  })
-
+  private commonHTTPHeaders() {
+    return new HttpHeaders({
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "access-control-allow-origin, access-control-allow-headers",
+      'x-api-key': localStorage.getItem(Utils.API_KEY_NAME) ? localStorage.getItem(Utils.API_KEY_NAME) : ''
+    })
+  }
 
   private commonHTTPOptions(pn: string, sn: string, start_time: string, end_time: string) {
     let params = new HttpParams()
@@ -98,7 +100,7 @@ export class TimelineService {
       .set('end_time', end_time);
 
     const httpOptions = {
-      headers: this.commonHTTPHeaders,
+      headers: this.commonHTTPHeaders(),
       params: params
     };
     return httpOptions;
@@ -166,14 +168,15 @@ export class TimelineService {
       .set('bucket_name', bucket_name)
       .set('object_key', object_key);
 
-    const httpOptions = {
-      headers: this.commonHTTPHeaders,
-      params: params
+      const httpOptions = {
+        headers: this.commonHTTPHeaders(),
+        params: params,
+        responseType: 'text' as const, //ugly notation (search '*OBSERVE* AND *RESPONSE* TYPES'): https://angular.io/guide/http#requesting-a-typed-response
     };
 
     const url = `${environment.baseUrl}/${this.S3ObjectPath}`;
-    
-    return this.http.get<any>(url, httpOptions)
+
+    return this.http.get(url,httpOptions)
       .pipe(
         tap((res) => {
           this.S3Source.next(res);
