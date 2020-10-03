@@ -21,7 +21,12 @@ export default class Utils {
 
     static allCharsAreNumbers(text): boolean {
         let numbers = /^[0-9]+$/;
-        return text.match(numbers);
+        let matches = text.match(numbers)
+        return matches != null;
+    }
+
+    static percentatge(value: number, nElements: number): string {
+        return (value / nElements * 100).toFixed(2)
     }
 
     static createArrayOfObjectsFromMap(elementsToIterate: Map<string, number>, nElements: number): Array<any> {
@@ -30,7 +35,7 @@ export default class Utils {
             let row = {
                 'pn!sn': key,
                 'count': value,
-                '%': ((value / nElements) * 100).toFixed(2)
+                '%': this.percentatge(value, nElements)
             };
             dataToReturn.push(row);
         }
@@ -73,9 +78,9 @@ export default class Utils {
     }
 
     static createCountMapFromArray(data: any[]) {
-        //key: pn!sn
-        //value: how many times appears printer in data
-        //i.e: number of data ('howm many' xmls, jsons, etc) sent by that printer in the selected time range
+        // key: pn!sn
+        // value: how many times appears each printer identified by 'pn!sn' in data
+        // i.e: number of data ('howm many' xmls, jsons, etc) sent by that printer in the selected time range
         let printerCountMap = new Map();
         for (const element of data) {
             let pn = element[1]['Value'];
