@@ -106,7 +106,7 @@ export class TimelineDataComponent implements AfterViewInit {
 
   private setUploadedXmlSubscription() {
     this.uploadedXmlSubscription = this.timelineService.uploadedXmlData.subscribe(
-      (data: any) => {
+      (data: any) => {        
         if (data) {
           let type = ElementType.OpenXml;
           let tableDescription = 'Printers sent ' + type + ' files in the selected time range';

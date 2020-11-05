@@ -127,12 +127,12 @@ export class SingleTimelineComponent implements OnInit, AfterViewInit {
 
       this.showProgressBarBottom = false;
 
-      let message = 'Data ready below ⬇';
+      /* let message = 'Data ready below ⬇';
       let action = 'Got it!';
       this._snackBar.open(message, action, {
         duration: 5000,
         verticalPosition: 'top',
-      });
+      }); */
     }, 1000);
   }
 

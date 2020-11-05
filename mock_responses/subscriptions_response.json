@@ -1,0 +1,20 @@
+[
+    {
+        "PrinterID": "Y0U23A!HPCT000011",
+        "AccountID": "MiquelCCTest_3763",
+        "ServiceID": "HP-PPU",
+        "RegistrationTimeEpoch": 1594993081000
+    },
+    {
+        "PrinterID": "Y0U23A!HPCT000011",
+        "AccountID": "pr250f9d43",
+        "ServiceID": "PRINTOS",
+        "RegistrationTimeEpoch": 1575551409215
+    },
+    {
+        "PrinterID": "Y0U23A!HPCT000011",
+        "AccountID": "se00000000",
+        "ServiceID": "seals",
+        "RegistrationTimeEpoch": 1600938101369
+    }
+]

@@ -1,0 +1,556 @@
+{
+    "Results": [
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:25:00.347"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "Y0U23A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97F1T00H"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "Y0U23A!MY97F1T00H-7396e65a-f5f2-4db9-8d02-bd1a7d4c8132"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:24:59Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/Y0U23A!MY97F1T00H_2020_09_16_09_24_57_813"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAFEjUaGAIF8qpFWAAAAACOybG5AAX2HZngAAAHgiABKLP57LHJLjCz9O2xyS44CED3E0jRSFDANxABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:25:13.195"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "2QU25A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97I1T005"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "2QU25A!MY97I1T005-5b736643-06d8-4074-a7f4-a7bc9d8fd968"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:25:12Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/2QU25A!MY97I1T005_2020_09_16_09_25_11_129"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAFEjUaGAIF8qpFWAAAAACOybG5AAX2HZngAAAHgiABKLP57LHJLjCz9O2xyS44CED3E0jRSFDANxAFGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:30:01.257"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "Y0U23A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97F1T00H"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "Y0U23A!MY97F1T00H-284f6143-420a-4592-8fa3-950ac8e4f56b"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:30:00Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/Y0U23A!MY97F1T00H_2020_09_16_09_29_57_738"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchACEjUaGAIF8rYRbwAAAADiLt+4AAX2HbAgAAAE8iABKNmg/7HJLjCOuv+xyS44BED2CUitQlCeMRABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:30:13.951"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "2QU25A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97I1T005"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "2QU25A!MY97I1T005-2d344c77-ad24-4d44-b772-1f462aeb7ac4"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:30:12Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/2QU25A!MY97I1T005_2020_09_16_09_30_10_814"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchABEjUaGAIF8YK9xQAAAAC5R6HcAAX2HargAAAAUiABKJWGgLLJLjCSqoCyyS44BECBCkjNQlC+MRABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:35:01.675"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "Y0U23A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97F1T00H"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "Y0U23A!MY97F1T00H-0f58aa6b-6dc6-47bc-9de0-061dd4d19514"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:35:00Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/Y0U23A!MY97F1T00H_2020_09_16_09_34_57_540"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAEEjUaGAIF5vr8sgAAAAHMmh4oAAX2HcAAAAADIiABKLzHkbLJLjDr55GyyS44BED2CUipQlCaMRABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:35:13.535"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "2QU25A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97I1T005"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "2QU25A!MY97I1T005-8895e95d-2379-49b1-ae0d-3fa862b20a78"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:35:12Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/2QU25A!MY97I1T005_2020_09_16_09_35_10_807"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchABEjUaGAIF8YK9xQAAAAC5SiVSAAX2Hb9gAAAAUiABKIevkrLJLjDqxpKyyS44BECBCkjMQlC9MRABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:39:35.692"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "4VW19A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY9A71Q017"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "4VW19A!MY9A71Q017-07e662bf-a053-4ac2-98cf-5fcb510b3689"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:39:35Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/4VW19A!MY9A71Q017_2020_09_16_09_39_32_921"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAFEjUaGAIF8qpFWAAAAACO1MVpAAX2HcxwAAAHgiABKPatorLJLjDm3qKyyS44BUDwCki6Q1CrMhABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:40:14.422"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "Y0U23A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97F1T00H"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "Y0U23A!MY97F1T00H-beacda87-6372-46c8-9bcc-f745c3474734"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:40:12Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/Y0U23A!MY97F1T00H_2020_09_16_09_39_57_742"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAEEjUaGAIF5vr8sgAAAAHMmsa5AAX2HdVwAAADIiABKJ+ApLLJLjC+9qSyyS44BECSCkjaQ1CgMhABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:40:14.519"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "4VW19A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY9A71Q017"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "4VW19A!MY9A71Q017-27dfbe5a-5ee1-4764-8b89-73e50991e38b"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:40:11Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/4VW19A!MY9A71Q017_2020_09_16_09_39_35_981"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAHEjUaGAIF5gEWXQAAAANjUDVwAAX2HdBQAAAA0iABKLfspLLJLjDx1aWyyS44BkCoE0jGS1CIOhAAGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:40:26.248"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "2QU25A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97I1T005"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "2QU25A!MY97I1T005-0125fbad-65ba-4680-87be-f74bfe19a9e4"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:40:24Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/2QU25A!MY97I1T005_2020_09_16_09_40_10_562"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAHEjUaGAIF5gEWXQAAAANjUDVwAAX2HdBQAAAA0iABKLfspLLJLjDx1aWyyS44BkCoE0jGS1CIOhADGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:44:23.209"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "4VW19A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY9A71Q017"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "4VW19A!MY9A71Q017-fdb27db8-31cc-43b7-8705-3f2bc16aac28"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:44:21Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/4VW19A!MY9A71Q017_2020_09_16_09_44_17_347"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchADEjUaGAIF5gk6rwAAAADGw8DxAAX2Hd4wAAAA8iABKN7bs7LJLjCAjLSyyS44BECOCkjgQlDRMRABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:45:01.981"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "Y0U23A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY97F1T00H"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "Y0U23A!MY97F1T00H-3e455dca-1fd1-45ea-b00f-01e9a60b20dd"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:45:00Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/Y0U23A!MY97F1T00H_2020_09_16_09_44_57_585"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAGEjUaGAIF5hfdVAAAAALx89unAAX2HeOAAAABQiABKOGWtrLJLjDNwLayyS44BED2CUivQlCgMRABGAE="
+            }
+        ],
+        [
+            {
+                "Field": "@timestamp",
+                "Value": "2020-09-16 09:46:05.303"
+            },
+            {
+                "Field": "fields.ProductNumber",
+                "Value": "4VW19A"
+            },
+            {
+                "Field": "fields.SerialNumber",
+                "Value": "MY9A71Q017"
+            },
+            {
+                "Field": "fields.bucket_name",
+                "Value": "drp-cloudconnector-to-blacksea"
+            },
+            {
+                "Field": "fields.bucket_region",
+                "Value": "US_WEST_1"
+            },
+            {
+                "Field": "fields.key",
+                "Value": "4VW19A!MY9A71Q017-b579aca7-59dc-4f41-8c0c-67ded69ef527"
+            },
+            {
+                "Field": "fields.topic",
+                "Value": "json"
+            },
+            {
+                "Field": "fields.metadata.date",
+                "Value": "2020-09-16T09:46:01Z"
+            },
+            {
+                "Field": "fields.metadata.xml-generator-object-path",
+                "Value": "uploads/raw/4VW19A!MY9A71Q017_2020_09_16_09_45_47_526"
+            },
+            {
+                "Field": "@ptr",
+                "Value": "Cl8KJgoiMTAzNjkxMDEzODI3Oi9hd3MvbGFtYmRhL0FXU1BhcnNlchAFEjUaGAIF8qpFWAAAAACO22kyAAX2HerQAAAHgiABKPegurLJLjDuv7qyyS44A0DBCUjaQlDLMRAAGAE="
+            }
+        ]
+    ],
+    "Statistics": {
+        "BytesScanned": 16792,
+        "RecordsMatched": 13,
+        "RecordsScanned": 52
+    },
+    "Status": "Complete"
+}

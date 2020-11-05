@@ -8,6 +8,13 @@ import { environment } from 'src/environments/environment';
 import { ApiError, ErrorType } from './ApiError';
 import Utils from './utils';
 
+import cloudJsonResponseMock from '../../../mock_responses/cloud_json_response.json';
+import heartbeatResponseMock from '../../../mock_responses/heartbeat_response.json';
+import openxmlResponseMock from '../../../mock_responses/openxml_response.json';
+import rtaResponseMock from '../../../mock_responses/rta_response.json';
+import s3ResponseMock from '../../../mock_responses/s3_response.json';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,16 +31,16 @@ export class TimelineService {
   private S3Source = new ReplaySubject<any>(1);
   S3Data = this.S3Source.asObservable();
 
-  private uploadedXmlSource = new ReplaySubject<JSON>(1);
+  private uploadedXmlSource = new ReplaySubject<any>(1);
   uploadedXmlData = this.uploadedXmlSource.asObservable();
 
-  private cloudJsonSource = new ReplaySubject<JSON>(1);
+  private cloudJsonSource = new ReplaySubject<any>(1);
   cloudJsonData = this.cloudJsonSource.asObservable();
 
-  private heartBeatSource = new ReplaySubject<JSON>(1);
+  private heartBeatSource = new ReplaySubject<any>(1);
   heartBeatData = this.heartBeatSource.asObservable();
 
-  private rtaSource = new ReplaySubject<JSON>(1);
+  private rtaSource = new ReplaySubject<any>(1);
   rtaData = this.rtaSource.asObservable();
 
   public cleanSources() {
@@ -107,6 +114,9 @@ export class TimelineService {
   }
 
   public getUploadedXmls(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+    // Uncomment line below in order to use mock_responses instead of fetching data from back-end
+    //this.uploadedXmlSource.next(openxmlResponseMock); return of(openxmlResponseMock);
+
     const url = `${environment.baseUrl}/${this.openXmlPath}`;
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
 
@@ -121,6 +131,9 @@ export class TimelineService {
   }
 
   public getCloudJsons(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+    // Uncomment line below in order to use mock_responses instead of fetching data from back-end
+    //this.cloudJsonSource.next(cloudJsonResponseMock); return of(cloudJsonResponseMock);
+
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
     const url = `${environment.baseUrl}/${this.cloudJsonPath}`;
 
@@ -135,6 +148,9 @@ export class TimelineService {
   }
 
   public getHeartBeats(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+    // Uncomment line below in order to use mock_responses instead of fetching data from back-end
+    //this.heartBeatSource.next(heartbeatResponseMock); return of(heartbeatResponseMock);
+    
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
     const url = `${environment.baseUrl}/${this.heartbeatPath}`;
 
@@ -149,6 +165,9 @@ export class TimelineService {
   }
 
   public getRTAs(pn: string, sn: string, start_time: string, end_time: string): Observable<any> {
+    // Uncomment line below in order to use mock_responses instead of fetching data from back-end
+    //this.rtaSource.next(rtaResponseMock); return of(rtaResponseMock);
+    
     const httpOptions = this.commonHTTPOptions(pn, sn, start_time, end_time);
     const url = `${environment.baseUrl}/${this.rtaPath}`;
 
@@ -163,6 +182,9 @@ export class TimelineService {
   }
 
   public getS3Object(bucket_region: string, bucket_name: string, object_key: string): Observable<any> {
+    // Uncomment line below in order to use mock_responses instead of fetching data from back-end
+    //this.S3Source.next(s3ResponseMock); return of(s3ResponseMock);
+    
     let params = new HttpParams()
       .set('bucket_region', bucket_region)
       .set('bucket_name', bucket_name)
